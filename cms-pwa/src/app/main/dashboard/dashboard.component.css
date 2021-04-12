@@ -1,0 +1,28 @@
+.dashboard-card {
+  padding: 2rem;
+}
+
+.title-box {
+  border-bottom: 1px solid #333;
+  margin-bottom: 2rem;
+}
+
+.heading {
+  font-size: 3rem;
+  margin-bottom: 0;
+}
+
+.subheading {
+  font-size: 0.9rem;
+}
+
+.content-description {
+  font-size: 1.1rem;
+}
+
+:host {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}

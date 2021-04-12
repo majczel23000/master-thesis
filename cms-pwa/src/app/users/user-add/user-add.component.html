@@ -1,0 +1,63 @@
+<app-current-path [currentPathItems]="[languageService.getTranslation('locationUsers'), languageService.getTranslation('locationRegister')]"></app-current-path>
+<app-module-navigation [navigation]="userService.getUsersNavigation()"></app-module-navigation>
+<mat-card class="module-add-card pb-2 mt-4">
+
+  <mat-card-header>
+    <mat-card-title>
+      <h1 class="module-add-title">{{languageService.getTranslation('newUserHeader')}}</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form class="example-form" [formGroup]="addUserFormGroup" (ngSubmit)="addUser()">
+
+      <mat-form-field class="example-full-width mb-4">
+        <input matInput placeholder="{{languageService.getTranslation('email')}}" name="email" formControlName="email" [errorStateMatcher]="matcher">
+        <mat-hint>{{languageService.getTranslation('newUserEmailPlaceholder')}}</mat-hint>
+        <mat-error *ngIf="control.email.hasError('email') && !control.email.hasError('required')">
+          Please enter a valid email address!
+        </mat-error>
+        <mat-error *ngIf="control.email.hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width mb-4">
+        <input matInput placeholder="{{languageService.getTranslation('firstName')}}" type="text" name="firstName" formControlName="firstName" [errorStateMatcher]="matcher">
+        <mat-hint>{{languageService.getTranslation('newUserFirstNamePlaceholder')}}</mat-hint>
+        <mat-error *ngIf="control.firstName.hasError('required')">
+          First Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width mb-4">
+        <input matInput placeholder="{{languageService.getTranslation('lastName')}}" type="text" name="lastName" formControlName="lastName" [errorStateMatcher]="matcher">
+        <mat-hint>{{languageService.getTranslation('newUserLastNamePlaceholder')}}</mat-hint>
+        <mat-error *ngIf="control.lastName.hasError('required')">
+          Last Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="{{languageService.getTranslation('password')}}" type="password" name="password" formControlName="password" [errorStateMatcher]="matcher">
+        <mat-hint>{{languageService.getTranslation('newUserPasswordPlaceholder')}}</mat-hint>
+        <mat-error *ngIf="control.password.hasError('required')">
+          Password is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="!control.password.hasError('required') && control.password.hasError('minlength')">
+          Password must have at least 6 characters
+        </mat-error>
+      </mat-form-field>
+      <div class="role-list-title mt-4">{{languageService.getTranslation('selectRoles')}}:</div>
+      <div class="role-list">
+        <mat-checkbox color="primary" #checkbox class="role-list-item"*ngFor="let role of roles" (change)="onCheckboxChange(role.code, checkbox)">{{role.name}}</mat-checkbox>
+      </div>
+
+      <mat-card-actions>
+        <button mat-raised-button class="module-add-btn" color="primary">{{languageService.getTranslation('register')}}</button>
+      </mat-card-actions>
+
+    </form>
+  </mat-card-content>
+
+</mat-card>

@@ -1,0 +1,70 @@
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~@fortawesome/fontawesome-free/css/all.css';
+@import 'assets/css/details.css';
+@import 'assets/css/lists.css';
+@import 'assets/css/add.css';
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.users-card {
+    min-height: 100%;
+}
+
+.users-card-header {
+    display: flex;
+    justify-content: center;
+}
+
+table {
+    width: 100%;
+}
+
+.error-snackbar {
+    background: #ff0033 !important;
+    color: #f6f6f6 !important;
+    max-width: 50% !important;
+    right: 0 !important;
+}
+
+.success-snackbar {
+    background: #28a745 !important;
+    color: #f6f6f6 !important;
+    max-width: 50% !important;
+    right: 0 !important;
+}
+
+.mat-simple-snackbar-action {
+    color: #f6f6f6 !important;
+}
+
+@media only screen and (max-width: 650px) {
+  .mobile-display-none {
+    display: none;
+  }
+  .cdk-overlay-pane {
+    width: 100% !important;
+  }
+}
+
+@media only screen and (min-width: 650px) {
+  .desktop-display-none {
+    display: none !important;
+  }
+}
+
+.spinner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255,255,255,0.8);
+  z-index: 1;
+}

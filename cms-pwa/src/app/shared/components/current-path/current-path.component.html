@@ -1,0 +1,7 @@
+<div class="current-path-container">
+  <span class="current-path-item">{{languageService.getTranslation('location')}}:  </span>
+  <span class="current-path-item" *ngFor="let item of currentPathItems; let i = index">
+    <span *ngIf="currentPathItems.length-1 == i"> {{item}}</span>
+    <span *ngIf="currentPathItems.length-1 != i">{{item}} <b> > </b> </span>
+  </span>
+</div>

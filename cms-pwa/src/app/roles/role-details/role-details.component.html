@@ -1,0 +1,65 @@
+<app-current-path *ngIf="role" [currentPathItems]="['roles', role.name]"></app-current-path>
+
+<app-module-navigation [navigation]="roleService.getRolesNavigation()"></app-module-navigation>
+
+<mat-card class="module-details-card pb-5 mt-4">
+
+  <mat-card-header>
+    <mat-card-title>
+      <h1 class="module-details-title">{{languageService.getTranslation('role')}}: {{role?.code}}</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form class="module-details-form" [formGroup]="editRoleFormGroup" *ngIf="role" (ngSubmit)="editRole()">
+
+      <table class="module-details-table">
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('code')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{role?.code}}</td>
+        </tr>
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('name')}}:</td>
+          <td class="module-details-item">
+            <mat-form-field>
+              <input matInput value="{{role?.name}}" name="name" formControlName="name" [errorStateMatcher]="matcher">
+              <mat-error *ngIf="control.name.hasError('required')">
+                Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('description')}}:</td>
+          <td class="module-details-item">
+            <mat-form-field>
+              <input matInput value="{{role?.description}}" name="description" formControlName="description" [errorStateMatcher]="matcher">
+              <mat-error *ngIf="control.description.hasError('required')">
+                Description is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('status')}}:</td>
+          <td class="module-details-item module-details-status" (click)="changeStatus()"
+              [ngStyle]="{ 'background': role.status === 'INACTIVE' ? '#828282' : '#28a745' }">{{role?.status}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('createdAt')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{role?.createdAt}}</td>
+        </tr>
+      </table>
+
+      <mat-card-actions class="module-edit-actions">
+        <button mat-raised-button class="module-edit-btn" color="primary">{{languageService.getTranslation('saveChanges')}}</button>
+        <a mat-raised-button class="module-edit-btn" (click)="clearChanges()" color="accent">{{languageService.getTranslation('clearChanges')}}</a>
+      </mat-card-actions>
+
+    </form>
+  </mat-card-content>
+
+</mat-card>

@@ -1,0 +1,23 @@
+.login-full-width {
+  width: 100%;
+}
+
+.login-btn {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.login-header {
+  display: flex;
+  justify-content: center;
+}
+
+.login-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.login-card {
+  padding: 20px 30px;
+}

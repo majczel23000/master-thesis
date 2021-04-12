@@ -1,0 +1,26 @@
+::ng-deep .mat-card-header {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .mat-card-header-text {
+  margin: 0 !important;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.module-add-btn {
+  width: 100%;
+  margin: 0px !important;
+}
+
+.add-img-btn {
+  width: 50%;
+  margin-bottom: 20px !important;
+}
+
+.img-name {
+  margin-left: 20px;
+}

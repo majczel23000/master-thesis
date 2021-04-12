@@ -1,0 +1,26 @@
+.module-add-card {
+  margin: 0 auto;
+  padding: 20px 30px !important;
+}
+
+.module-add-title {
+  font-size: 1.5rem !important;
+}
+
+.module-add-btn {
+  width: 100% !important;
+}
+
+.role-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+
+.role-list-title {
+  font-size: 1rem !important;
+  margin-bottom: 15px !important;
+}
+
+.role-list-item {
+  flex: 1 0 50% !important;
+}

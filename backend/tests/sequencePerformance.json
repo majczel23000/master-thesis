@@ -1,0 +1,37 @@
+{
+    "config": {
+        "target": "http://localhost:3456",
+        "phases": [
+            {
+                "duration": 10,
+                "arrivalRate": 5
+            }
+        ]
+    },
+    "scenarios": [
+        {
+            "flow": [
+                {
+                    "get": {
+                        "url": "/users"
+                    }
+                },
+                {
+                    "get": {
+                        "url": "/users"
+                    }
+                },
+                {
+                    "get": {
+                        "url": "/roles"
+                    }
+                },
+                {
+                    "get": {
+                        "url": "/faqs"
+                    }
+                }
+            ]
+        }
+    ]
+}

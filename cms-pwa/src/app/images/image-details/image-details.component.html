@@ -1,0 +1,59 @@
+<app-current-path *ngIf="image" [currentPathItems]="['images', image.name]"></app-current-path>
+<app-module-navigation [navigation]="imageService.getImagesNavigation()"></app-module-navigation>
+<mat-card class="module-details-card pb-2 mt-4">
+
+  <mat-card-header>
+    <mat-card-title>
+      <h1 class="module-details-title">Image: {{image?.code}}</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form class="module-details-form" *ngIf="image">
+
+      <table class="module-details-table">
+
+        <tr class="module-details-row">
+          <td colspan="2" class="module-details-item image-item">
+            <img class="image-row" [src]="image.image">
+          </td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('code')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{image?.code}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('name')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{image?.name}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('createdAt')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{image?.createdAt}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('updatedAt')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{image?.updatedAt}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('status')}}:</td>
+          <td class="module-details-item module-details-status" (click)="changeStatus()"
+              [ngStyle]="{ 'background': image.status === 'INACTIVE' ? '#828282' : image.status === 'ACTIVE' ? '#28a745' : 'blue' }">{{image?.status}}</td>
+        </tr>
+
+      </table>
+
+      <mat-card-actions class="module-edit-actions">
+        <button mat-raised-button class="module-edit-btn" color="primary">{{languageService.getTranslation('saveChanges')}}</button>
+        <a mat-raised-button class="module-edit-btn" color="warn" (click)="removeImage()">{{languageService.getTranslation('remove')}}</a>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+
+
+
+</mat-card>

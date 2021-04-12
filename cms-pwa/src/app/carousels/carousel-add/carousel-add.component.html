@@ -1,0 +1,48 @@
+<app-current-path [currentPathItems]="['carousels', 'add']"></app-current-path>
+<app-module-navigation [navigation]="carouselService.getCarouselsNavigation()"></app-module-navigation>
+<mat-card class="module-add-card pb-2 mt-4">
+
+  <mat-card-header>
+    <mat-card-title>
+      <h1 class="module-add-title">{{languageService.getTranslation('CarouselsAddNav')}}</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form class="example-form" [formGroup]="addCarouselFormGroup" (ngSubmit)="addCarousel()">
+
+      <mat-form-field class="example-full-width mb-4">
+        <input matInput placeholder="{{languageService.getTranslation('code')}}" name="code" formControlName="code" [errorStateMatcher]="matcher">
+        <mat-hint>{{languageService.getTranslation('typeCodeHere')}}</mat-hint>
+        <mat-error *ngIf="control.code.hasError('minlength') && !control.code.hasError('required')">
+          Code must have at least 5 characters
+        </mat-error>
+        <mat-error *ngIf="control.code.hasError('required')">
+          Code is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width mb-4">
+        <input matInput placeholder="{{languageService.getTranslation('name')}}" type="text" name="name" formControlName="name" [errorStateMatcher]="matcher">
+        <mat-hint>{{languageService.getTranslation('typeNameHere')}}</mat-hint>
+        <mat-error *ngIf="control.name.hasError('minlength') && !control.name.hasError('required')">
+          Name must have at least 5 characters
+        </mat-error>
+        <mat-error *ngIf="control.name.hasError('required')">
+          Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width mb-4">
+        <input matInput placeholder="{{languageService.getTranslation('description')}}" type="text" name="description" formControlName="description" [errorStateMatcher]="matcher">
+        <mat-hint>{{languageService.getTranslation('typeDescHere')}}</mat-hint>
+      </mat-form-field>
+
+      <mat-card-actions>
+        <button mat-raised-button class="module-add-btn" color="primary">{{languageService.getTranslation('add')}}</button>
+      </mat-card-actions>
+
+    </form>
+  </mat-card-content>
+
+</mat-card>

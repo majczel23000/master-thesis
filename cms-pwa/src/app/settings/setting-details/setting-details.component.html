@@ -1,0 +1,112 @@
+<app-current-path *ngIf="setting" [currentPathItems]="['settings', setting.name]"></app-current-path>
+
+<app-module-navigation [navigation]="settingsService.getSettingsNavigation()"></app-module-navigation>
+
+<mat-card class="module-details-card pb-5 mt-4">
+
+  <mat-card-header>
+    <mat-card-title>
+      <h1 class="module-details-title">setting: {{setting?.code}}</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form class="module-details-form" [formGroup]="editSettingFormGroup" *ngIf="setting" (ngSubmit)="editSetting()">
+
+      <table class="module-details-table">
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('code')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{setting?.code}}</td>
+        </tr>
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('name')}}:</td>
+          <td *ngIf="setting.status !== 'DELETED'" class="module-details-item">
+            <mat-form-field>
+              <input matInput value="{{setting?.name}}" name="name" formControlName="name" [errorStateMatcher]="matcher">
+              <mat-error *ngIf="control.name.hasError('required')">
+                Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td class="module-details-item" style="text-align: left" *ngIf="setting.status === 'DELETED'">{{setting?.name}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('description')}}:</td>
+          <td *ngIf="setting.status !== 'DELETED'" class="module-details-item">
+            <mat-form-field>
+              <input matInput value="{{setting?.description}}" name="description" formControlName="description" [errorStateMatcher]="matcher">
+              <mat-error *ngIf="control.description.hasError('required')">
+                Description is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td class="module-details-item" style="text-align: left" *ngIf="setting.status === 'DELETED'">{{setting?.description}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Type:</td>
+          <td *ngIf="setting.status !== 'DELETED'" class="module-details-item">
+            <mat-form-field class="type-value-fields">
+              <mat-select formControlName="type" value="{{setting?.type}}">
+                <mat-option *ngFor="let type of settingType" [value]="type">
+                  {{type}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="control.type.hasError('required')">
+                Type is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td class="module-details-item" style="text-align: left" *ngIf="setting.status === 'DELETED'">{{setting?.type}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Value:</td>
+          <td *ngIf="setting.status !== 'DELETED'" class="module-details-item">
+            <mat-form-field class="example-full-width mb-4 type-value-fields">
+              <input matInput type="text" name="value" formControlName="value" [errorStateMatcher]="matcher" value="{{setting?.value}}">
+              <mat-error *ngIf="control.value.hasError('required')">
+                Value is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="typeStringError">
+                Value for String type is <strong>invalid</strong>
+              </mat-error>
+              <mat-error *ngIf="typeNumberError && !control.value.hasError('required')">
+                Value for Number type is <strong>invalid</strong>
+              </mat-error>
+              <mat-error *ngIf="typeBooleanError">
+                Value for Boolean type is <strong>invalid</strong>
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td class="module-details-item" style="text-align: left" *ngIf="setting.status === 'DELETED'">{{setting?.value}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('status')}}:</td>
+          <td class="module-details-item module-details-status" (click)="changeStatus()"
+              [ngStyle]="{ 'background': setting.status === 'INACTIVE' ? '#828282' : '#28a745' }">{{setting?.status}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('createdAt')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{setting?.createdAt}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('updatedAt')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{setting?.updatedAt}}</td>
+        </tr>
+      </table>
+
+      <mat-card-actions *ngIf="setting.status !== 'DELETED'" class="module-edit-actions">
+        <button mat-raised-button class="module-edit-btn" color="primary">{{languageService.getTranslation('saveChanges')}}</button>
+        <a mat-raised-button class="module-edit-btn" (click)="clearChanges()" color="accent">{{languageService.getTranslation('clearChanges')}}</a>
+        <a mat-raised-button class="module-edit-btn" color="warn" (click)="removeSetting()">{{languageService.getTranslation('remove')}}</a>
+      </mat-card-actions>
+
+    </form>
+  </mat-card-content>
+
+</mat-card>

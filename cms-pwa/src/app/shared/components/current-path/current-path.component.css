@@ -1,0 +1,8 @@
+.current-path-container {
+  margin: 0 auto 15px auto;
+}
+
+.current-path-item {
+  font-size: 1rem;
+  font-family: 'Consolas'
+}

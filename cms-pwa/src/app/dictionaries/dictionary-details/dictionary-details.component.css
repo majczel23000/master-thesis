@@ -1,0 +1,28 @@
+::ng-deep .mat-card-header {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .mat-card-header-text {
+  margin: 0 !important;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.module-details-row {
+  background: white;
+}
+
+.second {
+  background: #1234;
+}
+
+.second td {
+  padding: 5px 20px 0px 20px !important;
+}
+
+::ng-deep .second .mat-form-field-wrapper {
+  padding-bottom: 0px !important;
+}

@@ -1,0 +1,236 @@
+<app-current-path *ngIf="menu" [currentPathItems]="['menus', menu.name]"></app-current-path>
+<app-module-navigation [navigation]="menuService.getMenusNavigation()"></app-module-navigation>
+<mat-card class="module-details-card pb-2 mt-4">
+
+  <mat-card-header>
+    <mat-card-title>
+      <h1 class="module-details-title">Menu: {{menu?.code}}</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form class="module-details-form" [formGroup]="editMenuFormGroup" *ngIf="menu" (ngSubmit)="editMenu()">
+
+      <table class="module-details-table">
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('code')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{menu?.code}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('name')}}:</td>
+          <td *ngIf="menu.status !== 'DELETED'" class="module-details-item">
+            <mat-form-field class="module-details-form-field">
+              <input matInput value="{{menu?.name}}" name="name" formControlName="name" [errorStateMatcher]="matcher">
+              <mat-error *ngIf="!control.name.hasError('required') && control.name.hasError('minlength')">
+                Name must have at least 5 characters
+              </mat-error>
+              <mat-error *ngIf="control.name.hasError('required')">
+                Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td *ngIf="menu.status === 'DELETED'" class="module-details-item" style="text-align: left">{{menu.name}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('description')}}:</td>
+          <td *ngIf="menu.status !== 'DELETED'" class="module-details-item">
+            <mat-form-field class="module-details-form-field">
+              <input matInput value="{{menu?.description}}" name="description" formControlName="description">
+            </mat-form-field>
+          </td>
+          <td *ngIf="menu.status === 'DELETED'" class="module-details-item" style="text-align: left">{{menu.description}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('createdAt')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{menu?.createdAt}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('updatedAt')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{menu?.updatedAt}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('status')}}:</td>
+          <td class="module-details-item module-details-status" (click)="changeStatus()"
+              [ngStyle]="{ 'background': menu.status === 'INACTIVE' ? '#828282' : menu.status === 'ACTIVE' ? '#28a745' : 'blue' }">{{menu?.status}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td *ngIf="menu.status === 'DELETED'" colspan="2" class="module-details-item module-elements-title">{{languageService.getTranslation('elements')}}</td>
+          <td *ngIf="menu.status !== 'DELETED'" class="module-details-item module-elements-title">{{languageService.getTranslation('elements')}}</td>
+          <td *ngIf="menu.status !== 'DELETED'" class="module-details-item">
+            <a mat-raised-button class="module-edit-btn" color="primary" (click)="addMenuElement()" *ngIf="menuElementsVisibility">{{languageService.getTranslation('add')}}</a>
+            <a mat-raised-button class="module-edit-btn" color="primary" (click)="menuElementsVisibility = !menuElementsVisibility">
+              <ng-container *ngIf="!menuElementsVisibility">{{languageService.getTranslation('show')}}</ng-container>
+              <ng-container *ngIf="menuElementsVisibility">{{languageService.getTranslation('hide')}}</ng-container>
+            </a>
+          </td>
+        </tr>
+
+      </table>
+
+      <table *ngIf="menu.status !== 'DELETED'">
+
+        <ng-container *ngIf="menuElementsVisibility && !menuElements.length">
+          <tr class="module-details-row">
+            <td class="module-details-item-none">
+              {{languageService.getTranslation('noElements')}}
+            </td>
+          </tr>
+        </ng-container>
+
+        <ng-container *ngIf="menuElementsVisibility">
+          <ng-container *ngFor="let menuElement of menuElements; let i = index">
+
+            <tr class="module-details-row first" >
+              <td class="module-details-item-element">
+                <mat-form-field class="module-details-form-field" [ngClass]="{'mat-form-field-invalid ng-dirty ng-invalid ng-touched' : !menuElement.url.length}">
+                  <textarea #url matInput value="{{menuElement?.url}}" name="url" placeholder="Url {{i+1}}"
+                            (change)="menuElement.url = url.value"></textarea>
+                </mat-form-field>
+              </td>
+              <td class="module-details-item-element">
+                <mat-form-field class="module-details-form-field" [ngClass]="{'mat-form-field-invalid ng-dirty ng-invalid ng-touched' : !menuElement.text.length}">
+                  <textarea #text matInput value="{{menuElement?.text}}" name="text" placeholder="Text {{i+1}}"
+                            (change)="menuElement.text = text.value"></textarea>
+                </mat-form-field>
+              </td>
+              <td class="module-details-item-delete">
+                <a mat-raised-button class="module-edit-btn" color="warn" (click)="removeMenuElement(0, i, 0, 0)"><i class="material-icons">delete</i></a>
+                <a mat-raised-button class="module-edit-btn" color="primary" (click)="addMenuElement(menuElement)"><i class="material-icons">add</i></a>
+                <a mat-raised-button class="module-edit-btn" color="basic" *ngIf="i !== 0" (click)="moveElementUp(0, menuElement, i, 0, 0)"><i class="material-icons">keyboard_arrow_up</i></a>
+                <a mat-raised-button class="module-edit-btn" color="basic" *ngIf="i+1 < menuElements.length" (click)="moveElementDown(0, menuElement, i, 0, 0)"><i class="material-icons">keyboard_arrow_down</i></a>
+              </td>
+            </tr>
+
+            <ng-container *ngIf="menuElement.children && menuElement.children.length">
+              <ng-container *ngFor="let subEl1 of menuElement.children; let j = index">
+
+                <tr class="module-details-row second">
+                  <td class="module-details-item-element">
+                    <mat-form-field class="module-details-form-field" [ngClass]="{'mat-form-field-invalid ng-dirty ng-invalid ng-touched' : !subEl1.url.length}">
+                  <textarea #url matInput value="{{subEl1?.url}}" name="url" placeholder="Url {{i+1}}.{{j+1}}"
+                            (change)="subEl1.url = url.value"></textarea>
+                    </mat-form-field>
+                  </td>
+                  <td class="module-details-item-element">
+                    <mat-form-field class="module-details-form-field" [ngClass]="{'mat-form-field-invalid ng-dirty ng-invalid ng-touched' : !subEl1.text.length}">
+                  <textarea #text matInput value="{{subEl1?.text}}" name="text" placeholder="Text {{i+1}}.{{j+1}}"
+                            (change)="subEl1.text = text.value"></textarea>
+                    </mat-form-field>
+                  </td>
+                  <td class="module-details-item-delete">
+                    <a mat-raised-button class="module-edit-btn" color="warn" (click)="removeMenuElement(1, i, j, 0)"><i class="material-icons">delete</i></a>
+                    <a mat-raised-button class="module-edit-btn" color="primary" (click)="addMenuElement(subEl1)"><i class="material-icons">add</i></a>
+                    <a mat-raised-button class="module-edit-btn" color="basic" *ngIf="j !== 0" (click)="moveElementUp(1, subEl1, i, j, 0)"><i class="material-icons">keyboard_arrow_up</i></a>
+                    <a mat-raised-button class="module-edit-btn" color="basic" *ngIf="j+1 < menuElement.children.length" (click)="moveElementDown(1, subEl1, i, j, 0)"><i class="material-icons">keyboard_arrow_down</i></a>
+                  </td>
+                </tr>
+
+                <ng-container *ngIf="subEl1.children && subEl1.children.length">
+                  <ng-container *ngFor="let subEl2 of subEl1.children; let k = index">
+
+                    <tr class="module-details-row third">
+                      <td class="module-details-item-element">
+                        <mat-form-field class="module-details-form-field" [ngClass]="{'mat-form-field-invalid ng-dirty ng-invalid ng-touched' : !subEl2.url.length}">
+                          <textarea #url matInput value="{{subEl2?.url}}" name="url" placeholder="Url {{i+1}}.{{j+1}}.{{k+1}}"
+                            (change)="subEl2.url = url.value"></textarea>
+                        </mat-form-field>
+                      </td>
+                      <td class="module-details-item-element">
+                        <mat-form-field class="module-details-form-field" [ngClass]="{'mat-form-field-invalid ng-dirty ng-invalid ng-touched' : !subEl2.text.length}">
+                          <textarea #text matInput value="{{subEl2?.text}}" name="text" placeholder="Text {{i+1}}.{{j+1}}.{{k+1}}"
+                            (change)="subEl2.text = text.value"></textarea>
+                        </mat-form-field>
+                      </td>
+                      <td class="module-details-item-delete">
+                        <a mat-raised-button class="module-edit-btn" color="warn" (click)="removeMenuElement(2, i, j, k)"><i class="material-icons">delete</i></a>
+                        <a mat-raised-button class="module-edit-btn" color="basic" *ngIf="k !== 0" (click)="moveElementUp(2, subEl2, i, j, k)"><i class="material-icons">keyboard_arrow_up</i></a>
+                        <a mat-raised-button class="module-edit-btn" color="basic" *ngIf="k+1 < subEl1.children.length" (click)="moveElementDown(2, subEl2, i, j, k)"><i class="material-icons">keyboard_arrow_down</i></a>
+                      </td>
+                    </tr>
+
+                  </ng-container>
+                </ng-container>
+
+              </ng-container>
+            </ng-container>
+
+          </ng-container>
+        </ng-container>
+
+      </table>
+
+      <table *ngIf="menu.status === 'DELETED'">
+
+        <ng-container *ngIf="menuElementsVisibility && !menuElements.length">
+          <tr class="module-details-row">
+            <td class="module-details-item-none">
+              This menu have no elements
+            </td>
+          </tr>
+        </ng-container>
+
+        <ng-container *ngIf="menuElementsVisibility">
+          <ng-container *ngFor="let menuElement of menuElements; let i = index">
+
+            <tr class="module-details-row first" >
+              <td class="module-details-item-element" style="text-align: left">
+                <span style="font-size: 12px">Url {{i+1}}:</span> {{menuElement.url}}
+              </td>
+              <td class="module-details-item-element" style="text-align: left">
+                <span style="font-size: 12px">Text {{i+1}}:</span> {{menuElement.text}}
+              </td>
+            </tr>
+
+            <ng-container *ngIf="menuElement.children && menuElement.children.length">
+              <ng-container *ngFor="let subEl1 of menuElement.children; let j = index">
+
+                <tr class="module-details-row second">
+                  <td class="module-details-item-element" style="text-align: left">
+                    <span style="font-size: 12px">Url {{i+1}}.{{j+1}}:</span> {{subEl1.url}}
+                  </td>
+                  <td class="module-details-item-element" style="text-align: left">
+                    <span style="font-size: 12px">Url {{i+1}}.{{j+1}}:</span> {{subEl1.text}}
+                  </td>
+                </tr>
+
+                <ng-container *ngIf="subEl1.children && subEl1.children.length">
+                  <ng-container *ngFor="let subEl2 of subEl1.children; let k = index">
+
+                    <tr class="module-details-row second">
+                      <td class="module-details-item-element" style="text-align: left">
+                        <span style="font-size: 12px">Url {{i+1}}.{{j+1}}.{{k+1}}:</span> {{subEl2.url}}
+                      </td>
+                      <td class="module-details-item-element" style="text-align: left">
+                        <span style="font-size: 12px">Url {{i+1}}.{{j+1}}.{{k+1}}:</span> {{subEl2.text}}
+                      </td>
+                    </tr>
+
+                  </ng-container>
+                </ng-container>
+
+              </ng-container>
+            </ng-container>
+
+          </ng-container>
+        </ng-container>
+
+      </table>
+
+      <mat-card-actions *ngIf="menu.status !== 'DELETED'" class="module-edit-actions">
+        <button mat-raised-button class="module-edit-btn" color="primary">{{languageService.getTranslation('saveChanges')}}</button>
+        <a mat-raised-button class="module-edit-btn" (click)="clearChanges()" color="accent">{{languageService.getTranslation('clearChanges')}}</a>
+        <a mat-raised-button class="module-edit-btn" color="warn" (click)="removeMenu()">{{languageService.getTranslation('remove')}}</a>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+
+
+
+</mat-card>

@@ -1,0 +1,46 @@
+<app-current-path [currentPathItems]="['images', 'add']"></app-current-path>
+<app-module-navigation [navigation]="imageService.getImagesNavigation()"></app-module-navigation>
+<mat-card class="module-add-card pb-2 mt-4">
+
+  <mat-card-header>
+    <mat-card-title>
+      <h1 class="module-add-title">{{languageService.getTranslation('ImagesAddNav')}}</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form class="example-form" [formGroup]="addImageFormGroup" (ngSubmit)="addImage()">
+
+      <mat-form-field class="example-full-width mb-4">
+        <input matInput placeholder="Code" name="code" formControlName="code" [errorStateMatcher]="matcher">
+        <mat-hint>{{languageService.getTranslation('typeCodeHere')}}</mat-hint>
+        <mat-error *ngIf="control.code.hasError('minlength') && !control.code.hasError('required')">
+          Code must have at least 5 characters
+        </mat-error>
+        <mat-error *ngIf="control.code.hasError('required')">
+          Code is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width mb-4">
+        <input matInput placeholder="Name" type="text" name="name" formControlName="name" [errorStateMatcher]="matcher">
+        <mat-hint>{{languageService.getTranslation('typeNameHere')}}</mat-hint>
+        <mat-error *ngIf="control.name.hasError('minlength') && !control.name.hasError('required')">
+          Name must have at least 5 characters
+        </mat-error>
+        <mat-error *ngIf="control.name.hasError('required')">
+          Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-card-actions>
+        <button color="primary" class="add-img-btn" type="button" mat-raised-button (click)="imageInput.click()">{{languageService.getTranslation('chooseImage')}}</button>
+        <input hidden (change)="onImageSelected($event)" #imageInput type="file" id="file">
+        <span class="img-name" *ngIf="selectedImage">{{selectedImage}}</span>
+        <button mat-raised-button class="module-add-btn" color="primary">{{languageService.getTranslation('add')}}</button>
+      </mat-card-actions>
+
+    </form>
+  </mat-card-content>
+
+</mat-card>

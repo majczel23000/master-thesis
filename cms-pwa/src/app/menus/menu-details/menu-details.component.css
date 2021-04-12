@@ -1,0 +1,25 @@
+::ng-deep .mat-card-header {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .mat-card-header-text {
+  margin: 0 !important;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.first {
+  background: #fafcff;
+}
+
+.second {
+  background: #cfe2ff;
+}
+
+.third {
+  background: #b8d4ff;
+}
+

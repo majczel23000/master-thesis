@@ -1,0 +1,66 @@
+<div class="main-container">
+  <mat-toolbar color="primary" class="header-toolbar" *ngIf="loginService.isUserLogged()">
+    <button mat-icon-button (click)="sideMenu.toggle()" class="btn-toggle-menu">
+      <div style="display:flex; justify-content: center">
+          <i class="material-icons" style="line-height: unset">menu</i>
+          <h1 class="header-app-name">{{languageService.getTranslation('appName')}}</h1>
+          <h3 class="header-app-author-logout">miraCMS</h3>
+          <h1 class="header-app-name-mobile">CMS</h1>
+      </div>
+    </button>
+
+    <button mat-button [matMenuTriggerFor]="menu" class="header-user-menu btn-toggle-menu">
+      <div style="display:flex; justify-content: center">
+        <i class="material-icons" style="line-height: unset">person</i>
+        <span class="header-user-info ml-2">{{loginService.getUser().firstName}} {{loginService.getUser().lastName}}</span>
+      </div>
+    </button>
+
+<!--    <div class="languageContainer">-->
+<!--      <button mat-raised-button class="module-edit-btn" (click)="languageService.changeLanguageCode('en')" color="accent">en</button>-->
+<!--      <button mat-raised-button class="module-edit-btn" (click)="languageService.changeLanguageCode('es')" color="accent">es</button>-->
+<!--    </div>-->
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [routerLink]="['/users/user', loginService.getUser()._id]">Profile</button>
+      <button mat-menu-item (click)="logout()">Logout</button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <!-- LOGOUT HEADER -->
+  <mat-toolbar color="primary" class="header-toolbar" *ngIf="!loginService.isUserLogged()">
+    <div class="header-app-name-container">
+      <h1 class="header-app-name-logout">{{languageService.getTranslation('appName')}}</h1>
+      <h3 class="header-app-author-logout">miraCMS</h3>
+    </div>
+    <div class="header-app-name-container-mobile">
+      <h1 class="header-app-name-logout">CMS</h1>
+      <h3 class="header-app-author-logout">miraCMS</h3>
+    </div>
+
+  </mat-toolbar>
+
+  <!-- SIDENAV MENU AND CONTENT-->
+  <mat-sidenav-container class="main-sidenav-container">
+    <mat-sidenav #sideMenu id="main-menu">
+      <mat-nav-list>
+        <a *ngFor="let item of menuItems" mat-list-item routerLink="{{item.routerLink}}" (click)="sideMenu.toggle()">
+          <div class="width-30">
+              <i class="material-icons">{{item.icon}}</i>
+          </div>
+          <div class="width-80">{{languageService.getTranslation(item.text)}}</div>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="sidenav-content">
+
+      <div class="spinner" *ngIf="spinnerService.getSpinner()">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <router-outlet></router-outlet>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

@@ -1,0 +1,30 @@
+::ng-deep .mat-card-header {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .mat-card-header-text {
+  margin: 0 !important;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.type-value-fields {
+  width: 50%;
+  float: left;
+}
+
+.type-value-fields:nth-child(2n+1) {
+  padding-left: 20px;
+}
+
+@media only screen and (max-width: 650px) {
+  .type-value-fields {
+    width: 100%;
+  }
+  .type-value-fields:nth-child(2n+1) {
+    padding-left: 0;
+  }
+}

@@ -1,0 +1,149 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.header-user-info {
+    height: 100%; 
+    display: block;
+}
+
+.header-app-name-container, .header-app-name-container-mobile{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+@media only screen and (min-width: 600px) {
+  .header-app-name-container-mobile {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .header-app-name-container {
+    display: none;
+  }
+}
+
+h1.header-app-name, h1.header-app-name-mobile {
+    margin-left: 8px;
+    color: white;
+}
+
+h1.header-app-name-logout {
+  font-size: 1.8rem;
+  color: #f6f6f6;
+}
+
+h3.header-app-author-logout {
+  font-size: 1rem;
+  margin-left: 15px;
+  color: #d6d6d6;
+  font-weight: 100;
+}
+
+.main-sidenav-container {
+    flex: 1 0 auto;
+}
+
+.btn-toggle-menu {
+    background: none;
+    border: none;
+}
+
+.btn-toggle-menu:hover {
+    cursor: pointer;
+}
+  
+#main-menu {
+    min-width: 300px;
+}
+
+#main-menu a {
+    width: 100%;
+}
+
+.width-30 {
+    width: 30%;
+    float: left;
+}
+
+.width-80 {
+    width: 80%;
+    float: left;
+}
+
+.header-user-menu { 
+    position: absolute;
+    right: 20%;
+}
+.material-icons{
+    color: white;
+}
+
+span {
+    color: white;
+}
+
+a .material-icons{
+    color: black;
+}
+
+.main-toolbar {
+    padding: 20px 0px;
+}
+
+.sidenav-content {
+  padding: 20px;
+  font-family: 'OpenSans' !important;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-toolbar {
+  min-height: 64px !important;
+}
+
+@media only screen and (max-width: 650px) {
+  h1.header-app-name, .header-user-info {
+    display: none;
+  }
+  #main-menu {
+    min-width: 100%;
+  }
+  #main-menu a {
+    font-size: 1.2rem;
+  }
+}
+
+@media only screen and (min-width: 650px) {
+  h1.header-app-name-mobile {
+    display: none;
+  }
+}
+
+::ng-deep .cdk-overlay-pane {
+  justify-content: flex-end !important;
+}
+
+.languageContainer {
+  position: absolute;
+  right: 1%;
+  
+}
+
+.languageContainer button {
+  background: #f6f6f6;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  font-size: 0.7rem;
+  border: none;
+  margin: 1px !important;
+}

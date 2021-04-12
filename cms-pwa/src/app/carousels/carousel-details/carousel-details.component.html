@@ -1,0 +1,347 @@
+<app-current-path *ngIf="carousel" [currentPathItems]="['carousels', carousel.name]"></app-current-path>
+<app-module-navigation [navigation]="carouselService.getCarouselsNavigation()"></app-module-navigation>
+<mat-card class="module-details-card pb-2 mt-4">
+
+  <mat-card-header>
+    <mat-card-title>
+      <h1 class="module-details-title">Carousel: {{carousel?.code}}</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-tab-group color="primary" backgroundColor="primary">
+
+    <mat-tab label="{{languageService.getTranslation('general')}}">
+      <form class="module-details-form" [formGroup]="editCarouselFormGroup" *ngIf="carousel" (ngSubmit)="editCarousel()">
+
+        <table class="module-details-table">
+
+          <tr class="module-details-row">
+            <td class="module-details-item">{{languageService.getTranslation('code')}}:</td>
+            <td class="module-details-item" style="text-align: left">{{carousel?.code}}</td>
+          </tr>
+
+          <tr class="module-details-row">
+            <td class="module-details-item">{{languageService.getTranslation('name')}}:</td>
+            <td *ngIf="carousel?.status !== 'DELETED'" class="module-details-item">
+              <mat-form-field class="module-details-form-field">
+                <input matInput value="{{carousel?.name}}" name="name" formControlName="name" [errorStateMatcher]="matcher">
+                <mat-error *ngIf="!control.name.hasError('required') && control.name.hasError('minlength')">
+                  Name must have at least 5 characters
+                </mat-error>
+                <mat-error *ngIf="control.name.hasError('required')">
+                  Name is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </td>
+            <td *ngIf="carousel?.status === 'DELETED'" class="module-details-item" style="text-align: left">{{carousel?.name}}</td>
+          </tr>
+
+          <tr class="module-details-row">
+            <td class="module-details-item">{{languageService.getTranslation('description')}}:</td>
+            <td *ngIf="carousel?.status !== 'DELETED'" class="module-details-item">
+              <mat-form-field class="module-details-form-field">
+                <input matInput value="{{carousel?.description}}" name="description" formControlName="description">
+              </mat-form-field>
+            </td>
+            <td *ngIf="carousel?.status === 'DELETED'" class="module-details-item" style="text-align: left">{{carousel?.description}}</td>
+          </tr>
+
+          <tr class="module-details-row">
+            <td class="module-details-item">{{languageService.getTranslation('createdAt')}}:</td>
+            <td class="module-details-item" style="text-align: left">{{carousel?.createdAt}}</td>
+          </tr>
+
+          <tr class="module-details-row">
+            <td class="module-details-item">{{languageService.getTranslation('updatedAt')}}:</td>
+            <td class="module-details-item" style="text-align: left">{{carousel?.updatedAt}}</td>
+          </tr>
+
+          <tr class="module-details-row">
+            <td class="module-details-item">{{languageService.getTranslation('status')}}:</td>
+            <td class="module-details-item module-details-status" (click)="changeStatus()"
+                [ngStyle]="{ 'background': carousel?.status === 'INACTIVE' ? '#828282' : carousel?.status === 'ACTIVE' ? '#28a745' : 'blue' }">{{carousel?.status}}</td>
+          </tr>
+
+        </table>
+      </form>
+    </mat-tab>
+
+    <mat-tab label="{{languageService.getTranslation('desktop')}}">
+      <table class="module-details-table" *ngIf="carousel?.status === 'DELETED'">
+        <tr class="module-details-row" *ngIf="!carousel?.itemsDesktop.length">
+          <td class="module-details-item">{{languageService.getTranslation('noElements')}}</td>
+        </tr>
+      </table>
+
+      <table class="module-details-table" *ngIf="carousel?.status !== 'DELETED'">
+        <tr class="module-details-row">
+          <td class="module-details-item"><button mat-raised-button class="module-edit-btn" color="primary" (click)="addDesktopItem()">{{languageService.getTranslation('add')}}</button></td>
+        </tr>
+        <tr class="module-details-row" *ngIf="!carouselDesktopItems.length">
+          <td class="module-details-item">{{languageService.getTranslation('noElements')}}</td>
+        </tr>
+        <ng-container *ngFor="let carouselDesktopItem of carouselDesktopItems; let i = index">
+          <table class="module-details-table table-hover">
+            <tr class="module-details-row" >
+              <td class="module-details-item">Header text:</td>
+              <td class="module-details-item">
+                <textarea #header matInput matTextareaAutosize value="{{carouselDesktopItem?.header}}" name="header"
+                          (change)="carouselDesktopItem.header = header.value"></textarea>
+              </td>
+            </tr>
+            <tr class="module-details-row" >
+              <td class="module-details-item">Description text:</td>
+              <td class="module-details-item">
+                <textarea #description matInput matTextareaAutosize value="{{carouselDesktopItem?.description}}" name="description"
+                          (change)="carouselDesktopItem.description = description.value"></textarea>
+              </td>
+            </tr>
+            <tr class="module-details-row" >
+              <td class="module-details-item">Button text:</td>
+              <td class="module-details-item">
+                <textarea #buttonText matInput matTextareaAutosize value="{{carouselDesktopItem?.button.text}}" name="buttonText"
+                          (change)="carouselDesktopItem.button.text = buttonText.value"></textarea>
+              </td>
+            </tr>
+            <tr class="module-details-row" >
+              <td class="module-details-item">Button url:</td>
+              <td class="module-details-item">
+                <textarea #buttonUrl matInput matTextareaAutosize value="{{carouselDesktopItem?.button.url}}" name="buttonUrl"
+                          (change)="carouselDesktopItem.button.url = buttonUrl.value"></textarea>
+              </td>
+            </tr>
+            <tr class="module-details-row" >
+              <td class="module-details-item" *ngIf="!carouselDesktopItem.item"> << Image here >> </td>
+              <td class="module-details-item" *ngIf="carouselDesktopItem.item"><img class="image-row" [src]="carouselDesktopItem.item"></td>
+              <td class="module-details-item">
+                <button color="primary" class="add-img-btn mr-4" type="button" mat-raised-button (click)="imageInput.click()">From device</button>
+                <input hidden (change)="onImageSelected($event, i, true)" #imageInput type="file" id="file">
+                <button color="primary" class="add-img-btn mr-4" type="button" mat-raised-button (click)="showCMSImages(i, 'desktop')">From CMS</button>
+                <button color="warn" class="add-img-btn" type="button" mat-raised-button (click)="removeDesktopItem(i)"><i class="material-icons">delete</i> Delete</button>
+              </td>
+            </tr>
+
+          </table>
+        </ng-container>
+
+      </table>
+    </mat-tab>
+
+    <mat-tab label="{{languageService.getTranslation('mobile')}}">
+      <table class="module-details-table" *ngIf="carousel?.status === 'DELETED'">
+        <tr class="module-details-row" *ngIf="!carousel?.itemsMobile.length">
+          <td class="module-details-item">{{languageService.getTranslation('noElements')}}</td>
+        </tr>
+      </table>
+
+      <table class="module-details-table" *ngIf="carousel?.status !== 'DELETED'">
+        <tr class="module-details-row">
+          <td class="module-details-item"><button mat-raised-button class="module-edit-btn" color="primary" (click)="addMobileItem()">{{languageService.getTranslation('add')}}</button></td>
+        </tr>
+        <tr class="module-details-row" *ngIf="!carouselMobileItems.length">
+          <td class="module-details-item">{{languageService.getTranslation('noElements')}}</td>
+        </tr>
+        <ng-container *ngFor="let carouselMobileItem of carouselMobileItems; let i = index">
+          <table class="module-details-table table-hover">
+            <tr class="module-details-row" >
+              <td class="module-details-item">Header text:</td>
+              <td class="module-details-item">
+                <textarea #header matInput matTextareaAutosize value="{{carouselMobileItem?.header}}" name="header"
+                          (change)="carouselMobileItem.header = header.value"></textarea>
+              </td>
+            </tr>
+            <tr class="module-details-row" >
+              <td class="module-details-item">Description text:</td>
+              <td class="module-details-item">
+                <textarea #description matInput matTextareaAutosize value="{{carouselMobileItem?.description}}" name="description"
+                          (change)="carouselMobileItem.description = description.value"></textarea>
+              </td>
+            </tr>
+            <tr class="module-details-row" >
+              <td class="module-details-item">Button text:</td>
+              <td class="module-details-item">
+                <textarea #buttonText matInput matTextareaAutosize value="{{carouselMobileItem?.button.text}}" name="buttonText"
+                          (change)="carouselMobileItem.button.text = buttonText.value"></textarea>
+              </td>
+            </tr>
+            <tr class="module-details-row" >
+              <td class="module-details-item">Button url:</td>
+              <td class="module-details-item">
+                <textarea #buttonUrl matInput matTextareaAutosize value="{{carouselMobileItem?.button.url}}" name="buttonUrl"
+                          (change)="carouselMobileItem.button.url = buttonUrl.value"></textarea>
+              </td>
+            </tr>
+            <tr class="module-details-row" >
+              <td class="module-details-item" *ngIf="!carouselMobileItem.item"> << Image here >> </td>
+              <td class="module-details-item" *ngIf="carouselMobileItem.item"><img class="image-row" [src]="carouselMobileItem.item"></td>
+              <td class="module-details-item">
+                <button color="primary" class="add-img-btn mr-4" type="button" mat-raised-button (click)="imageInput.click()">From device</button>
+                <input hidden (change)="onImageSelected($event, i, false)" #imageInput type="file" id="file">
+                <button color="primary" class="add-img-btn mr-4" type="button" mat-raised-button (click)="showCMSImages(i, 'mobile')">From CMS</button>
+                <button color="warn" class="add-img-btn" type="button" mat-raised-button (click)="removeMobileItem(i)"><i class="material-icons">delete</i> Delete</button>
+              </td>
+            </tr>
+
+          </table>
+        </ng-container>
+
+      </table>
+    </mat-tab>
+
+    <mat-tab label="{{languageService.getTranslation('configuration')}}">
+      <table class="module-details-table" *ngIf="carousel?.status === 'DELETED'">
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Display dots:</td>
+          <td class="module-details-item" style="text-align: left">{{carousel?.configuration.dots}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Display arrows:</td>
+          <td class="module-details-item" style="text-align: left">{{carousel?.configuration.arrows}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Autoplay carousel:</td>
+          <td class="module-details-item" style="text-align: left">{{carousel?.configuration.autoplay}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Show infinite slides:</td>
+          <td class="module-details-item" style="text-align: left">{{carousel?.configuration.infinite}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Make slides draggable:</td>
+          <td class="module-details-item" style="text-align: left">{{carousel?.configuration.draggable}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Swipe:</td>
+          <td class="module-details-item" style="text-align: left">{{carousel?.configuration.swipe}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Pause carousel on hover:</td>
+          <td class="module-details-item" style="text-align: left">{{carousel?.configuration.pauseOnHover}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Display slides right to left:</td>
+          <td class="module-details-item" style="text-align: left">{{carousel?.configuration.rtl}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Time for one slide:</td>
+          <td class="module-details-item" style="text-align: left">{{carousel?.configuration.speed}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Slides to show:</td>
+          <td class="module-details-item" style="text-align: left">{{carousel?.configuration.slidesToShow}}</td>
+        </tr>
+
+      </table>
+
+      <table class="module-details-table" *ngIf="carousel?.status !== 'DELETED'">
+        <tr class="module-details-row">
+          <td class="module-details-item">Display dots:</td>
+          <td class="module-details-item" style="text-align: left">
+            <mat-checkbox #dots [checked]="carouselConfiguration?.dots" color="primary"
+            (change)="carouselConfiguration.dots = dots.checked"></mat-checkbox>
+          </td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Display arrows:</td>
+          <td class="module-details-item" style="text-align: left">
+            <mat-checkbox #arrows [checked]="carouselConfiguration?.arrows" color="primary"
+                          (change)="carouselConfiguration.arrows = arrows.checked"></mat-checkbox>
+          </td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Autoplay carousel:</td>
+          <td class="module-details-item" style="text-align: left">
+            <mat-checkbox #autoplay [checked]="carouselConfiguration?.autoplay" color="primary"
+                          (change)="carouselConfiguration.autoplay = autoplay.checked"></mat-checkbox>
+          </td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Show infinite slides:</td>
+          <td class="module-details-item" style="text-align: left">
+            <mat-checkbox #infinite [checked]="carouselConfiguration?.infinite" color="primary"
+                          (change)="carouselConfiguration.infinite = infinite.checked"></mat-checkbox>
+          </td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Make slides draggable:</td>
+          <td class="module-details-item" style="text-align: left">
+            <mat-checkbox #draggable [checked]="carouselConfiguration?.draggable" color="primary"
+                          (change)="carouselConfiguration.draggable = draggable.checked"></mat-checkbox>
+          </td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Swipe:</td>
+          <td class="module-details-item" style="text-align: left">
+            <mat-checkbox #swipe [checked]="carouselConfiguration?.swipe" color="primary"
+                          (change)="carouselConfiguration.swipe = swipe.checked"></mat-checkbox>
+          </td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Pause carousel on hover:</td>
+          <td class="module-details-item" style="text-align: left">
+            <mat-checkbox #pauseOnHover [checked]="carouselConfiguration?.pauseOnHover" color="primary"
+                          (change)="carouselConfiguration.pauseOnHover = pauseOnHover.checked"></mat-checkbox>
+          </td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Display slides right to left:</td>
+          <td class="module-details-item" style="text-align: left">
+            <mat-checkbox #rtl [checked]="carouselConfiguration?.rtl" color="primary"
+                          (change)="carouselConfiguration.rtl = rtl.checked"></mat-checkbox>
+          </td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">Time for one slide:</td>
+          <td class="module-details-item" style="text-align: left">
+            <input #speed matInput value="{{carouselConfiguration?.speed}}" name="speed"
+            (input)="carouselConfiguration.speed = speed.value">
+          </td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item w-75">Slides to show:</td>
+          <td class="module-details-item" style="text-align: left">
+            <input #slidesToShow matInput value="{{carouselConfiguration?.slidesToShow}}" name="slidesToShow"
+                   (input)="carouselConfiguration.slidesToShow = slidesToShow.value">
+          </td>
+        </tr>
+      </table>
+    </mat-tab>
+
+  </mat-tab-group>
+
+  <mat-card-actions *ngIf="carousel?.status !== 'DELETED'" class="module-edit-actions">
+    <button type="submit" mat-raised-button class="module-edit-btn" color="primary" (click)="runEditCarousel()">{{languageService.getTranslation('saveChanges')}}</button>
+    <a mat-raised-button class="module-edit-btn" (click)="clearChanges()" color="accent">{{languageService.getTranslation('clearChanges')}}</a>
+    <a mat-raised-button class="module-edit-btn" color="warn" (click)="removeCarousel()">{{languageService.getTranslation('remove')}}</a>
+  </mat-card-actions>
+
+</mat-card>
+
+<div class="background-fade" *ngIf="CMSImagesFlag" (click)="hideCMSImages($event)">
+  <div class="cms-images-box">
+    <h1 mat-dialog-title class="dialog-title">Choose image from CMS</h1>
+    <ng-container *ngFor="let CMSimage of CMSImages; let k = index">
+      <img class="image-row-cms" [src]="CMSimage.image" (click)="selectCMSImage(CMSimage.image)">
+    </ng-container>
+  </div>
+</div>
+

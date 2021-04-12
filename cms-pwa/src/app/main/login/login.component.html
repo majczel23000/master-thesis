@@ -1,0 +1,43 @@
+
+<div class="row" style="height: 100%">
+  <div class="col-md-8 col-lg-5" style="margin: auto">
+    <mat-card class="mat-elevation-z6 login-card pb-5">
+
+      <mat-card-header class="login-header">
+        <mat-card-title>
+          <h1 class="login-title">Please sign in</h1>
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form class="login-form" [formGroup]="loginFormGroup">
+
+          <mat-form-field class="login-full-width mb-3">
+            <input matInput placeholder="Email" name="email" formControlName="email" [errorStateMatcher]="matcher">
+            <mat-hint>Type your email here</mat-hint>
+            <mat-error *ngIf="control.email.hasError('email') && !control.email.hasError('required')">
+              Please enter a valid email address!
+            </mat-error>
+            <mat-error *ngIf="control.email.hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="login-full-width">
+            <input matInput placeholder="Password" type="password" name="password" formControlName="password" [errorStateMatcher]="matcher">
+            <mat-hint>Type your password here</mat-hint>
+            <mat-error *ngIf="control.password.hasError('required')">
+              Password is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+        </form>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-raised-button class="login-btn" (click)="login()" color="primary">Login</button>
+      </mat-card-actions>
+
+    </mat-card>
+  </div>
+</div>

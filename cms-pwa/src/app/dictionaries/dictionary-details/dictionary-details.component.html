@@ -1,0 +1,172 @@
+<app-current-path *ngIf="dictionary" [currentPathItems]="['dictionaries', dictionary.name]"></app-current-path>
+<app-module-navigation [navigation]="dictionaryService.getDictionariesNavigation()"></app-module-navigation>
+<mat-card class="module-details-card pb-2 mt-4">
+
+  <mat-card-header>
+    <mat-card-title>
+      <h1 class="module-details-title">Dictionary: {{dictionary?.code}}</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form class="module-details-form" [formGroup]="editDictionaryFormGroup" *ngIf="dictionary" (ngSubmit)="editDictionary()">
+
+      <table class="module-details-table">
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('code')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{dictionary?.code}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('name')}}:</td>
+          <td *ngIf="dictionary?.status !== 'DELETED'" class="module-details-item">
+            <mat-form-field class="module-details-form-field">
+              <input matInput value="{{dictionary?.name}}" name="name" formControlName="name" [errorStateMatcher]="matcher">
+              <mat-error *ngIf="!control.name.hasError('required') && control.name.hasError('minlength')">
+                Name must have at least 5 characters
+              </mat-error>
+              <mat-error *ngIf="control.name.hasError('required')">
+                Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td *ngIf="dictionary?.status === 'DELETED'" class="module-details-item" style="text-align: left">{{dictionary.name}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('description')}}:</td>
+          <td *ngIf="dictionary?.status !== 'DELETED'" class="module-details-item">
+            <mat-form-field class="module-details-form-field">
+              <input matInput value="{{dictionary?.description}}" name="description" formControlName="description">
+            </mat-form-field>
+          </td>
+          <td *ngIf="dictionary?.status === 'DELETED'" class="module-details-item" style="text-align: left">{{dictionary.description}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('createdAt')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{dictionary?.createdAt}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('updatedAt')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{dictionary?.updatedAt}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('status')}}:</td>
+          <td class="module-details-item module-details-status" (click)="changeStatus()"
+              [ngStyle]="{ 'background': dictionary.status === 'INACTIVE' ? '#828282' : dictionary.status === 'ACTIVE' ? '#28a745' : 'blue' }">{{dictionary?.status}}</td>
+        </tr>
+
+        <tr class="module-details-row">
+          <td *ngIf="dictionary?.status === 'DELETED'" colspan="2" class="module-details-item module-elements-title">Languages</td>
+          <td *ngIf="dictionary?.status !== 'DELETED'" class="module-details-item module-elements-title">Languages</td>
+          <td *ngIf="dictionary?.status !== 'DELETED'" class="module-details-item">
+            <a mat-raised-button class="module-edit-btn" color="primary" (click)="addLanguageElement()" *ngIf="dictionaryElementsVisibility">{{languageService.getTranslation('add')}}</a>
+            <a mat-raised-button class="module-edit-btn" color="primary" (click)="dictionaryElementsVisibility = !dictionaryElementsVisibility">
+              <ng-container *ngIf="!dictionaryElementsVisibility">{{languageService.getTranslation('show')}}</ng-container>
+              <ng-container *ngIf="dictionaryElementsVisibility">{{languageService.getTranslation('hide')}}</ng-container>
+            </a>
+          </td>
+        </tr>
+
+      </table>
+
+      <table *ngIf="dictionary?.status !== 'DELETED'">
+
+        <ng-container *ngIf="dictionaryElementsVisibility && !dictionaryElements.length">
+          <tr class="module-details-row">
+            <td class="module-details-item-none">
+                {{languageService.getTranslation('noElements')}}
+            </td>
+          </tr>
+        </ng-container>
+
+        <ng-container *ngIf="dictionaryElementsVisibility">
+          <ng-container *ngFor="let dictionaryLanguage of dictionaryElements; let i = index">
+
+            <tr class="module-details-row first" >
+              <td class="module-details-item-element">
+                <mat-form-field class="module-details-form-field" [ngClass]="{'mat-form-field-invalid ng-dirty ng-invalid ng-touched' : !dictionaryLanguage.language.length}">
+                  <textarea #language matInput value="{{dictionaryLanguage?.language}}" name="language" placeholder="Language {{i+1}}"
+                            (change)="dictionaryLanguage.language = language.value"></textarea>
+                </mat-form-field>
+              </td>
+              <td class="module-details-item-delete">
+                <a mat-raised-button class="module-edit-btn" color="warn" (click)="removeElement(0, i, 0)"><i class="material-icons">delete</i></a>
+                <a mat-raised-button class="module-edit-btn" color="primary" (click)="addLanguageElement(dictionaryLanguage)"><i class="material-icons">add</i></a>
+                </td>
+            </tr>
+
+            <ng-container *ngIf="dictionaryLanguage.elements && dictionaryLanguage.elements.length">
+              <ng-container *ngFor="let dictionaryElement of dictionaryLanguage.elements; let j = index">
+
+                <tr class="module-details-row second">
+                  <td class="module-details-item-element">
+                    <mat-form-field class="module-details-form-field" [ngClass]="{'mat-form-field-invalid ng-dirty ng-invalid ng-touched' : !dictionaryElement.value.length}">
+                  <textarea #el matInput value="{{dictionaryElement.value}}" name="el" placeholder="Element {{i+1}}.{{j+1}}" (change)="changeValue(dictionaryLanguage, el.value, j)"></textarea>
+                    </mat-form-field>
+                  </td>
+
+                  <td class="module-details-item-delete">
+                    <a mat-raised-button class="module-edit-btn" color="warn" (click)="removeElement(1, i, j)"><i class="material-icons">delete</i></a>
+                  </td>
+                </tr>
+
+              </ng-container>
+            </ng-container>
+
+          </ng-container>
+        </ng-container>
+
+      </table>
+
+      <table *ngIf="dictionary?.status === 'DELETED'">
+
+        <ng-container *ngIf="dictionaryElementsVisibility && !dictionaryElements.length">
+          <tr class="module-details-row">
+            <td class="module-details-item-none">
+                {{languageService.getTranslation('noElements')}}
+            </td>
+          </tr>
+        </ng-container>
+
+        <ng-container *ngIf="dictionaryElementsVisibility">
+          <ng-container *ngFor="let dictionaryLanguage of dictionaryElements; let i = index">
+
+            <tr class="module-details-row first" >
+              <td class="module-details-item-element" style="text-align: left">
+                <span style="font-size: 12px">Language {{i+1}}:</span> {{dictionaryLanguage.language}}
+              </td>
+            </tr>
+
+            <ng-container *ngIf="dictionaryLanguage.elements && dictionaryLanguage.elements.length">
+              <ng-container *ngFor="let dictionaryElement of dictionaryLanguage.elements; let j = index">
+
+                <tr class="module-details-row second">
+                  <td class="module-details-item-element" style="text-align: left">
+                    {{dictionaryElement.value}}
+                  </td>
+                </tr>
+
+              </ng-container>
+            </ng-container>
+
+          </ng-container>
+        </ng-container>
+
+      </table>
+
+      <mat-card-actions *ngIf="dictionary?.status !== 'DELETED'" class="module-edit-actions">
+        <button mat-raised-button class="module-edit-btn" color="primary">{{languageService.getTranslation('saveChanges')}}</button>
+        <a mat-raised-button class="module-edit-btn" (click)="clearChanges()" color="accent">{{languageService.getTranslation('clearChanges')}}</a>
+        <a mat-raised-button class="module-edit-btn" color="warn" (click)="removeDictionary()">{{languageService.getTranslation('remove')}}</a>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+
+
+
+</mat-card>

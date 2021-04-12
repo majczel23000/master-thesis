@@ -1,0 +1,22 @@
+::ng-deep .mat-card-header {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .mat-card-header-text {
+  margin: 0 !important;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.image-row {
+  width: 50%;
+}
+
+@media only screen and (max-width: 650px) {
+  .image-item {
+    padding: 0;
+  }
+}

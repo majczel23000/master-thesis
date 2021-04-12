@@ -1,0 +1,26 @@
+.error-title {
+  text-align: center;
+  color: #ff0033;
+}
+
+.error-message {
+  text-align: center;
+  color: #333;
+  font-size: 1.5rem;
+  width: 50%;
+  margin: auto;
+}
+
+.error-box {
+  display: block;
+  width: 50%;
+  height: 90%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center {
+  flex: 1;
+}

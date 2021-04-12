@@ -1,0 +1,14 @@
+<mat-card class="dashboard-card">
+  <div class="title-box text-center">
+    <h1 class="heading">{{languageService.getTranslation('welcomeTo')}}</h1>
+    <p class="subheading">{{languageService.getTranslation('welcomeText1')}}</p>
+  </div>
+
+  <div class="content-box text-center">
+    <p class="content-description">{{languageService.getTranslation('welcomeText2')}}</p>
+    <span class="roles-item" *ngFor="let item of modules | keyvalue">
+      <ng-container *ngIf="item.value">{{item.key}}<br/> </ng-container>
+    </span>
+  </div>
+  
+</mat-card>

@@ -1,0 +1,25 @@
+.module-table-row:hover {
+  background: #f6f6f6 !important;
+  cursor: pointer !important;
+}
+
+.module-table {
+  margin: 10px auto 30px auto !important;
+}
+
+td.mat-cell {
+  width: calc(100%/4) !important;
+}
+
+.module-filter {
+  margin: 20px auto 0 auto !important;
+  display: block !important;
+  padding-bottom: 0px !important;
+}
+
+@media only screen and (max-width: 650px) {
+  td.mat-cell, th.mat-header-cell {
+    width: calc(100%/2) !important;
+    padding-left: 24px !important;
+  }
+}

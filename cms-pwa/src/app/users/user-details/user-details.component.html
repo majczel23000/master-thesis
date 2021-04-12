@@ -1,0 +1,96 @@
+<app-current-path *ngIf="user" [currentPathItems]="[languageService.getTranslation('locationUsers'), user.email]"></app-current-path>
+<app-module-navigation [navigation]="userService.getUsersNavigation()"></app-module-navigation>
+<mat-card class="module-details-card pb-2 mt-4">
+
+  <mat-card-header>
+    <mat-card-title>
+      <h1 class="module-details-title">{{languageService.getTranslation('user')}}: {{user?.firstName}} {{user?.lastName}}</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form class="module-details-form" [formGroup]="editUserFormGroup" *ngIf="user" (ngSubmit)="editUser()">
+
+      <table class="module-details-table desktop">
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('firstName')}}:</td>
+          <td *ngIf="user.status !== 'DELETED'" class="module-details-item">
+            <mat-form-field>
+              <input matInput value="{{user?.firstName}}" name="firstName" formControlName="firstName" [errorStateMatcher]="matcher">
+              <mat-error *ngIf="control.firstName.hasError('required')">
+                First Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td *ngIf="user.status === 'DELETED'" class="module-details-item" style="text-align: left">{{user?.firstName}}</td>
+        </tr>
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('lastName')}}:</td>
+          <td *ngIf="user.status !== 'DELETED'" class="module-details-item">
+            <mat-form-field class="module-details-form-field">
+              <input matInput value="{{user?.lastName}}" name="lastName" formControlName="lastName" [errorStateMatcher]="matcher">
+              <mat-error *ngIf="control.lastName.hasError('required')">
+                Last Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td *ngIf="user.status === 'DELETED'" class="module-details-item" style="text-align: left">{{user?.lastName}}</td>
+        </tr>
+        <tr class="module-details-row">
+          <td class="module-details-item">Email:</td>
+          <td class="module-details-item" style="text-align: left">{{user?.email}}</td>
+        </tr>
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('createdAt')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{user?.createdAt}}</td>
+        </tr>
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('updatedAt')}}:</td>
+          <td class="module-details-item" style="text-align: left">{{user?.updatedAt}}</td>
+        </tr>
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('status')}}:</td>
+          <td class="module-details-item module-details-status" (click)="changeStatus()"
+              [ngStyle]="{ 'background': user.status === 'INACTIVE' ? '#828282' : user.status === 'ACTIVE' ? '#28a745' : 'blue' }">{{user?.status}}</td>
+        </tr>
+        <tr *ngIf="user.status !== 'DELETED'" class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('password')}}:</td>
+          <td class="module-details-item">
+            <mat-form-field>
+              <input matInput name="password" type="password" formControlName="password" [errorStateMatcher]="matcher">
+              <mat-error *ngIf="!control.password.hasError('required') && control.password.hasError('minlength')">
+                Password must have at least 6 characters
+              </mat-error>
+              <mat-error *ngIf="control.password.hasError('required')">
+                Password is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr class="module-details-row">
+          <td class="module-details-item">{{languageService.getTranslation('roles')}}:</td>
+          <td *ngIf="user.status !== 'DELETED'"  class="module-details-item" style="text-align: left">
+            <div class="role-list" *ngIf="user?.roles">
+              <mat-checkbox [checked]="checkIfUserHasThisRole(role.code)" color="primary" #checkbox class="role-list-item" (change)="onCheckboxChange(role.code, checkbox)"
+                            *ngFor="let role of roles" >{{role.name}}</mat-checkbox>
+            </div>
+          </td>
+          <td *ngIf="user.status === 'DELETED'" class="module-details-item">
+            <div class="role-list">
+              <p *ngFor="let role of roles">{{role.name}}, </p>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <mat-card-actions class="module-edit-actions" *ngIf="user.status !== 'DELETED'">
+        <button mat-raised-button class="module-edit-btn" color="primary">{{languageService.getTranslation('saveChanges')}}</button>
+        <button mat-raised-button class="module-edit-btn" (click)="clearChanges()" color="accent">{{languageService.getTranslation('clearChanges')}}</button>
+        <button mat-raised-button class="module-edit-btn" color="warn" (click)="removeUser()">{{languageService.getTranslation('removeUser')}}</button>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+
+
+
+</mat-card>
