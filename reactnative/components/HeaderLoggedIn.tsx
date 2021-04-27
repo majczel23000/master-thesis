@@ -12,7 +12,7 @@ export function HeaderLoggedIn() {
 const styles = StyleSheet.create({
     headerBox: {
         backgroundColor: '#DB995A',
-        height: '8vh',
+        height: '10vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
