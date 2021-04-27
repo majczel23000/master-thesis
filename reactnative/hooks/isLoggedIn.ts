@@ -14,10 +14,8 @@ export default function isLoggedIn() {
                    else result = false;
                });
             } catch (e) {
-                // We might want to provide this error information to an error reporting service
                 console.warn(e);
             } finally {
-                console.log(result);
                 setLoggedIn(result);
             }
         }

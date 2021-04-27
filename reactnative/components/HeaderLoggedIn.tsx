@@ -1,10 +1,17 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from "react-native";
+import { IconButton } from "react-native-paper";
 
 export function HeaderLoggedIn() {
+
+    const openMenu = () => {
+
+    }
+
     return (
         <View style={styles.headerBox}>
-            <Text style={styles.headerText}>CMS in</Text>
+            <IconButton icon="menu" onPress={openMenu}></IconButton>
+            <Text style={styles.headerText}>CMS</Text>
         </View>
     );
 }
@@ -15,7 +22,8 @@ const styles = StyleSheet.create({
         height: '10vh',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flexWrap: 'wrap',
     },
     headerText: {
         color: 'black',

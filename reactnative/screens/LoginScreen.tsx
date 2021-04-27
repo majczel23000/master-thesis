@@ -1,8 +1,16 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginScreen({navigation}: {navigation: any}) {
+
+    const login = () => {
+        console.log('LOGIN');
+        navigation.navigate('DashboardScreen');
+        AsyncStorage.setItem('LOGGED_IN', 'true');
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.box}>
@@ -24,7 +32,12 @@ export default function LoginScreen({navigation}: {navigation: any}) {
                     theme={{colors: {primary: '#DB995A'}}}
                 />
                 <Text style={styles.info}>Type your password here</Text>
-                <Button mode="contained" style={styles.btn}>Login</Button>
+                <Button
+                    mode="contained"
+                    style={styles.btn}
+                    onPress={login}>
+                    Login
+                </Button>
             </View>
         </View>
     );
@@ -41,7 +54,7 @@ const styles = StyleSheet.create({
         width: '90vw',
         backgroundColor: 'white',
         shadowColor: 'black',
-        shadowRadius: 15,
+        shadowRadius: 10,
         shadowOpacity: 0.2,
         borderRadius: 5,
         paddingTop: '3vh',
@@ -63,10 +76,15 @@ const styles = StyleSheet.create({
         border: 'none',
     },
     info: {
-        color: 'gray'
+        color: 'gray',
+        fontSize: 11,
+        padding: 2
     },
     btn: {
         backgroundColor: '#DB995A',
-        marginTop: '5vh'
+        marginTop: '5vh',
+        shadowRadius: 3,
+        shadowOpacity: 0.2,
+        borderRadius: 3,
     }
 });

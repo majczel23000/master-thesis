@@ -1,7 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import * as React from 'react';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import LoginScreen from "../screens/LoginScreen";
+import DashboardScreen from "../screens/DashboardScreen";
+import isLoggedIn from "../hooks/isLoggedIn";
 
 export default function Navigation() {
   return (
@@ -10,13 +12,14 @@ export default function Navigation() {
     </NavigationContainer>
   );
 }
-
 const Drawer = createDrawerNavigator();
 
 function RootNavigator() {
+    const loggedIn = isLoggedIn();
   return (
-      <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />} initialRouteName="LoginScreen">
+      <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />} initialRouteName={loggedIn ? 'LoginScreen' : 'DashboardScreen'}>
           <Drawer.Screen name="LoginScreen" component={LoginScreen} />
+          <Drawer.Screen name="DashboardScreen" component={DashboardScreen} />
       </Drawer.Navigator>
   );
 }
