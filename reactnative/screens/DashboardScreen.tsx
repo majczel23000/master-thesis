@@ -1,7 +1,25 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import {useEffect} from "react";
+import {StackHeaderLeftButtonProps} from "@react-navigation/stack";
+import MenuIcon from "../components/MenuIcon";
+import { useNavigation } from '@react-navigation/native';
+import {Button} from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function DashboardScreen() {
+
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerLeft: (props: StackHeaderLeftButtonProps) => (<MenuIcon/>)
+        });
+    });
+
+    const logout = () => {
+        AsyncStorage.setItem('LOGGED_IN', 'false');
+    }
 
     const roles = ['CAROUSELS', 'DICTIONARIES', 'SETTINGS', 'IMAGES', 'USERS', 'ROLES'];
     return (
@@ -14,6 +32,7 @@ export default function DashboardScreen() {
                 {
                     roles.map(role => <Text style={styles.role} key={role}>{role}</Text>)
                 }
+                <Button onPress={logout}>Logout</Button>
             </View>
         </View>
     );
@@ -37,6 +56,7 @@ const styles = StyleSheet.create({
         paddingBottom: '3vh',
         paddingLeft: '4vh',
         paddingRight: '4vh',
+        marginTop: 20
     },
     header: {
         fontSize: 50,

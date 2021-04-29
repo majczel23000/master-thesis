@@ -1,13 +1,17 @@
 import * as React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, View } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function LoginScreen({navigation}: {navigation: any}) {
+export default function LoginScreen() {
+
+    const navigation = useNavigation();
 
     const login = () => {
         console.log('LOGIN');
-        navigation.navigate('DashboardScreen');
+
+        navigation.navigate("Root", { screen: 'Dashboard' });
         AsyncStorage.setItem('LOGGED_IN', 'true');
     }
 

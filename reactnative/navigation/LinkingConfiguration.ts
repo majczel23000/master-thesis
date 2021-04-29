@@ -1,9 +1,3 @@
-/**
- * Learn more about deep linking with React Navigation
- * https://reactnavigation.org/docs/deep-linking
- * https://reactnavigation.org/docs/configuring-links
- */
-
 import * as Linking from 'expo-linking';
 
 export default {
@@ -12,16 +6,26 @@ export default {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          Database: {
             screens: {
-              TabOneScreen: 'one',
-            },
+              DatabaseScreen: 'database'
+            }
           },
-          TabTwo: {
+          FileSystem: {
             screens: {
-              TabTwoScreen: 'two',
-            },
+              FileSystemScreen: 'filesystem'
+            }
           },
+          Clients: {
+            screens: {
+              ClientsScreen: 'clients'
+            }
+          },
+          Login: {
+            screens: {
+              LoginScreen: 'login'
+            }
+          }
         },
       },
       NotFound: '*',

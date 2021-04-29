@@ -1,22 +1,23 @@
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import useCachedResources from './hooks/useCachedResources';
-import isLoggedIn from './hooks/isLoggedIn';
+import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
-import { HeaderLoggedOut } from './components/HeaderLoggedOut';
-import { HeaderLoggedIn } from './components/HeaderLoggedIn';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
-  const loggedIn = isLoggedIn();
+  const colorScheme = useColorScheme();
+
   if (!isLoadingComplete) {
     return null;
   } else {
     return (
-        <SafeAreaProvider>
-            {loggedIn ? <HeaderLoggedIn/> : <HeaderLoggedOut/>}
-          <Navigation/>
-        </SafeAreaProvider>
+      <SafeAreaProvider>
+        <Navigation colorScheme={colorScheme} />
+        <StatusBar />
+      </SafeAreaProvider>
     );
   }
 }

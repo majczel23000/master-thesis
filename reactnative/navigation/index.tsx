@@ -1,33 +1,27 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import LoginScreen from "../screens/LoginScreen";
-import DashboardScreen from "../screens/DashboardScreen";
-import isLoggedIn from "../hooks/isLoggedIn";
+import { ColorSchemeName } from 'react-native';
+import { RootStackParamList } from '../types';
+import DrawerNavigator from './DrawerNavigator';
+import LinkingConfiguration from './LinkingConfiguration';
 
-export default function Navigation() {
+export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      linking={LinkingConfiguration}
+      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <RootNavigator />
     </NavigationContainer>
   );
 }
-const Drawer = createDrawerNavigator();
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-    const loggedIn = isLoggedIn();
   return (
-      <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />} initialRouteName={loggedIn ? 'LoginScreen' : 'DashboardScreen'}>
-          <Drawer.Screen name="LoginScreen" component={LoginScreen} />
-          <Drawer.Screen name="DashboardScreen" component={DashboardScreen} />
-      </Drawer.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName={'Root'}>
+      <Stack.Screen name="Root" component={DrawerNavigator} />
+    </Stack.Navigator>
   );
-}
-
-function CustomDrawerContent(props: any) {
-    return (
-        <DrawerContentScrollView {...props}>
-            <DrawerItemList {...props} />
-        </DrawerContentScrollView>
-    );
 }
