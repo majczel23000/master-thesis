@@ -25,6 +25,41 @@ export default {
             screens: {
               LoginScreen: 'login'
             }
+          },
+          Carousel: {
+            screens: {
+              CarouselScreen: 'carousel'
+            }
+          },
+          Dictionary: {
+            screens: {
+              DictionaryScreen: 'dictionary'
+            }
+          },
+          Image: {
+            screens: {
+              ImageScreen: 'image'
+            }
+          },
+          Role: {
+            screens: {
+              RoleScreen: 'role'
+            }
+          },
+          Setting: {
+            screens: {
+              SettingScreen: 'setting'
+            }
+          },
+          User: {
+            screens: {
+              UserScreen: 'user'
+            }
+          },
+          Profile: {
+            screens: {
+              ProfileScreen: 'profile'
+            }
           }
         },
       },

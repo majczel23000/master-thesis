@@ -17,6 +17,13 @@ export type TabOneParamList = {
 export type DrawerParamList = {
   Login: undefined;
   Dashboard: undefined;
+  Carousel: undefined;
+  Dictionary: undefined;
+  Image: undefined;
+  Role: undefined;
+  Setting: undefined;
+  User: undefined;
+  Profile: undefined;
 };
 
 export type LoginParamList = {
@@ -25,6 +32,34 @@ export type LoginParamList = {
 
 export type DashboardParamList = {
   DashboardScreen: undefined;
+};
+
+export type DictionaryParamList = {
+  DictionaryScreen: undefined;
+};
+
+export type ImageParamList = {
+  ImageScreen: undefined;
+};
+
+export type RoleParamList = {
+  RoleScreen: undefined;
+};
+
+export type SettingParamList = {
+  SettingScreen: undefined;
+};
+
+export type UserParamList = {
+  UserScreen: undefined;
+};
+
+export type CarouselParamList = {
+  CarouselScreen: undefined;
+};
+
+export type ProfileParamList = {
+  ProfileScreen: undefined;
 };
 
 export type onPressFunc = (event: GestureResponderEvent) => void;
