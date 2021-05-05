@@ -1,9 +1,9 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from '@react-navigation/drawer';
 import * as React from 'react';
 import LoginScreen from "../screens/LoginScreen";
-import {DashboardParamList,DictionaryParamList,ImageParamList,RoleParamList,
-    DrawerParamList,SettingParamList,UserParamList,LoginParamList,CarouselParamList, ProfileParamList} from '../types';
+import { DashboardParamList,DictionaryParamList,ImageParamList,RoleParamList,
+    DrawerParamList,SettingParamList,UserParamList,LoginParamList,CarouselParamList, ProfileParamList } from '../types';
 import { StyleSheet } from 'react-native';
 import DashboardScreen from "../screens/DashboardScreen";
 import CarouselScreen from "../screens/CarouselScreen";
@@ -14,17 +14,92 @@ import RoleScreen from "../screens/RoleScreen";
 import SettingScreen from "../screens/SettingScreen";
 import UserScreen from "../screens/UserScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import LoggedInHeader from '../components/LoggedInHeader';
+import {IconButton} from "react-native-paper";
+
 const Drawer = createDrawerNavigator<DrawerParamList>();
+
+function CustomDrawerContent(props: any) {
+
+    return (
+        <DrawerContentScrollView {...props} style={styles.drawerStyle}>
+            <DrawerItem
+                label="Dashboard"
+                style={styles.drawerItemBox}
+                labelStyle={styles.drawerItemLabel}
+                onPress={() => props.navigation.navigate('Dashboard')}
+                icon={() => <IconButton icon="view-dashboard" color='black'> </IconButton>}
+            />
+            <DrawerItem
+                label="Users"
+                style={styles.drawerItemBox}
+                labelStyle={styles.drawerItemLabel}
+                onPress={() => props.navigation.navigate('User')}
+                icon={() => <IconButton icon="account-circle" color='black'> </IconButton>}
+            />
+            <DrawerItem
+                label="Roles"
+                style={styles.drawerItemBox}
+                labelStyle={styles.drawerItemLabel}
+                onPress={() => props.navigation.navigate('Role')}
+                icon={() => <IconButton icon="human" color='black'> </IconButton>}
+            />
+            {/*<DrawerItem*/}
+            {/*    label="Faqs"*/}
+            {/*    style={styles.drawerItemBox}*/}
+            {/*    labelStyle={styles.drawerItemLabel}*/}
+            {/*    onPress={() => props.navigation.navigate('Faq')}*/}
+            {/*    icon={() => <IconButton icon="question_answer" color='black'> </IconButton>}*/}
+            {/*/>*/}
+            {/*<DrawerItem*/}
+            {/*    label="Menus"*/}
+            {/*    style={styles.drawerItemBox}*/}
+            {/*    labelStyle={styles.drawerItemLabel}*/}
+            {/*    onPress={() => props.navigation.navigate('Menu')}*/}
+            {/*    icon={() => <IconButton icon="menu" color='black'> </IconButton>}*/}
+            {/*/>*/}
+            <DrawerItem
+                label="Images"
+                style={styles.drawerItemBox}
+                labelStyle={styles.drawerItemLabel}
+                onPress={() => props.navigation.navigate('Image')}
+                icon={() => <IconButton icon="image" color='black'> </IconButton>}
+            />
+            <DrawerItem
+                label="Settings"
+                style={styles.drawerItemBox}
+                labelStyle={styles.drawerItemLabel}
+                onPress={() => props.navigation.navigate('Setting')}
+                icon={() => <IconButton icon="settings" color='black'> </IconButton>}
+            />
+            <DrawerItem
+                label="Dictionaries"
+                style={styles.drawerItemBox}
+                labelStyle={styles.drawerItemLabel}
+                onPress={() => props.navigation.navigate('Dictionary')}
+                icon={() => <IconButton icon="book" color='black'> </IconButton>}
+            />
+            <DrawerItem
+                label="Profile"
+                style={styles.drawerItemBox}
+                labelStyle={styles.drawerItemLabel}
+                onPress={() => props.navigation.navigate('Profile')}
+                icon={() => <IconButton icon="account" color='black'> </IconButton>}
+            />
+        </DrawerContentScrollView>
+    );
+}
 
 export default function DrawerNavigator() {
 
     const loggedIn = isLoggedIn();
-    console.log(loggedIn);
     if (loggedIn === 'null') {
         return null;
     } else {
         return (
-            <Drawer.Navigator initialRouteName={loggedIn === 'true' ? 'Dashboard' : 'Login'}>
+            <Drawer.Navigator
+                initialRouteName={loggedIn === 'true' ? 'Dashboard' : 'Login'}
+                drawerContent={props => CustomDrawerContent(props)}>
                 <Drawer.Screen
                     name="Login"
                     component={LoginNavigator}
@@ -32,10 +107,6 @@ export default function DrawerNavigator() {
                 <Drawer.Screen
                     name="Dashboard"
                     component={DashboardNavigator}
-                />
-                <Drawer.Screen
-                    name="Carousel"
-                    component={CarouselNavigator}
                 />
                 <Drawer.Screen
                     name="Dictionary"
@@ -91,9 +162,10 @@ function DashboardNavigator() {
         <DashboardStack.Navigator>
             <DashboardStack.Screen
                 options={{
-                    title: 'CMS',
+                    title: 'CMSs',
                     headerTitleStyle: styles.headerTitleStyle,
                     headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
                 }}
                 name="DashboardScreen"
                 component={DashboardScreen}
@@ -112,6 +184,7 @@ function CarouselNavigator() {
                     title: 'CMS',
                     headerTitleStyle: styles.headerTitleStyle,
                     headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
                 }}
                 name="CarouselScreen"
                 component={CarouselScreen}
@@ -130,6 +203,7 @@ function DictionaryNavigator() {
                     title: 'CMS',
                     headerTitleStyle: styles.headerTitleStyle,
                     headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
                 }}
                 name="DictionaryScreen"
                 component={DictionaryScreen}
@@ -148,6 +222,7 @@ function ImageNavigator() {
                     title: 'CMS',
                     headerTitleStyle: styles.headerTitleStyle,
                     headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
                 }}
                 name="ImageScreen"
                 component={ImageScreen}
@@ -166,6 +241,7 @@ function RoleNavigator() {
                     title: 'CMS',
                     headerTitleStyle: styles.headerTitleStyle,
                     headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
                 }}
                 name="RoleScreen"
                 component={RoleScreen}
@@ -184,6 +260,7 @@ function SettingNavigator() {
                     title: 'CMS',
                     headerTitleStyle: styles.headerTitleStyle,
                     headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
                 }}
                 name="SettingScreen"
                 component={SettingScreen}
@@ -202,6 +279,7 @@ function UserNavigator() {
                     title: 'CMS',
                     headerTitleStyle: styles.headerTitleStyle,
                     headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
                 }}
                 name="UserScreen"
                 component={UserScreen}
@@ -220,6 +298,7 @@ function ProfileNavigator() {
                     title: 'CMS',
                     headerTitleStyle: styles.headerTitleStyle,
                     headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
                 }}
                 name="ProfileScreen"
                 component={ProfileScreen}
@@ -233,8 +312,20 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         fontWeight: "bold",
         color: "#f6f6f6",
+        fontSize: 25
     },
     headerStyle: {
         backgroundColor: "orange"
+    },
+    drawerStyle: {
+        backgroundColor: "#ffd38c"
+    },
+    drawerItemLabel: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#212529'
+    },
+    drawerItemBox: {
+        height: '7vh'
     }
 });

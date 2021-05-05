@@ -9,8 +9,6 @@ export default function LoginScreen() {
     const navigation = useNavigation();
 
     const login = () => {
-        console.log('LOGIN');
-
         navigation.navigate("Root", { screen: 'Dashboard' });
         AsyncStorage.setItem('LOGGED_IN', 'true');
     }
