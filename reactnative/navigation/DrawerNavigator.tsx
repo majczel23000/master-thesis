@@ -1,9 +1,20 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import {createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import * as React from 'react';
 import LoginScreen from "../screens/LoginScreen";
-import { DashboardParamList,DictionaryParamList,ImageParamList,RoleParamList,
-    DrawerParamList,SettingParamList,UserParamList,LoginParamList,CarouselParamList, ProfileParamList } from '../types';
+import {
+    DashboardParamList,
+    DictionaryParamList,
+    ImageParamList,
+    RoleParamList,
+    DrawerParamList,
+    SettingParamList,
+    UserParamList,
+    LoginParamList,
+    CarouselParamList,
+    ProfileParamList,
+    UserDetailsParamList
+} from '../types';
 import { StyleSheet } from 'react-native';
 import DashboardScreen from "../screens/DashboardScreen";
 import CarouselScreen from "../screens/CarouselScreen";
@@ -15,7 +26,8 @@ import SettingScreen from "../screens/SettingScreen";
 import UserScreen from "../screens/UserScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import LoggedInHeader from '../components/LoggedInHeader';
-import {IconButton} from "react-native-paper";
+import { IconButton } from "react-native-paper";
+import UserDetailsScreen from "../screens/UserDetailsScreen";
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -127,6 +139,10 @@ export default function DrawerNavigator() {
                 <Drawer.Screen
                     name="User"
                     component={UserNavigator}
+                />
+                <Drawer.Screen
+                    name="UserDetails"
+                    component={UserDetailsNavigator}
                 />
                 <Drawer.Screen
                     name="Profile"
@@ -285,6 +301,26 @@ function UserNavigator() {
                 component={UserScreen}
             />
         </UserStack.Navigator>
+    )
+}
+
+const UserDetailsStack = createStackNavigator<UserDetailsParamList>();
+
+function UserDetailsNavigator({ route }: { route: any}) {
+    return (
+        <UserDetailsStack.Navigator>
+            <UserDetailsStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="UserDetailsScreen"
+            >
+                {() => <UserDetailsScreen {...route.params} />}
+            </UserDetailsStack.Screen>
+        </UserDetailsStack.Navigator>
     )
 }
 

@@ -19,7 +19,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName={'Root'}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Root" component={DrawerNavigator} />
     </Stack.Navigator>
   );

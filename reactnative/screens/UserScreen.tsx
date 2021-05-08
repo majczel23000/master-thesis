@@ -1,15 +1,19 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import {useEffect} from "react";
-import {StackHeaderLeftButtonProps} from "@react-navigation/stack";
+import { Text, View } from 'react-native';
+import { useEffect } from "react";
+import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
 import { useNavigation } from '@react-navigation/native';
-import {Button} from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import Location from "../components/Location";
+import ModuleNavigation from "../components/ModuleNavigation";
+import moduleStyles from "../styles/moduleStyles";
+import { Searchbar, DataTable } from 'react-native-paper';
 
 export default function UserScreen() {
 
     const navigation = useNavigation();
+    const [searchQuery, setSearchQuery] = React.useState('');
+    const onChangeSearch = (query: any) => setSearchQuery(query);
 
     useEffect(() => {
         navigation.setOptions({
@@ -17,60 +21,74 @@ export default function UserScreen() {
         });
     });
 
+    const users = [
+        {
+            email: 'admin@admin.pl',
+            status: 'ACTIVE',
+            id: 1234,
+        },
+        {
+            email: 'admin1@admin.pl',
+            status: 'ACTIVE',
+            id: 12343,
+        },
+        {
+            email: 'admin2@admin.pl',
+            status: 'INACTIVE',
+            id: 12354,
+        },
+        {
+            email: 'admin3@admin.pl',
+            status: 'ACTIVE',
+            id: 1212334,
+        },
+        {
+            email: 'admin4@admin.pl',
+            status: 'ACTIVE',
+            id: 1212334,
+        }
+    ];
+    const [page, setPage] = React.useState(0);
+    const itemsPerPage = 5;
+    const from = page * itemsPerPage;
+    const to = (page + 1) * itemsPerPage;
+
     return (
-        <View style={styles.container}>
-            <View style={styles.box}>
-                <Text style={styles.header}>USER</Text>
-            </View>
+        <View style={moduleStyles.container}>
+            <Location location={'users'}/>
+            <ModuleNavigation elements={[
+                {text: 'Users list', url: 'User'},
+                {text: 'Add new user', url: 'UserAdd'}
+                ]} />
+            <Searchbar
+                placeholder="Filter"
+                onChangeText={onChangeSearch}
+                style={moduleStyles.filter}
+                inputStyle={moduleStyles.filterText}
+                value={searchQuery}
+            />
+            <DataTable style={moduleStyles.box}>
+                <DataTable.Header>
+                    <DataTable.Title>Email</DataTable.Title>
+                    <DataTable.Title>Status</DataTable.Title>
+                </DataTable.Header>
+
+                {
+                    users.slice(from, to).map(user =>
+                        <DataTable.Row key={user.email} onPress={() => navigation.navigate("Root", { screen: 'UserDetails', params: { userId: user.id }})}>
+                            <DataTable.Cell>{user.email}</DataTable.Cell>
+                            <DataTable.Cell>{user.status}</DataTable.Cell>
+                        </DataTable.Row>
+                    )
+                }
+
+                <DataTable.Pagination
+                    page={page}
+                    numberOfPages={Math.floor(users.length / itemsPerPage)}
+                    onPageChange={page => setPage(page)}
+                    label={`${from + 1}-${to} of ${users.length}`}
+                />
+            </DataTable>
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#fafafa'
-    },
-    box: {
-        width: '90vw',
-        backgroundColor: 'white',
-        shadowColor: 'black',
-        shadowRadius: 10,
-        shadowOpacity: 0.2,
-        borderRadius: 5,
-        paddingTop: '3vh',
-        paddingBottom: '3vh',
-        paddingLeft: '4vh',
-        paddingRight: '4vh',
-        marginTop: 20
-    },
-    header: {
-        fontSize: 50,
-        fontWeight: '500',
-        textAlign: 'center',
-    },
-    subheader: {
-        backgroundColor: 'white',
-        textAlign: 'center',
-        padding: 10,
-        paddingTop: 0,
-    },
-    line: {
-        height: 1,
-        backgroundColor: 'black',
-        margin: 10,
-    },
-    info: {
-        fontSize: 18,
-        textAlign: 'center',
-        marginTop: 20,
-        marginBottom: 20,
-    },
-    role: {
-        textAlign: 'center',
-        padding: 1,
-        fontSize: 16
-    }
-});

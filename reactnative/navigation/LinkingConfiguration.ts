@@ -56,6 +56,11 @@ export default {
               UserScreen: 'user'
             }
           },
+          UserDetails: {
+            screens: {
+              UserDetailsScreen: 'userdetails'
+            }
+          },
           Profile: {
             screens: {
               ProfileScreen: 'profile'

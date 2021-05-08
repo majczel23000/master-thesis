@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {useEffect} from "react";
-import {StackHeaderLeftButtonProps} from "@react-navigation/stack";
+import { useEffect } from "react";
+import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
 import { useNavigation } from '@react-navigation/native';
-import {Button} from "react-native-paper";
+import { Button } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function DashboardScreen() {

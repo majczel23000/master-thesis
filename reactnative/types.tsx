@@ -14,6 +14,7 @@ export type DrawerParamList = {
   Role: undefined;
   Setting: undefined;
   User: undefined;
+  UserDetails: undefined;
   Profile: undefined;
 };
 
@@ -43,6 +44,10 @@ export type SettingParamList = {
 
 export type UserParamList = {
   UserScreen: undefined;
+};
+
+export type UserDetailsParamList = {
+  UserDetailsScreen: undefined;
 };
 
 export type CarouselParamList = {

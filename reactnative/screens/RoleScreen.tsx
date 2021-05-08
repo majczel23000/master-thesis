@@ -4,8 +4,7 @@ import {useEffect} from "react";
 import {StackHeaderLeftButtonProps} from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
 import { useNavigation } from '@react-navigation/native';
-import {Button} from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 export default function RoleScreen() {
 
