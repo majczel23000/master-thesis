@@ -13,7 +13,7 @@ import {
     LoginParamList,
     CarouselParamList,
     ProfileParamList,
-    UserDetailsParamList, UserAddParamList
+    UserDetailsParamList, UserAddParamList, RoleDetailsParamList
 } from '../types';
 import { StyleSheet } from 'react-native';
 import DashboardScreen from "../screens/DashboardScreen";
@@ -29,6 +29,7 @@ import LoggedInHeader from '../components/LoggedInHeader';
 import { IconButton } from "react-native-paper";
 import UserDetailsScreen from "../screens/UserDetailsScreen";
 import UserAddScreen from "../screens/UserAdd";
+import RoleDetailsScreen from "../screens/RoleDetailsScreen";
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -122,22 +123,6 @@ export default function DrawerNavigator() {
                     component={DashboardNavigator}
                 />
                 <Drawer.Screen
-                    name="Dictionary"
-                    component={DictionaryNavigator}
-                />
-                <Drawer.Screen
-                    name="Image"
-                    component={ImageNavigator}
-                />
-                <Drawer.Screen
-                    name="Role"
-                    component={RoleNavigator}
-                />
-                <Drawer.Screen
-                    name="Setting"
-                    component={SettingNavigator}
-                />
-                <Drawer.Screen
                     name="User"
                     component={UserNavigator}
                 />
@@ -148,6 +133,26 @@ export default function DrawerNavigator() {
                 <Drawer.Screen
                     name="UserAdd"
                     component={UserAddNavigator}
+                />
+                <Drawer.Screen
+                    name="Role"
+                    component={RoleNavigator}
+                />
+                <Drawer.Screen
+                    name="RoleDetails"
+                    component={RoleDetailsNavigator}
+                />
+                <Drawer.Screen
+                    name="Dictionary"
+                    component={DictionaryNavigator}
+                />
+                <Drawer.Screen
+                    name="Image"
+                    component={ImageNavigator}
+                />
+                <Drawer.Screen
+                    name="Setting"
+                    component={SettingNavigator}
                 />
                 <Drawer.Screen
                     name="Profile"
@@ -190,6 +195,98 @@ function DashboardNavigator() {
                 component={DashboardScreen}
             />
         </DashboardStack.Navigator>
+    )
+}
+
+const UserStack = createStackNavigator<UserParamList>();
+function UserNavigator() {
+    return (
+        <UserStack.Navigator>
+            <UserStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="UserScreen"
+                component={UserScreen}
+            />
+        </UserStack.Navigator>
+    )
+}
+
+const UserDetailsStack = createStackNavigator<UserDetailsParamList>();
+function UserDetailsNavigator({ route }: { route: any}) {
+    return (
+        <UserDetailsStack.Navigator>
+            <UserDetailsStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="UserDetailsScreen"
+            >
+                {() => <UserDetailsScreen {...route.params} />}
+            </UserDetailsStack.Screen>
+        </UserDetailsStack.Navigator>
+    )
+}
+
+const UserAddStack = createStackNavigator<UserAddParamList>();
+function UserAddNavigator() {
+    return (
+        <UserAddStack.Navigator>
+            <UserAddStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="UserAddScreen"
+                component={UserAddScreen}
+            />
+        </UserAddStack.Navigator>
+    )
+}
+
+const RoleStack = createStackNavigator<RoleParamList>();
+function RoleNavigator() {
+    return (
+        <RoleStack.Navigator>
+            <RoleStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="RoleScreen"
+                component={RoleScreen}
+            />
+        </RoleStack.Navigator>
+    )
+}
+
+const RoleDetailsStack = createStackNavigator<RoleDetailsParamList>();
+function RoleDetailsNavigator({ route }: { route: any}) {
+    return (
+        <RoleDetailsStack.Navigator>
+            <RoleDetailsStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="RoleDetailsScreen"
+            >
+                {() => <RoleDetailsScreen {...route.params} />}
+            </RoleDetailsStack.Screen>
+        </RoleDetailsStack.Navigator>
     )
 }
 
@@ -247,24 +344,6 @@ function ImageNavigator() {
     )
 }
 
-const RoleStack = createStackNavigator<RoleParamList>();
-function RoleNavigator() {
-    return (
-        <RoleStack.Navigator>
-            <RoleStack.Screen
-                options={{
-                    title: 'CMS',
-                    headerTitleStyle: styles.headerTitleStyle,
-                    headerStyle: styles.headerStyle,
-                    headerTitle: props => <LoggedInHeader {...props} />
-                }}
-                name="RoleScreen"
-                component={RoleScreen}
-            />
-        </RoleStack.Navigator>
-    )
-}
-
 const SettingStack = createStackNavigator<SettingParamList>();
 function SettingNavigator() {
     return (
@@ -280,61 +359,6 @@ function SettingNavigator() {
                 component={SettingScreen}
             />
         </SettingStack.Navigator>
-    )
-}
-
-const UserStack = createStackNavigator<UserParamList>();
-function UserNavigator() {
-    return (
-        <UserStack.Navigator>
-            <UserStack.Screen
-                options={{
-                    title: 'CMS',
-                    headerTitleStyle: styles.headerTitleStyle,
-                    headerStyle: styles.headerStyle,
-                    headerTitle: props => <LoggedInHeader {...props} />
-                }}
-                name="UserScreen"
-                component={UserScreen}
-            />
-        </UserStack.Navigator>
-    )
-}
-
-const UserDetailsStack = createStackNavigator<UserDetailsParamList>();
-function UserDetailsNavigator({ route }: { route: any}) {
-    return (
-        <UserDetailsStack.Navigator>
-            <UserDetailsStack.Screen
-                options={{
-                    title: 'CMS',
-                    headerTitleStyle: styles.headerTitleStyle,
-                    headerStyle: styles.headerStyle,
-                    headerTitle: props => <LoggedInHeader {...props} />
-                }}
-                name="UserDetailsScreen"
-            >
-                {() => <UserDetailsScreen {...route.params} />}
-            </UserDetailsStack.Screen>
-        </UserDetailsStack.Navigator>
-    )
-}
-
-const UserAddStack = createStackNavigator<UserAddParamList>();
-function UserAddNavigator() {
-    return (
-        <UserAddStack.Navigator>
-            <UserAddStack.Screen
-                options={{
-                    title: 'CMS',
-                    headerTitleStyle: styles.headerTitleStyle,
-                    headerStyle: styles.headerStyle,
-                    headerTitle: props => <LoggedInHeader {...props} />
-                }}
-                name="UserAddScreen"
-                component={UserAddScreen}
-            />
-        </UserAddStack.Navigator>
     )
 }
 

@@ -8,14 +8,15 @@ export type RootStackParamList = {
 export type DrawerParamList = {
   Login: undefined;
   Dashboard: undefined;
-  Carousel: undefined;
-  Dictionary: undefined;
-  Image: undefined;
-  Role: undefined;
-  Setting: undefined;
   User: undefined;
   UserDetails: undefined;
   UserAdd: undefined;
+  Role: undefined;
+  RoleDetails: undefined;
+  Carousel: undefined;
+  Dictionary: undefined;
+  Image: undefined;
+  Setting: undefined;
   Profile: undefined;
 };
 
@@ -27,6 +28,23 @@ export type DashboardParamList = {
   DashboardScreen: undefined;
 };
 
+export type UserParamList = {
+  UserScreen: undefined;
+};
+export type UserDetailsParamList = {
+  UserDetailsScreen: undefined;
+};
+export type UserAddParamList = {
+  UserAddScreen: undefined;
+};
+
+export type RoleParamList = {
+  RoleScreen: undefined;
+};
+export type RoleDetailsParamList = {
+  RoleDetailsScreen: undefined;
+};
+
 export type DictionaryParamList = {
   DictionaryScreen: undefined;
 };
@@ -35,24 +53,8 @@ export type ImageParamList = {
   ImageScreen: undefined;
 };
 
-export type RoleParamList = {
-  RoleScreen: undefined;
-};
-
 export type SettingParamList = {
   SettingScreen: undefined;
-};
-
-export type UserParamList = {
-  UserScreen: undefined;
-};
-
-export type UserDetailsParamList = {
-  UserDetailsScreen: undefined;
-};
-
-export type UserAddParamList = {
-  UserAddScreen: undefined;
 };
 
 export type CarouselParamList = {

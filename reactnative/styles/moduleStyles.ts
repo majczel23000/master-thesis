@@ -19,7 +19,8 @@ export default StyleSheet.create({
         paddingBottom: '3vh',
         paddingLeft: '4vh',
         paddingRight: '4vh',
-        marginTop: 20
+        marginTop: 20,
+        marginBottom: '2vh',
     },
     header: {
         fontSize: 25,

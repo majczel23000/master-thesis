@@ -8,7 +8,7 @@ import Location from "../components/Location";
 import ModuleNavigation from "../components/ModuleNavigation";
 import moduleStyles from "../styles/moduleStyles";
 import { Searchbar, DataTable } from 'react-native-paper';
-import {UserModel} from "../models/User.model";
+import { UserModel } from "../models/User.model";
 
 export default function UserScreen() {
 
