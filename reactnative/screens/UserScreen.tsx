@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useEffect } from "react";
 import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
@@ -8,6 +8,7 @@ import Location from "../components/Location";
 import ModuleNavigation from "../components/ModuleNavigation";
 import moduleStyles from "../styles/moduleStyles";
 import { Searchbar, DataTable } from 'react-native-paper';
+import {UserModel} from "../models/User.model";
 
 export default function UserScreen() {
 
@@ -21,11 +22,14 @@ export default function UserScreen() {
         });
     });
 
-    const users = [
+    const users: UserModel[] = [
         {
             email: 'admin@admin.pl',
             status: 'ACTIVE',
             id: 1234,
+            firstName: 'Admin',
+            lastName: 'Adminiusz',
+            roles: ['USERS_ADD', 'USERS_DELETE', 'USERS_ACTIVATE', 'ROLES_ADD', 'ROLES_DELETE', 'ROLES_ACTIVATE']
         },
         {
             email: 'admin1@admin.pl',
@@ -57,7 +61,6 @@ export default function UserScreen() {
         <View style={moduleStyles.container}>
             <Location location={'users'}/>
             <ModuleNavigation elements={[
-                {text: 'Users list', url: 'User'},
                 {text: 'Add new user', url: 'UserAdd'}
                 ]} />
             <Searchbar
@@ -75,7 +78,7 @@ export default function UserScreen() {
 
                 {
                     users.slice(from, to).map(user =>
-                        <DataTable.Row key={user.email} onPress={() => navigation.navigate("Root", { screen: 'UserDetails', params: { userId: user.id }})}>
+                        <DataTable.Row key={user.email} onPress={() => navigation.navigate("Root", { screen: 'UserDetails', params: { user: user }})}>
                             <DataTable.Cell>{user.email}</DataTable.Cell>
                             <DataTable.Cell>{user.status}</DataTable.Cell>
                         </DataTable.Row>

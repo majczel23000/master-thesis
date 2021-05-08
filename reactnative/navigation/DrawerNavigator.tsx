@@ -13,7 +13,7 @@ import {
     LoginParamList,
     CarouselParamList,
     ProfileParamList,
-    UserDetailsParamList
+    UserDetailsParamList, UserAddParamList
 } from '../types';
 import { StyleSheet } from 'react-native';
 import DashboardScreen from "../screens/DashboardScreen";
@@ -28,6 +28,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import LoggedInHeader from '../components/LoggedInHeader';
 import { IconButton } from "react-native-paper";
 import UserDetailsScreen from "../screens/UserDetailsScreen";
+import UserAddScreen from "../screens/UserAdd";
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -145,6 +146,10 @@ export default function DrawerNavigator() {
                     component={UserDetailsNavigator}
                 />
                 <Drawer.Screen
+                    name="UserAdd"
+                    component={UserAddNavigator}
+                />
+                <Drawer.Screen
                     name="Profile"
                     component={ProfileNavigator}
                 />
@@ -154,7 +159,6 @@ export default function DrawerNavigator() {
 }
 
 const LoginStack = createStackNavigator<LoginParamList>();
-
 function LoginNavigator() {
     return (
         <LoginStack.Navigator>
@@ -172,7 +176,6 @@ function LoginNavigator() {
 }
 
 const DashboardStack = createStackNavigator<DashboardParamList>();
-
 function DashboardNavigator() {
     return (
         <DashboardStack.Navigator>
@@ -191,7 +194,6 @@ function DashboardNavigator() {
 }
 
 const CarouselStack = createStackNavigator<CarouselParamList>();
-
 function CarouselNavigator() {
     return (
         <CarouselStack.Navigator>
@@ -210,7 +212,6 @@ function CarouselNavigator() {
 }
 
 const DictionaryStack = createStackNavigator<DictionaryParamList>();
-
 function DictionaryNavigator() {
     return (
         <DictionaryStack.Navigator>
@@ -229,7 +230,6 @@ function DictionaryNavigator() {
 }
 
 const ImageStack = createStackNavigator<ImageParamList>();
-
 function ImageNavigator() {
     return (
         <ImageStack.Navigator>
@@ -248,7 +248,6 @@ function ImageNavigator() {
 }
 
 const RoleStack = createStackNavigator<RoleParamList>();
-
 function RoleNavigator() {
     return (
         <RoleStack.Navigator>
@@ -267,7 +266,6 @@ function RoleNavigator() {
 }
 
 const SettingStack = createStackNavigator<SettingParamList>();
-
 function SettingNavigator() {
     return (
         <SettingStack.Navigator>
@@ -286,7 +284,6 @@ function SettingNavigator() {
 }
 
 const UserStack = createStackNavigator<UserParamList>();
-
 function UserNavigator() {
     return (
         <UserStack.Navigator>
@@ -305,7 +302,6 @@ function UserNavigator() {
 }
 
 const UserDetailsStack = createStackNavigator<UserDetailsParamList>();
-
 function UserDetailsNavigator({ route }: { route: any}) {
     return (
         <UserDetailsStack.Navigator>
@@ -324,8 +320,25 @@ function UserDetailsNavigator({ route }: { route: any}) {
     )
 }
 
-const ProfileStack = createStackNavigator<ProfileParamList>();
+const UserAddStack = createStackNavigator<UserAddParamList>();
+function UserAddNavigator() {
+    return (
+        <UserAddStack.Navigator>
+            <UserAddStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="UserAddScreen"
+                component={UserAddScreen}
+            />
+        </UserAddStack.Navigator>
+    )
+}
 
+const ProfileStack = createStackNavigator<ProfileParamList>();
 function ProfileNavigator() {
     return (
         <ProfileStack.Navigator>

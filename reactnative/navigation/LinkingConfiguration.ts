@@ -61,6 +61,11 @@ export default {
               UserDetailsScreen: 'userdetails'
             }
           },
+          UserAdd: {
+            screens: {
+              UserAddScreen: 'useradd'
+            }
+          },
           Profile: {
             screens: {
               ProfileScreen: 'profile'

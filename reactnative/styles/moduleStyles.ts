@@ -22,9 +22,10 @@ export default StyleSheet.create({
         marginTop: 20
     },
     header: {
-        fontSize: 50,
+        fontSize: 25,
         fontWeight: '500',
         textAlign: 'center',
+        marginBottom: '2vh'
     },
     filter: {
         width: '90vw',
@@ -37,5 +38,32 @@ export default StyleSheet.create({
     },
     filterText: {
         fontSize: 14
+    },
+    input: {
+        backgroundColor: 'white',
+        border: 'none',
+    },
+    info: {
+        color: 'gray',
+        fontSize: 11,
+        padding: 2
+    },
+    btn: {
+        backgroundColor: '#DB995A',
+        marginTop: '5vh',
+        shadowRadius: 3,
+        shadowOpacity: 0.2,
+        borderRadius: 3,
+    },
+    btnClear: {
+       backgroundColor: 'gray',
+        marginTop: '2vh',
+        marginBottom: '2vh'
+    },
+    btnRemove: {
+        backgroundColor: 'red'
+    },
+    btnYes: {
+        backgroundColor: 'green'
     }
 });
