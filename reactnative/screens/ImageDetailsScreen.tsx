@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import {Image, Text, View} from 'react-native';
 import { useEffect } from "react";
 import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
@@ -9,11 +9,11 @@ import Location from "../components/Location";
 import ModuleNavigation from "../components/ModuleNavigation";
 import { Modal, Portal, Button, Provider, TextInput } from "react-native-paper";
 import detailsStyles from "../styles/detailsStyles";
-import { RoleModel } from "../models/Role.model";
+import { ImageModel } from "../models/Image.model";
 
-export default function RoleDetailsScreen( route: { role: RoleModel } ) {
+export default function ImageDetailsScreen( route: { image: ImageModel } ) {
 
-    const role = route.role;
+    const img = route.image;
 
     useEffect(() => {
         navigation.setOptions({
@@ -22,8 +22,8 @@ export default function RoleDetailsScreen( route: { role: RoleModel } ) {
     });
 
     const navigation = useNavigation();
-    const [name, onChangeName] = React.useState(route.role.name || 'Name');
-    const [description, onChangeDescription] = React.useState(route.role.description || 'Description');
+    const [name, onChangeName] = React.useState(route.image.name || 'Name');
+    const [image, onChangeImage] = React.useState(route.image.image || 'Image');
 
     // Modal logic
     const [visible, setVisible] = React.useState(false);
@@ -31,10 +31,6 @@ export default function RoleDetailsScreen( route: { role: RoleModel } ) {
     const hideModal = () => setVisible(false);
 
     const save = () => {
-
-    }
-
-    const clear = () => {
 
     }
 
@@ -50,7 +46,7 @@ export default function RoleDetailsScreen( route: { role: RoleModel } ) {
                     onDismiss={hideModal}
                     contentContainerStyle={detailsStyles.modal}>
                     <Text style={detailsStyles.modalTitle}>Change Status</Text>
-                    <Text style={detailsStyles.modalInfo}>Are you sure you want to change status of this role?</Text>
+                    <Text style={detailsStyles.modalInfo}>Are you sure you want to change status of this image?</Text>
                     <Button
                         mode="contained"
                         style={detailsStyles.btnYes}
@@ -66,19 +62,20 @@ export default function RoleDetailsScreen( route: { role: RoleModel } ) {
                 </Modal>
             </Portal>
             <View style={moduleStyles.container}>
-                <Location location={`roles > ${role.code}`}/>
+                <Location location={`images > ${img.code}`}/>
                 <ModuleNavigation elements={[
-                    {text: 'Roles list', url: 'Role'}
+                    {text: 'Images list', url: 'Image'},
+                    {text: 'Images add', url: 'ImageAdd'}
                 ]} />
                 <View style={moduleStyles.box}>
-                    <Text style={moduleStyles.header}>Role: {role.code}</Text>
+                    <Text style={moduleStyles.header}>Image: {img.code}</Text>
                     <Text style={detailsStyles.label}>Code: </Text>
                     <TextInput
                         style={detailsStyles.input}
                         underlineColor={'#DB995A'}
                         selectionColor={'#DB995A'}
                         theme={{colors: {primary: '#DB995A', text: 'black'}}}
-                        value={role.code}
+                        value={img.code}
                     />
                     <Text style={detailsStyles.label}>Name:</Text>
                     <TextInput
@@ -89,27 +86,33 @@ export default function RoleDetailsScreen( route: { role: RoleModel } ) {
                         value={name}
                         onChangeText={onChangeName}
                     />
-                    <Text style={detailsStyles.label}>Description:</Text>
-                    <TextInput
-                        style={detailsStyles.input}
-                        underlineColor={'#DB995A'}
-                        selectionColor={'#DB995A'}
-                        theme={{colors: {primary: '#DB995A', text: 'black'}}}
-                        value={description}
-                        onChangeText={onChangeDescription}
-                    />
                     <Text style={detailsStyles.label}>Created At:</Text>
                     <TextInput
                         style={detailsStyles.input}
                         underlineColor={'#DB995A'}
                         selectionColor={'#DB995A'}
                         theme={{colors: {primary: '#DB995A', text: 'black'}}}
-                        value={role.createdAt || 'data utworzenia'}
+                        value={img.createdAt || 'data utworzenia'}
+                    />
+                    <Text style={detailsStyles.label}>Updated At:</Text>
+                    <TextInput
+                        style={detailsStyles.input}
+                        underlineColor={'#DB995A'}
+                        selectionColor={'#DB995A'}
+                        theme={{colors: {primary: '#DB995A', text: 'black'}}}
+                        value={img.updatedAt || 'data modyfikacji'}
+                    />
+                    <Text style={detailsStyles.label}>Image:</Text>
+                    <Image
+                        style={detailsStyles.img}
+                        source={{
+                            uri: img.image
+                        }}
                     />
                     <Text style={detailsStyles.label}>Status:</Text>
-                    <Button color={role.status === 'ACTIVE' ? 'green' : 'red'}
+                    <Button color={img.status === 'ACTIVE' ? 'green' : 'red'}
                             labelStyle={detailsStyles.status}
-                            onPress={showModal}>{role.status || 'UNKNOW'}</Button>
+                            onPress={showModal}>{img.status || 'UNKNOW'}</Button>
                     <Button
                         mode="contained"
                         style={moduleStyles.btn}
@@ -118,9 +121,8 @@ export default function RoleDetailsScreen( route: { role: RoleModel } ) {
                     </Button>
                     <Button
                         mode="contained"
-                        style={moduleStyles.btnClear}
-                        onPress={clear}>
-                        Clear changes
+                        style={moduleStyles.btnRemove}>
+                        Remove
                     </Button>
                 </View>
             </View>

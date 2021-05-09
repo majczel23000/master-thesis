@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import Location from "../components/Location";
 import moduleStyles from "../styles/moduleStyles";
 import { Searchbar, DataTable } from 'react-native-paper';
-import {RoleModel} from "../models/Role.model";
+import { RoleModel } from "../models/Role.model";
 
 export default function RoleScreen() {
 

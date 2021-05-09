@@ -13,7 +13,12 @@ import {
     LoginParamList,
     CarouselParamList,
     ProfileParamList,
-    UserDetailsParamList, UserAddParamList, RoleDetailsParamList
+    UserDetailsParamList,
+    UserAddParamList,
+    RoleDetailsParamList,
+    ImageDetailsParamList,
+    ImageAddParamList,
+    SettingDetailsParamList
 } from '../types';
 import { StyleSheet } from 'react-native';
 import DashboardScreen from "../screens/DashboardScreen";
@@ -30,6 +35,9 @@ import { IconButton } from "react-native-paper";
 import UserDetailsScreen from "../screens/UserDetailsScreen";
 import UserAddScreen from "../screens/UserAdd";
 import RoleDetailsScreen from "../screens/RoleDetailsScreen";
+import ImageDetailsScreen from "../screens/ImageDetailsScreen";
+import ImageAddScreen from "../screens/ImageAddScreen";
+import SettingDetailsScreen from "../screens/SettingDetailsScreen";
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -143,16 +151,28 @@ export default function DrawerNavigator() {
                     component={RoleDetailsNavigator}
                 />
                 <Drawer.Screen
-                    name="Dictionary"
-                    component={DictionaryNavigator}
-                />
-                <Drawer.Screen
                     name="Image"
                     component={ImageNavigator}
                 />
                 <Drawer.Screen
+                    name="ImageDetails"
+                    component={ImageDetailsNavigator}
+                />
+                <Drawer.Screen
+                    name="ImageAdd"
+                    component={ImageAddNavigator}
+                />
+                <Drawer.Screen
                     name="Setting"
                     component={SettingNavigator}
+                />
+                <Drawer.Screen
+                    name="SettingDetails"
+                    component={SettingDetailsNavigator}
+                />
+                <Drawer.Screen
+                    name="Dictionary"
+                    component={DictionaryNavigator}
                 />
                 <Drawer.Screen
                     name="Profile"
@@ -290,6 +310,98 @@ function RoleDetailsNavigator({ route }: { route: any}) {
     )
 }
 
+const ImageStack = createStackNavigator<ImageParamList>();
+function ImageNavigator() {
+    return (
+        <ImageStack.Navigator>
+            <ImageStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="ImageScreen"
+                component={ImageScreen}
+            />
+        </ImageStack.Navigator>
+    )
+}
+
+const ImageDetailsStack = createStackNavigator<ImageDetailsParamList>();
+function ImageDetailsNavigator({ route }: { route: any}) {
+    return (
+        <ImageDetailsStack.Navigator>
+            <ImageDetailsStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="ImageDetailsScreen"
+            >
+                {() => <ImageDetailsScreen {...route.params} />}
+            </ImageDetailsStack.Screen>
+        </ImageDetailsStack.Navigator>
+    )
+}
+
+const ImageAddStack = createStackNavigator<ImageAddParamList>();
+function ImageAddNavigator() {
+    return (
+        <ImageAddStack.Navigator>
+            <ImageAddStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="ImageAddScreen"
+                component={ImageAddScreen}
+            />
+        </ImageAddStack.Navigator>
+    )
+}
+
+const SettingStack = createStackNavigator<SettingParamList>();
+function SettingNavigator() {
+    return (
+        <SettingStack.Navigator>
+            <SettingStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="SettingScreen"
+                component={SettingScreen}
+            />
+        </SettingStack.Navigator>
+    )
+}
+
+const SettingDetailsStack = createStackNavigator<SettingDetailsParamList>();
+function SettingDetailsNavigator({ route }: { route: any}) {
+    return (
+        <SettingDetailsStack.Navigator>
+            <SettingDetailsStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="SettingDetailsScreen"
+            >
+                {() => <SettingDetailsScreen {...route.params} />}
+            </SettingDetailsStack.Screen>
+        </SettingDetailsStack.Navigator>
+    )
+}
+
 const CarouselStack = createStackNavigator<CarouselParamList>();
 function CarouselNavigator() {
     return (
@@ -323,42 +435,6 @@ function DictionaryNavigator() {
                 component={DictionaryScreen}
             />
         </DictionaryStack.Navigator>
-    )
-}
-
-const ImageStack = createStackNavigator<ImageParamList>();
-function ImageNavigator() {
-    return (
-        <ImageStack.Navigator>
-            <ImageStack.Screen
-                options={{
-                    title: 'CMS',
-                    headerTitleStyle: styles.headerTitleStyle,
-                    headerStyle: styles.headerStyle,
-                    headerTitle: props => <LoggedInHeader {...props} />
-                }}
-                name="ImageScreen"
-                component={ImageScreen}
-            />
-        </ImageStack.Navigator>
-    )
-}
-
-const SettingStack = createStackNavigator<SettingParamList>();
-function SettingNavigator() {
-    return (
-        <SettingStack.Navigator>
-            <SettingStack.Screen
-                options={{
-                    title: 'CMS',
-                    headerTitleStyle: styles.headerTitleStyle,
-                    headerStyle: styles.headerStyle,
-                    headerTitle: props => <LoggedInHeader {...props} />
-                }}
-                name="SettingScreen"
-                component={SettingScreen}
-            />
-        </SettingStack.Navigator>
     )
 }
 

@@ -13,10 +13,14 @@ export type DrawerParamList = {
   UserAdd: undefined;
   Role: undefined;
   RoleDetails: undefined;
+  Image: undefined;
+  ImageDetails: undefined;
+  ImageAdd: undefined;
+  Setting: undefined;
+  SettingDetails: undefined;
+  SettingAdd: undefined;
   Carousel: undefined;
   Dictionary: undefined;
-  Image: undefined;
-  Setting: undefined;
   Profile: undefined;
 };
 
@@ -45,16 +49,28 @@ export type RoleDetailsParamList = {
   RoleDetailsScreen: undefined;
 };
 
-export type DictionaryParamList = {
-  DictionaryScreen: undefined;
-};
-
 export type ImageParamList = {
   ImageScreen: undefined;
+};
+export type ImageDetailsParamList = {
+  ImageDetailsScreen: undefined;
+};
+export type ImageAddParamList = {
+  ImageAddScreen: undefined;
 };
 
 export type SettingParamList = {
   SettingScreen: undefined;
+};
+export type SettingDetailsParamList = {
+  SettingDetailsScreen: undefined;
+};
+export type SettingAddParamList = {
+  SettingAddScreen: undefined;
+};
+
+export type DictionaryParamList = {
+  DictionaryScreen: undefined;
 };
 
 export type CarouselParamList = {

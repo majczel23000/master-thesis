@@ -59,12 +59,17 @@ export default StyleSheet.create({
     btnClear: {
        backgroundColor: 'gray',
         marginTop: '2vh',
-        marginBottom: '2vh'
     },
     btnRemove: {
-        backgroundColor: 'red'
+        backgroundColor: 'red',
+        marginTop: '2vh',
     },
     btnYes: {
-        backgroundColor: 'green'
+        backgroundColor: 'green',
+        marginTop: '2vh',
+    },
+    img: {
+        width: 100,
+        height: 100,
     }
 });

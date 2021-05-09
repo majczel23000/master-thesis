@@ -11,6 +11,7 @@ export default StyleSheet.create({
     input: {
         border: 'none',
         backgroundColor: 'white',
+        color: 'red',
         padding: 0,
         height: 50,
     },
@@ -42,5 +43,9 @@ export default StyleSheet.create({
     },
     btnNo: {
         backgroundColor: 'red'
+    },
+    img: {
+        width: 300,
+        height: 400,
     }
 });

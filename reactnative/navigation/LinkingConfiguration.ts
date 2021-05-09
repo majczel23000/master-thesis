@@ -41,9 +41,24 @@ export default {
               ImageScreen: 'image'
             }
           },
+          ImageDetails: {
+            screens: {
+              ImageDetailsScreen: 'imagedetails'
+            }
+          },
+          ImageAdd: {
+            screens: {
+              ImageAddScreen: 'imageadd'
+            }
+          },
           Role: {
             screens: {
               RoleScreen: 'role'
+            }
+          },
+          RoleDetails: {
+            screens: {
+              RoleDetailsScreen: 'roledetails'
             }
           },
           Setting: {
