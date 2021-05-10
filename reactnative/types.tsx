@@ -21,6 +21,8 @@ export type DrawerParamList = {
   SettingAdd: undefined;
   Carousel: undefined;
   Dictionary: undefined;
+  DictionaryDetails: undefined;
+  DictionaryAdd: undefined;
   Profile: undefined;
 };
 
@@ -71,6 +73,12 @@ export type SettingAddParamList = {
 
 export type DictionaryParamList = {
   DictionaryScreen: undefined;
+};
+export type DictionaryDetailsParamList = {
+  DictionaryDetailsScreen: undefined;
+};
+export type DictionaryAddParamList = {
+  DictionaryAddScreen: undefined;
 };
 
 export type CarouselParamList = {

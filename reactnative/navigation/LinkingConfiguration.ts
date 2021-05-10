@@ -36,6 +36,16 @@ export default {
               DictionaryScreen: 'dictionary'
             }
           },
+          DictionaryDetails: {
+            screens: {
+              DictionaryDetailsScreen: 'dictionarydetails'
+            }
+          },
+          DictionaryAdd: {
+            screens: {
+              DictionaryAddScreen: 'dictionaryadd'
+            }
+          },
           Image: {
             screens: {
               ImageScreen: 'image'
@@ -64,6 +74,16 @@ export default {
           Setting: {
             screens: {
               SettingScreen: 'setting'
+            }
+          },
+          SettingDetails: {
+            screens: {
+              SettingDetailsScreen: 'settingdetails'
+            }
+          },
+          SettingAdd: {
+            screens: {
+              SettingAddScreen: 'settingadd'
             }
           },
           User: {

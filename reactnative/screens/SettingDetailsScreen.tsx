@@ -158,7 +158,7 @@ export default function SettingDetailsScreen( route: { setting: SettingModel } )
                         mode="contained"
                         style={moduleStyles.btnRemove}
                         onPress={remove}>
-                        Remove user
+                        Remove setting
                     </Button>
                 </View>
             </View>

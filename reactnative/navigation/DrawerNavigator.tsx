@@ -18,13 +18,18 @@ import {
     RoleDetailsParamList,
     ImageDetailsParamList,
     ImageAddParamList,
-    SettingDetailsParamList
+    SettingDetailsParamList,
+    SettingAddParamList,
+    DictionaryDetailsParamList,
+    DictionaryAddParamList
 } from '../types';
 import { StyleSheet } from 'react-native';
 import DashboardScreen from "../screens/DashboardScreen";
 import CarouselScreen from "../screens/CarouselScreen";
 import isLoggedIn from "../hooks/isLoggedIn";
 import DictionaryScreen from "../screens/DictionaryScreen";
+import DictionaryDetailsScreen from "../screens/DictionaryDetailsScreen";
+import DictionaryAddScreen from "../screens/DictionaryAddScreen";
 import ImageScreen from "../screens/ImageScreen";
 import RoleScreen from "../screens/RoleScreen";
 import SettingScreen from "../screens/SettingScreen";
@@ -38,6 +43,7 @@ import RoleDetailsScreen from "../screens/RoleDetailsScreen";
 import ImageDetailsScreen from "../screens/ImageDetailsScreen";
 import ImageAddScreen from "../screens/ImageAddScreen";
 import SettingDetailsScreen from "../screens/SettingDetailsScreen";
+import SettingAddScreen from "../screens/SettingAddScreen";
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -171,8 +177,20 @@ export default function DrawerNavigator() {
                     component={SettingDetailsNavigator}
                 />
                 <Drawer.Screen
+                    name="SettingAdd"
+                    component={SettingAddNavigator}
+                />
+                <Drawer.Screen
                     name="Dictionary"
                     component={DictionaryNavigator}
+                />
+                <Drawer.Screen
+                    name="DictionaryDetails"
+                    component={DictionaryDetailsNavigator}
+                />
+                <Drawer.Screen
+                    name="DictionaryAdd"
+                    component={DictionaryAddNavigator}
                 />
                 <Drawer.Screen
                     name="Profile"
@@ -402,6 +420,24 @@ function SettingDetailsNavigator({ route }: { route: any}) {
     )
 }
 
+const SettingAddStack = createStackNavigator<SettingAddParamList>();
+function SettingAddNavigator() {
+    return (
+        <SettingAddStack.Navigator>
+            <SettingAddStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="SettingAddScreen"
+                component={SettingAddScreen}
+            />
+        </SettingAddStack.Navigator>
+    )
+}
+
 const CarouselStack = createStackNavigator<CarouselParamList>();
 function CarouselNavigator() {
     return (
@@ -437,6 +473,45 @@ function DictionaryNavigator() {
         </DictionaryStack.Navigator>
     )
 }
+
+
+const DictionaryDetailsStack = createStackNavigator<DictionaryDetailsParamList>();
+function DictionaryDetailsNavigator({ route }: { route: any}) {
+    return (
+        <DictionaryDetailsStack.Navigator>
+            <DictionaryDetailsStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="DictionaryDetailsScreen"
+            >
+                {() => <DictionaryDetailsScreen {...route.params} />}
+            </DictionaryDetailsStack.Screen>
+        </DictionaryDetailsStack.Navigator>
+    )
+}
+
+const DictionaryAddStack = createStackNavigator<DictionaryAddParamList>();
+function DictionaryAddNavigator() {
+    return (
+        <DictionaryAddStack.Navigator>
+            <DictionaryAddStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="DictionaryAddScreen"
+                component={DictionaryAddScreen}
+            />
+        </DictionaryAddStack.Navigator>
+    )
+}
+
 
 const ProfileStack = createStackNavigator<ProfileParamList>();
 function ProfileNavigator() {

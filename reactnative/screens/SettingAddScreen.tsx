@@ -9,7 +9,7 @@ import Location from "../components/Location";
 import ModuleNavigation from "../components/ModuleNavigation";
 import { TextInput, Button } from "react-native-paper";
 
-export default function ImageAddScreen() {
+export default function SettingAddScreen() {
 
     const add = () => {
         console.log(add);
@@ -25,12 +25,12 @@ export default function ImageAddScreen() {
 
     return (
         <View style={moduleStyles.container}>
-            <Location location={`images > add `}/>
+            <Location location={`settings > add `}/>
             <ModuleNavigation elements={[
-                {text: 'Images list', url: 'Image'}
+                {text: 'Settings list', url: 'Setting'}
             ]} />
             <View style={moduleStyles.box}>
-                <Text style={moduleStyles.header}>Add new image</Text>
+                <Text style={moduleStyles.header}>Add new setting</Text>
                 <TextInput
                     label="Code"
                     style={moduleStyles.input}
@@ -47,12 +47,36 @@ export default function ImageAddScreen() {
                     theme={{colors: {primary: '#DB995A'}}}
                 />
                 <Text style={moduleStyles.info}>Type name here</Text>
+                <TextInput
+                    label="Description"
+                    style={moduleStyles.input}
+                    underlineColor={'#DB995A'}
+                    selectionColor={'#DB995A'}
+                    theme={{colors: {primary: '#DB995A'}}}
+                />
+                <Text style={moduleStyles.info}>Type description here</Text>
+                <TextInput
+                    label="Setting type"
+                    style={moduleStyles.input}
+                    underlineColor={'#DB995A'}
+                    selectionColor={'#DB995A'}
+                    theme={{colors: {primary: '#DB995A'}}}
+                />
+                <Text style={moduleStyles.info}>Choose type </Text>
+                <TextInput
+                    label="Value"
+                    style={moduleStyles.input}
+                    underlineColor={'#DB995A'}
+                    selectionColor={'#DB995A'}
+                    theme={{colors: {primary: '#DB995A'}}}
+                />
+                <Text style={moduleStyles.info}>Type value here</Text>
 
                 <Button
                     mode="contained"
                     style={moduleStyles.btn}
                     onPress={add}>
-                    Add image
+                    Add setting
                 </Button>
             </View>
         </View>
