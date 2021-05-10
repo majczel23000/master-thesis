@@ -6,6 +6,7 @@ import MenuIcon from "../components/MenuIcon";
 import { useNavigation } from '@react-navigation/native';
 import { Button } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {AsyncStorageKeysEnum} from "../models/AsyncStorageKeys.enum";
 
 export default function DashboardScreen() {
 
@@ -18,7 +19,7 @@ export default function DashboardScreen() {
     });
 
     const logout = () => {
-        AsyncStorage.setItem('LOGGED_IN', 'false');
+        AsyncStorage.setItem(AsyncStorageKeysEnum.LOGGED_IN, 'false');
     }
 
     const roles = ['CAROUSELS', 'DICTIONARIES', 'SETTINGS', 'IMAGES', 'USERS', 'ROLES'];

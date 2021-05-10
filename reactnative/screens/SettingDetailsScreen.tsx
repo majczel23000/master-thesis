@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { StyleSheet, Text, View, Picker } from 'react-native';
+import { Text, View, Picker } from 'react-native';
 import { useEffect } from "react";
 import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";

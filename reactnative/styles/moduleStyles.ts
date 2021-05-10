@@ -71,5 +71,9 @@ export default StyleSheet.create({
     img: {
         width: 100,
         height: 100,
+    },
+    snackbarError: {
+        backgroundColor: 'red',
+        color: 'white'
     }
 });

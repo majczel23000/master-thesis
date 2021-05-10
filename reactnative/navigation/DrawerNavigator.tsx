@@ -120,12 +120,12 @@ function CustomDrawerContent(props: any) {
 export default function DrawerNavigator() {
 
     const loggedIn = isLoggedIn();
-    if (loggedIn === 'null') {
+    if (!loggedIn) {
         return null;
     } else {
         return (
             <Drawer.Navigator
-                initialRouteName={loggedIn === 'true' ? 'Dashboard' : 'Login'}
+                initialRouteName={loggedIn ? 'Dashboard' : 'Login'}
                 drawerContent={props => CustomDrawerContent(props)}>
                 <Drawer.Screen
                     name="Login"

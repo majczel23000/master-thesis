@@ -1,17 +1,17 @@
 import * as React from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
 
 export default function isLoggedIn() {
-    const [isLoggedIn, setLoggedIn] = React.useState('null');
+    const [isLoggedIn, setLoggedIn] = React.useState<boolean | undefined>(false);
 
-    // Load any resources or data that we need prior to rendering the app
     React.useEffect(() => {
-        let result: string;
+        let result: boolean;
         async function checkLoggedIn() {
             try {
-               await AsyncStorage.getItem('LOGGED_IN').then(res => {
-                   if (res === 'true') result = 'true';
-                   else result = "false";
+               await AsyncStorage.getItem(AsyncStorageKeysEnum.LOGGED_IN).then(res => {
+                   if (res === 'true') result = true;
+                   else result = false;
                });
             } catch (e) {
                 console.warn(e);
