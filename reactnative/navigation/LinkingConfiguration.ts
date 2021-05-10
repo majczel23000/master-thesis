@@ -103,7 +103,7 @@ export default {
           },
           Profile: {
             screens: {
-              ProfileScreen: 'profile'
+              Profile: 'profile'
             }
           }
         },

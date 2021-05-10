@@ -22,7 +22,7 @@ export default function LoggedInHeader(props: any) {
     }
 
     const goToProfile = () => {
-        navigation.navigate('Profile');
+        navigation.navigate('User');
         closeMenu();
     }
 

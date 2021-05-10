@@ -34,7 +34,6 @@ import ImageScreen from "../screens/ImageScreen";
 import RoleScreen from "../screens/RoleScreen";
 import SettingScreen from "../screens/SettingScreen";
 import UserScreen from "../screens/UserScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import LoggedInHeader from '../components/LoggedInHeader';
 import { IconButton } from "react-native-paper";
 import UserDetailsScreen from "../screens/UserDetailsScreen";
@@ -111,7 +110,7 @@ function CustomDrawerContent(props: any) {
                 label="Profile"
                 style={styles.drawerItemBox}
                 labelStyle={styles.drawerItemLabel}
-                onPress={() => props.navigation.navigate('Profile')}
+                onPress={() => props.navigation.navigate('User')}
                 icon={() => <IconButton icon="account" color='black'> </IconButton>}
             />
         </DrawerContentScrollView>
@@ -192,10 +191,7 @@ export default function DrawerNavigator() {
                     name="DictionaryAdd"
                     component={DictionaryAddNavigator}
                 />
-                <Drawer.Screen
-                    name="Profile"
-                    component={ProfileNavigator}
-                />
+
             </Drawer.Navigator>
         );
     }
@@ -513,23 +509,6 @@ function DictionaryAddNavigator() {
 }
 
 
-const ProfileStack = createStackNavigator<ProfileParamList>();
-function ProfileNavigator() {
-    return (
-        <ProfileStack.Navigator>
-            <ProfileStack.Screen
-                options={{
-                    title: 'CMS',
-                    headerTitleStyle: styles.headerTitleStyle,
-                    headerStyle: styles.headerStyle,
-                    headerTitle: props => <LoggedInHeader {...props} />
-                }}
-                name="ProfileScreen"
-                component={ProfileScreen}
-            />
-        </ProfileStack.Navigator>
-    )
-}
 
 const styles = StyleSheet.create({
     headerTitleStyle: {
