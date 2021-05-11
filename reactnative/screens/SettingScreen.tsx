@@ -69,6 +69,7 @@ export default function SettingScreen() {
             <DataTable style={moduleStyles.box}>
                 <DataTable.Header>
                     <DataTable.Title>Code</DataTable.Title>
+                    <DataTable.Title>Name</DataTable.Title>
                     <DataTable.Title>Type</DataTable.Title>
                     <DataTable.Title>Status</DataTable.Title>
                 </DataTable.Header>
@@ -77,6 +78,7 @@ export default function SettingScreen() {
                     settings.slice(from, to).map(setting =>
                         <DataTable.Row key={setting.code} onPress={() => navigation.navigate("Root", { screen: 'SettingDetails', params: { setting: setting }})}>
                             <DataTable.Cell>{setting.code}</DataTable.Cell>
+                            <DataTable.Cell>{setting.name}</DataTable.Cell>
                             <DataTable.Cell>{setting.type}</DataTable.Cell>
                             <DataTable.Cell>{setting.status}</DataTable.Cell>
                         </DataTable.Row>

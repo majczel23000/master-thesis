@@ -113,6 +113,14 @@ export default function SettingDetailsScreen( route: { setting: SettingModel } )
                         onChangeText={onChangeDescription}
                     />
                     <Text style={detailsStyles.label}>Type:</Text>
+                    <TextInput
+                        style={detailsStyles.input}
+                        underlineColor={'#DB995A'}
+                        selectionColor={'#DB995A'}
+                        theme={{colors: {primary: '#DB995A', text: 'black'}}}
+                        value={description}
+                        onChangeText={onChangeDescription}
+                    />
                     <Text style={detailsStyles.label}>Value:</Text>
                     <TextInput
                         style={detailsStyles.input}

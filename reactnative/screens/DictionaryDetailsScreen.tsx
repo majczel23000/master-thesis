@@ -129,6 +129,10 @@ export default function DictionaryDetailsScreen( route: { dictionary: Dictionary
                     <Button color={dictionary.status === 'ACTIVE' ? 'green' : 'red'}
                             labelStyle={detailsStyles.status}
                             onPress={showModal}>{dictionary.status || 'UNKNOW'}</Button>
+                    <Text style={detailsStyles.label}>Languages:</Text>
+                    <Button  mode="contained" onPress={() => console.log('Pressed')}>
+                        Show languages
+                    </Button>
                     <Button
                         mode="contained"
                         style={moduleStyles.btn}

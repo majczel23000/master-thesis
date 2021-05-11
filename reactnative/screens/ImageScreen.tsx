@@ -25,18 +25,26 @@ export default function ImageScreen() {
     const images: ImageModel[] = [
         {
             code: 'USERS_ADD',
+            name: 'adding users',
+            status: 'active',
             image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=='
         },
         {
             code: 'USERS_ADD2',
+            name: 'adding users2',
+            status: 'active',
             image: ''
         },
         {
             code: 'USERS_ADD3',
+            name: 'adding users3',
+            status: 'active',
             image: ''
         },
         {
             code: 'USERS_ADD4',
+            name: 'adding users4',
+            status: 'active',
             image: ''
         },
     ];
@@ -61,6 +69,8 @@ export default function ImageScreen() {
             <DataTable style={moduleStyles.box}>
                 <DataTable.Header>
                     <DataTable.Title>Code</DataTable.Title>
+                    <DataTable.Title>Name</DataTable.Title>
+                    <DataTable.Title>Status</DataTable.Title>
                     <DataTable.Title>Image</DataTable.Title>
                 </DataTable.Header>
 
@@ -68,6 +78,8 @@ export default function ImageScreen() {
                     images.slice(from, to).map(img =>
                         <DataTable.Row key={img.code} onPress={() => navigation.navigate("Root", { screen: 'ImageDetails', params: { image: img }})}>
                             <DataTable.Cell>{img.code}</DataTable.Cell>
+                            <DataTable.Cell>{img.name}</DataTable.Cell>
+                            <DataTable.Cell>{img.status}</DataTable.Cell>
                             <DataTable.Cell>
                                 <View>
                                     <Image
