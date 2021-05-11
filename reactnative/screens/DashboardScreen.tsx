@@ -1,14 +1,28 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
 import { useNavigation } from '@react-navigation/native';
-import { Button } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {AsyncStorageKeysEnum} from "../models/AsyncStorageKeys.enum";
+import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
+import { UserModel } from "../models/User.model";
+
+const modulesInitialData: any = {
+    'USERS': false,
+    'ROLES': false,
+    'FAQS': false,
+    'MENUS': false,
+    'IMAGES': false,
+    'SETTINGS': false,
+    'DICTIONARIES': false
+}
+
+let user: string = '';
 
 export default function DashboardScreen() {
+
+    const [modules, setModules] = useState(modulesInitialData);
 
     const navigation = useNavigation();
 
@@ -18,11 +32,37 @@ export default function DashboardScreen() {
         });
     });
 
-    const logout = () => {
-        AsyncStorage.setItem(AsyncStorageKeysEnum.LOGGED_IN, 'false');
-    }
+    useEffect(() => {
+        AsyncStorage.getItem(AsyncStorageKeysEnum.USER).then(
+            result => {
+                if (result != null) {
+                    const modulesData: any = {
+                        'USERS': false,
+                        'ROLES': false,
+                        'FAQS': false,
+                        'MENUS': false,
+                        'IMAGES': false,
+                        'SETTINGS': false,
+                        'DICTIONARIES': false
+                    }
+                    user = JSON.parse(result);
+                    // @ts-ignore
+                    for (let i = 0; i < user.roles.length; i++) {
+                        for (let key in modulesData) {
+                            if (modulesData.hasOwnProperty(key)) {
+                                // @ts-ignore
+                                if (user.roles[i].includes(key)) {
+                                    modulesData[key] = true;
+                                }
+                            }
+                        }
+                    }
+                    setModules(modulesData);
+                }
+            }
+        )
+    }, [modulesInitialData])
 
-    const roles = ['CAROUSELS', 'DICTIONARIES', 'SETTINGS', 'IMAGES', 'USERS', 'ROLES'];
     return (
         <View style={styles.container}>
             <View style={styles.box}>
@@ -31,9 +71,10 @@ export default function DashboardScreen() {
                 <View style={styles.line}></View>
                 <Text style={styles.info}>Here are modules that you have access to (specific actions depends on your roles):</Text>
                 {
-                    roles.map(role => <Text style={styles.role} key={role}>{role}</Text>)
+                    Object.keys(modules).map(key =>
+                        modules[key] ? <Text style={styles.role} key={key}>{key}</Text> : null
+                    )
                 }
-                <Button onPress={logout}>Logout</Button>
             </View>
         </View>
     );
