@@ -6,7 +6,6 @@ import MenuIcon from "../components/MenuIcon";
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
-import { UserModel } from "../models/User.model";
 
 const modulesInitialData: any = {
     'USERS': false,

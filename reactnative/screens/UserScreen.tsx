@@ -1,19 +1,24 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Location from "../components/Location";
 import ModuleNavigation from "../components/ModuleNavigation";
 import moduleStyles from "../styles/moduleStyles";
 import { Searchbar, DataTable } from 'react-native-paper';
-import { UserModel } from "../models/User.model";
+import { UserModel } from "../models/users/User.model";
+import { environment } from "../environment";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
+import { UsersResponseModel } from "../models/users/UsersResponse.model";
 
 export default function UserScreen() {
 
     const navigation = useNavigation();
     const [searchQuery, setSearchQuery] = React.useState('');
+    const [users, setUsers] = React.useState<UserModel[]>([]);
     const onChangeSearch = (query: any) => setSearchQuery(query);
 
     useEffect(() => {
@@ -22,36 +27,24 @@ export default function UserScreen() {
         });
     });
 
-    const users: UserModel[] = [
-        {
-            email: 'admin@admin.pl',
-            status: 'ACTIVE',
-            id: 1234,
-            firstName: 'Admin',
-            lastName: 'Adminiusz',
-            roles: ['USERS_ADD', 'USERS_DELETE', 'USERS_ACTIVATE', 'ROLES_ADD', 'ROLES_DELETE', 'ROLES_ACTIVATE']
-        },
-        {
-            email: 'admin1@admin.pl',
-            status: 'ACTIVE',
-            id: 12343,
-        },
-        {
-            email: 'admin2@admin.pl',
-            status: 'INACTIVE',
-            id: 12354,
-        },
-        {
-            email: 'admin3@admin.pl',
-            status: 'ACTIVE',
-            id: 1212334,
-        },
-        {
-            email: 'admin4@admin.pl',
-            status: 'ACTIVE',
-            id: 1212334,
-        }
-    ];
+    useFocusEffect(useCallback(() => {
+        AsyncStorage.getItem(AsyncStorageKeysEnum.TOKEN).then(result => {
+            if (result !== null) {
+                fetch(environment.apiUrl + 'users', {
+                    headers: {
+                        Accept: 'application/json',
+                        "Authorization": `Bearer ${JSON.parse(result)}`
+                    },
+                })
+                    .then(res => res.json())
+                    .then((data: UsersResponseModel) => {
+                        // @ts-ignore
+                        setUsers(data.data);
+                    })
+            }
+        });
+    }, []))
+
     const [page, setPage] = React.useState(0);
     const itemsPerPage = 5;
     const from = page * itemsPerPage;

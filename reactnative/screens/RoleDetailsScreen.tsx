@@ -9,7 +9,7 @@ import Location from "../components/Location";
 import ModuleNavigation from "../components/ModuleNavigation";
 import { Modal, Portal, Button, Provider, TextInput } from "react-native-paper";
 import detailsStyles from "../styles/detailsStyles";
-import { RoleModel } from "../models/Role.model";
+import { RoleModel } from "../models/roles/Role.model";
 
 export default function RoleDetailsScreen( route: { role: RoleModel } ) {
 

@@ -4,4 +4,5 @@ export interface RoleModel {
     description?: string;
     createdAt?: string;
     status?: string;
+    checked?: boolean;
 }

@@ -1,4 +1,4 @@
-import { UserModel } from "./User.model";
+import { UserModel } from "./users/User.model";
 
 export interface LoginResponseModel {
     code?: string;

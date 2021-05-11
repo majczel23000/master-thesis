@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import moduleStyles from "../styles/moduleStyles";
 import Location from "../components/Location";
 import ModuleNavigation from "../components/ModuleNavigation";
-import { UserModel } from "../models/User.model";
+import { UserModel } from "../models/users/User.model";
 import { Modal, Portal, Button, Provider, Checkbox, TextInput } from "react-native-paper";
 import detailsStyles from "../styles/detailsStyles";
 
