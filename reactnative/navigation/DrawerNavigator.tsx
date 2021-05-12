@@ -43,6 +43,7 @@ import ImageDetailsScreen from "../screens/ImageDetailsScreen";
 import ImageAddScreen from "../screens/ImageAddScreen";
 import SettingDetailsScreen from "../screens/SettingDetailsScreen";
 import SettingAddScreen from "../screens/SettingAddScreen";
+var { vh } = require('react-native-viewport-units');
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -120,9 +121,6 @@ function CustomDrawerContent(props: any) {
 export default function DrawerNavigator() {
 
     const loggedIn = isLoggedIn();
-    if (!loggedIn) {
-        return null;
-    } else {
         return (
             <Drawer.Navigator
                 initialRouteName={loggedIn ? 'Dashboard' : 'Login'}
@@ -194,7 +192,7 @@ export default function DrawerNavigator() {
 
             </Drawer.Navigator>
         );
-    }
+
 }
 
 const LoginStack = createStackNavigator<LoginParamList>();
@@ -529,6 +527,6 @@ const styles = StyleSheet.create({
         color: '#212529'
     },
     drawerItemBox: {
-        height: '7vh'
+        height: 7*vh
     }
 });

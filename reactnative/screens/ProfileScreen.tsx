@@ -10,6 +10,7 @@ import ModuleNavigation from "../components/ModuleNavigation";
 import { UserModel } from "../models/users/User.model";
 import { Modal, Portal, Button, Provider, Checkbox, TextInput } from "react-native-paper";
 import detailsStyles from "../styles/detailsStyles";
+var { vw, vh } = require('react-native-viewport-units');
 
 export default function ProfileScreen( route: { user: UserModel } ) {
 
@@ -190,8 +191,8 @@ export default function ProfileScreen( route: { user: UserModel } ) {
 
 const styles = StyleSheet.create({
     text: {
-        marginTop: '2vh',
-        marginBottom: '2vh',
+        marginTop: 2*vh,
+        marginBottom: 2*vh,
         fontSize: 18,
     },
     checkboxView: {

@@ -7,7 +7,7 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Location from "../components/Location";
 import ModuleNavigation from "../components/ModuleNavigation";
 import moduleStyles from "../styles/moduleStyles";
-import { Searchbar, DataTable } from 'react-native-paper';
+import { Searchbar, DataTable, ActivityIndicator } from 'react-native-paper';
 import { UserModel } from "../models/users/User.model";
 import { environment } from "../environment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -19,7 +19,8 @@ export default function UserScreen() {
     const navigation = useNavigation();
     const [searchQuery, setSearchQuery] = React.useState('');
     const [users, setUsers] = React.useState<UserModel[]>([]);
-    const onChangeSearch = (query: any) => setSearchQuery(query);
+    const [filteredUsers, setFilteredUsers] = React.useState<UserModel[]>([]);
+    const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
     useEffect(() => {
         navigation.setOptions({
@@ -28,6 +29,7 @@ export default function UserScreen() {
     });
 
     useFocusEffect(useCallback(() => {
+        setIsLoading(true);
         AsyncStorage.getItem(AsyncStorageKeysEnum.TOKEN).then(result => {
             if (result !== null) {
                 fetch(environment.apiUrl + 'users', {
@@ -40,10 +42,21 @@ export default function UserScreen() {
                     .then((data: UsersResponseModel) => {
                         // @ts-ignore
                         setUsers(data.data);
+                        // @ts-ignore
+                        setFilteredUsers(data.data);
+                        setIsLoading(false);
                     })
             }
         });
     }, []))
+
+    const applyFilter = (text: string) => {
+        setSearchQuery(text);
+        const tempUsers = users.filter(user => {
+            return user.email?.includes(text) || user.status?.includes(text);
+        });
+        setFilteredUsers(tempUsers);
+    }
 
     const [page, setPage] = React.useState(0);
     const itemsPerPage = 5;
@@ -58,33 +71,38 @@ export default function UserScreen() {
                 ]} />
             <Searchbar
                 placeholder="Filter"
-                onChangeText={onChangeSearch}
+                onChangeText={(text) => applyFilter(text)}
                 style={moduleStyles.filter}
                 inputStyle={moduleStyles.filterText}
                 value={searchQuery}
             />
-            <DataTable style={moduleStyles.box}>
-                <DataTable.Header>
-                    <DataTable.Title>Email</DataTable.Title>
-                    <DataTable.Title>Status</DataTable.Title>
-                </DataTable.Header>
 
-                {
-                    users.slice(from, to).map(user =>
-                        <DataTable.Row key={user.email} onPress={() => navigation.navigate("Root", { screen: 'UserDetails', params: { user: user }})}>
-                            <DataTable.Cell>{user.email}</DataTable.Cell>
-                            <DataTable.Cell>{user.status}</DataTable.Cell>
-                        </DataTable.Row>
-                    )
-                }
+            {
+                !isLoading ? <DataTable style={moduleStyles.box}>
+                    <DataTable.Header>
+                        <DataTable.Title>Email</DataTable.Title>
+                        <DataTable.Title>Status</DataTable.Title>
+                    </DataTable.Header>
 
-                <DataTable.Pagination
-                    page={page}
-                    numberOfPages={Math.floor(users.length / itemsPerPage)}
-                    onPageChange={page => setPage(page)}
-                    label={`${from + 1}-${to} of ${users.length}`}
-                />
-            </DataTable>
+                    {
+                        filteredUsers.slice(from, to).map(user =>
+                            <DataTable.Row key={user.email} onPress={() => navigation.navigate("Root", { screen: 'UserDetails', params: { user: user }})}>
+                                <DataTable.Cell>{user.email}</DataTable.Cell>
+                                <DataTable.Cell>{user.status}</DataTable.Cell>
+                            </DataTable.Row>
+                        )
+                    }
+
+                    <DataTable.Pagination
+                        page={page}
+                        numberOfPages={Math.ceil(filteredUsers.length / itemsPerPage)}
+                        onPageChange={page => {
+                            setPage(page)
+                        }}
+                        label={`${from + 1}-${page + 1 === Math.ceil(filteredUsers.length / itemsPerPage) ? filteredUsers.length : to} of ${filteredUsers.length}`}
+                    />
+                </DataTable> : <ActivityIndicator animating={isLoading} color={'orange'} size={200}/>
+            }
         </View>
     );
 }

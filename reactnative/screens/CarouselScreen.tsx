@@ -6,6 +6,7 @@ import MenuIcon from "../components/MenuIcon";
 import { useNavigation } from '@react-navigation/native';
 import {Button} from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+var { vw, vh } = require('react-native-viewport-units');
 
 export default function CarouselScreen() {
 
@@ -34,16 +35,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#fafafa'
     },
     box: {
-        width: '90vw',
+        width: 90*vw,
         backgroundColor: 'white',
         shadowColor: 'black',
         shadowRadius: 10,
         shadowOpacity: 0.2,
         borderRadius: 5,
-        paddingTop: '3vh',
-        paddingBottom: '3vh',
-        paddingLeft: '4vh',
-        paddingRight: '4vh',
+        paddingTop: 3*vh,
+        paddingBottom: 3*vh,
+        paddingLeft: 4*vh,
+        paddingRight: 4*vh,
         marginTop: 20
     },
     header: {

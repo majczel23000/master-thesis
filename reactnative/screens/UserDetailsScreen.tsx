@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import { useEffect } from "react";
 import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
@@ -10,6 +10,7 @@ import ModuleNavigation from "../components/ModuleNavigation";
 import { UserModel } from "../models/users/User.model";
 import { Modal, Portal, Button, Provider, Checkbox, TextInput } from "react-native-paper";
 import detailsStyles from "../styles/detailsStyles";
+var { vw, vh } = require('react-native-viewport-units');
 
 export default function UserDetailsScreen( route: { user: UserModel } ) {
 
@@ -92,106 +93,108 @@ export default function UserDetailsScreen( route: { user: UserModel } ) {
                     </Button>
                 </Modal>
             </Portal>
-            <View style={moduleStyles.container}>
-                <Location location={`users > ${user.email}`}/>
-                <ModuleNavigation elements={[
-                    {text: 'Users list', url: 'User'},
-                    {text: 'Add new user', url: 'UserAdd'}
-                ]} />
-                <View style={moduleStyles.box}>
-                    <Text style={moduleStyles.header}>User: {user.email}</Text>
-                    <Text style={detailsStyles.label}>First Name:</Text>
-                    <TextInput
-                        style={detailsStyles.input}
-                        underlineColor={'#DB995A'}
-                        selectionColor={'#DB995A'}
-                        theme={{colors: {primary: '#DB995A', text: 'black'}}}
-                        value={firstName}
-                        onChangeText={onChangeFirstName}
-                    />
-                    <Text style={detailsStyles.label}>Last Name:</Text>
-                    <TextInput
-                        style={detailsStyles.input}
-                        underlineColor={'#DB995A'}
-                        selectionColor={'#DB995A'}
-                        theme={{colors: {primary: '#DB995A', text: 'black'}}}
-                        value={lastName}
-                        onChangeText={onChangeLastName}
-                    />
-                    <Text style={detailsStyles.label}>Email:</Text>
-                    <TextInput
-                        style={detailsStyles.input}
-                        underlineColor={'#DB995A'}
-                        selectionColor={'#DB995A'}
-                        theme={{colors: {primary: '#DB995A', text: 'black'}}}
-                        value={email}
-                        onChangeText={onChangeEmail}
-                    />
-                    <Text style={detailsStyles.label}>Created At:</Text>
-                    <TextInput
-                        style={detailsStyles.input}
-                        underlineColor={'#DB995A'}
-                        selectionColor={'#DB995A'}
-                        theme={{colors: {primary: '#DB995A', text: 'black'}}}
-                        value={user.createdAt || 'data utworzenia'}
-                    />
-                    <Text style={detailsStyles.label}>Updated At:</Text>
-                    <TextInput
-                        style={detailsStyles.input}
-                        underlineColor={'#DB995A'}
-                        selectionColor={'#DB995A'}
-                        theme={{colors: {primary: '#DB995A', text: 'black'}}}
-                        value={user.createdAt || 'data modyfikacji'}
-                    />
-                    <Text style={detailsStyles.label}>Status:</Text>
-                    <Button color={user.status === 'ACTIVE' ? 'green' : 'red'}
-                            labelStyle={detailsStyles.status}
-                            onPress={showModal}>{user.status || 'UNKNOW'}</Button>
-                    <Text style={detailsStyles.label}>Roles:</Text>
-                    <View style={styles.checkboxView}>
-                        {
-                            checkboxes.map(checkbox =>
-                                <View key={checkbox.id + 'v'} style={styles.checkbox}>
-                                    <Checkbox
-                                        key={checkbox.id}
-                                        color={'orange'}
-                                        uncheckedColor={'gray'}
-                                        status={checkbox.checked ? 'checked' : 'unchecked'}
-                                        onPress={() => handleCheck(checkbox.id)}
-                                    />
-                                    <Text>{checkbox.title}</Text>
-                                </View>
-                            )
-                        }
+            <ScrollView >
+                <View style={moduleStyles.container}>
+                    <Location location={`users > ${user.email}`}/>
+                    <ModuleNavigation elements={[
+                        {text: 'Users list', url: 'User'},
+                        {text: 'Add new user', url: 'UserAdd'}
+                    ]} />
+                    <View style={moduleStyles.box}>
+                        <Text style={moduleStyles.header}>User: {user.email}</Text>
+                        <Text style={detailsStyles.label}>First Name:</Text>
+                        <TextInput
+                            style={detailsStyles.input}
+                            underlineColor={'#DB995A'}
+                            selectionColor={'#DB995A'}
+                            theme={{colors: {primary: '#DB995A', text: 'black'}}}
+                            value={firstName}
+                            onChangeText={onChangeFirstName}
+                        />
+                        <Text style={detailsStyles.label}>Last Name:</Text>
+                        <TextInput
+                            style={detailsStyles.input}
+                            underlineColor={'#DB995A'}
+                            selectionColor={'#DB995A'}
+                            theme={{colors: {primary: '#DB995A', text: 'black'}}}
+                            value={lastName}
+                            onChangeText={onChangeLastName}
+                        />
+                        <Text style={detailsStyles.label}>Email:</Text>
+                        <TextInput
+                            style={detailsStyles.input}
+                            underlineColor={'#DB995A'}
+                            selectionColor={'#DB995A'}
+                            theme={{colors: {primary: '#DB995A', text: 'black'}}}
+                            value={email}
+                            onChangeText={onChangeEmail}
+                        />
+                        <Text style={detailsStyles.label}>Created At:</Text>
+                        <TextInput
+                            style={detailsStyles.input}
+                            underlineColor={'#DB995A'}
+                            selectionColor={'#DB995A'}
+                            theme={{colors: {primary: '#DB995A', text: 'black'}}}
+                            value={user.createdAt || 'data utworzenia'}
+                        />
+                        <Text style={detailsStyles.label}>Updated At:</Text>
+                        <TextInput
+                            style={detailsStyles.input}
+                            underlineColor={'#DB995A'}
+                            selectionColor={'#DB995A'}
+                            theme={{colors: {primary: '#DB995A', text: 'black'}}}
+                            value={user.createdAt || 'data modyfikacji'}
+                        />
+                        <Text style={detailsStyles.label}>Status:</Text>
+                        <Button color={user.status === 'ACTIVE' ? 'green' : 'red'}
+                                labelStyle={detailsStyles.status}
+                                onPress={showModal}>{user.status || 'UNKNOW'}</Button>
+                        <Text style={detailsStyles.label}>Roles:</Text>
+                        <View style={styles.checkboxView}>
+                            {
+                                checkboxes.map(checkbox =>
+                                    <View key={checkbox.id + 'v'} style={styles.checkbox}>
+                                        <Checkbox
+                                            key={checkbox.id}
+                                            color={'orange'}
+                                            uncheckedColor={'gray'}
+                                            status={checkbox.checked ? 'checked' : 'unchecked'}
+                                            onPress={() => handleCheck(checkbox.id)}
+                                        />
+                                        <Text>{checkbox.title}</Text>
+                                    </View>
+                                )
+                            }
+                        </View>
+                        <Button
+                            mode="contained"
+                            style={moduleStyles.btn}
+                            onPress={save}>
+                            Save changes
+                        </Button>
+                        <Button
+                            mode="contained"
+                            style={moduleStyles.btnClear}
+                            onPress={clear}>
+                            Clear changes
+                        </Button>
+                        <Button
+                            mode="contained"
+                            style={moduleStyles.btnRemove}
+                            onPress={remove}>
+                            Remove user
+                        </Button>
                     </View>
-                    <Button
-                        mode="contained"
-                        style={moduleStyles.btn}
-                        onPress={save}>
-                        Save changes
-                    </Button>
-                    <Button
-                        mode="contained"
-                        style={moduleStyles.btnClear}
-                        onPress={clear}>
-                        Clear changes
-                    </Button>
-                    <Button
-                        mode="contained"
-                        style={moduleStyles.btnRemove}
-                        onPress={remove}>
-                        Remove user
-                    </Button>
                 </View>
-            </View>
+            </ScrollView>
         </Provider>
     );
 }
 
 const styles = StyleSheet.create({
     text: {
-        marginTop: '2vh',
-        marginBottom: '2vh',
+        marginTop: 2*vh,
+        marginBottom: 2*vh,
         fontSize: 18,
     },
     checkboxView: {

@@ -4,6 +4,7 @@ import * as React from "react";
 import {View} from "./Themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useNavigation} from "@react-navigation/native";
+var { vw } = require('react-native-viewport-units');
 
 export default function LoggedInHeader(props: any) {
 
@@ -49,7 +50,7 @@ export default function LoggedInHeader(props: any) {
 
 const styles = StyleSheet.create({
     menu: {
-      marginLeft: '-27vw',
+      marginLeft: -27*vw,
     },
     view: {
       backgroundColor: 'orange',
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     text: {
         fontWeight: "bold",
         color: "#f6f6f6",
-        marginLeft: '25vw',
+        marginLeft: 25*vw,
         fontSize: 25
     },
     img: {

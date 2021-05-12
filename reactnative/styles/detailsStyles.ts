@@ -1,15 +1,15 @@
 import { StyleSheet } from 'react-native';
+var { vw, vh } = require('react-native-viewport-units');
 
 export default StyleSheet.create({
     label: {
         width: '100%',
         backgroundColor: '#ddd',
         textAlign: 'center',
-        padding: '1vh',
+        padding: 1*vh,
         fontSize: 16,
     },
     input: {
-        border: 'none',
         backgroundColor: 'white',
         color: 'red',
         padding: 0,
@@ -19,8 +19,8 @@ export default StyleSheet.create({
         fontSize: 20
     },
     modal: {
-        margin: '5vw',
-        padding: '3vw',
+        margin: 5*vw,
+        padding: 3*vw,
         minHeight: 100,
         backgroundColor: 'white'
     },
@@ -29,8 +29,8 @@ export default StyleSheet.create({
         fontSize: 22,
         borderBottomColor: 'black',
         borderBottomWidth: 2,
-        paddingBottom: '2vh',
-        marginBottom: '2vh'
+        paddingBottom: 2*vh,
+        marginBottom: 2*vh
     },
     modalInfo: {
         textAlign: 'center',
@@ -38,8 +38,8 @@ export default StyleSheet.create({
     },
     btnYes: {
         backgroundColor: 'green',
-        marginTop: '2vh',
-        marginBottom: '2vh'
+        marginTop: 2*vh,
+        marginBottom: 2*vh
     },
     btnNo: {
         backgroundColor: 'red'

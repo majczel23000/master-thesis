@@ -8,6 +8,7 @@ import { environment } from "../environment";
 import { LoginResponseModel } from "../models/LoginResponse.model";
 import moduleStyles from "../styles/moduleStyles";
 import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
+let { vw, vh } = require('react-native-viewport-units');
 
 export default function LoginScreen() {
 
@@ -15,10 +16,12 @@ export default function LoginScreen() {
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string | undefined>('');
     const [visible, setVisible] = React.useState<boolean>(false);
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
     const navigation = useNavigation();
 
     const handleLogin = () => {
+        setIsLoading(true);
         fetch(environment.apiUrl + 'users/login', {
             method: 'POST',
             headers: environment.headers,
@@ -29,6 +32,7 @@ export default function LoginScreen() {
         })
             .then(result => result.json())
             .then((data: LoginResponseModel) => {
+                setIsLoading(false);
                 if (!data.status) {
                     setError(data.message || environment.defaultError);
                     setVisible(true);
@@ -75,9 +79,11 @@ export default function LoginScreen() {
                 <Button
                     mode="contained"
                     style={styles.btn}
-                    onPress={handleLogin}>
+                    onPress={handleLogin}
+                    loading={isLoading}>
                     Login
                 </Button>
+
             </View>
             <Snackbar
                 visible={visible}
@@ -97,16 +103,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#fafafa'
     },
     box: {
-        width: '90vw',
+        width: 90*vw,
         backgroundColor: 'white',
         shadowColor: 'black',
         shadowRadius: 10,
         shadowOpacity: 0.2,
         borderRadius: 5,
-        paddingTop: '3vh',
-        paddingBottom: '3vh',
-        paddingLeft: '4vh',
-        paddingRight: '4vh',
+        paddingTop: 3*vh,
+        paddingBottom: 3*vh,
+        paddingLeft: 4*vh,
+        paddingRight: 4*vh,
     },
     header: {
         fontSize: 30,
@@ -115,11 +121,9 @@ const styles = StyleSheet.create({
     },
     email: {
         backgroundColor: 'white',
-        border: 'none',
     },
     password: {
         backgroundColor: 'white',
-        border: 'none',
     },
     info: {
         color: 'gray',
@@ -128,7 +132,7 @@ const styles = StyleSheet.create({
     },
     btn: {
         backgroundColor: '#DB995A',
-        marginTop: '5vh',
+        marginTop: 5*vh,
         shadowRadius: 3,
         shadowOpacity: 0.2,
         borderRadius: 3,

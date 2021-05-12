@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {useCallback, useEffect, useState} from "react";
 import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
@@ -7,12 +7,13 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import moduleStyles from "../styles/moduleStyles";
 import Location from "../components/Location";
 import ModuleNavigation from "../components/ModuleNavigation";
-import {TextInput, Checkbox, Button, Snackbar} from "react-native-paper";
+import { TextInput, Checkbox, Button, Snackbar, ActivityIndicator } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
 import { environment } from "../environment";
 import { RolesResponseModel } from "../models/roles/RolesResponse.model";
 import { RoleModel } from "../models/roles/Role.model";
+let { vh } = require('react-native-viewport-units');
 
 export default function UserAddScreen() {
     const [roles, setRoles] = React.useState<RoleModel[]>([]);
@@ -21,9 +22,11 @@ export default function UserAddScreen() {
     const [lastName, setLastName] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
     const [error, setError] = useState<string | undefined>('');
-    const [visible, setVisible] = React.useState<boolean>(false);
+    const [visibleSnackbar, setVisibleSnackbar] = React.useState<boolean>(false);
+    const [areRolesLoading, setAreRolesLoading] = React.useState<boolean>(true);
+    const [isLoadingBtn, setIsLoadingBtn] = React.useState<boolean>(false);
 
-    const onDismissSnackBar = () => setVisible(false);
+    const onDismissSnackBar = () => setVisibleSnackbar(false);
 
     const handleCheck = (checkedCode: string | undefined) => {
         let temp = roles.map((role) => {
@@ -36,8 +39,7 @@ export default function UserAddScreen() {
     }
 
     const register = () => {
-        console.log(roles);
-        // collect selected roles codes
+        setIsLoadingBtn(true);
         const selectedRoles = roles.filter(role => role.checked);
         fetch(environment.apiUrl + 'users', {
             method: 'POST',
@@ -61,6 +63,7 @@ export default function UserAddScreen() {
     });
 
     useFocusEffect(useCallback(() => {
+        setAreRolesLoading(true);
         AsyncStorage.getItem(AsyncStorageKeysEnum.TOKEN).then(result => {
             if (result !== null) {
                 fetch(environment.apiUrl + 'roles', {
@@ -73,101 +76,109 @@ export default function UserAddScreen() {
                     .then((data: RolesResponseModel) => {
                         // @ts-ignore
                         setRoles(data.data);
+                        setAreRolesLoading(false);
                     })
             }
         });
     }, []))
 
     return (
-        <View style={moduleStyles.container}>
-            <Location location={`users > add `}/>
-            <ModuleNavigation elements={[
-                {text: 'Users list', url: 'User'}
-            ]} />
-            <View style={moduleStyles.box}>
-                <Text style={moduleStyles.header}>Add new user</Text>
-                <TextInput
-                    label="Email"
-                    style={moduleStyles.input}
-                    underlineColor={'#DB995A'}
-                    selectionColor={'#DB995A'}
-                    theme={{colors: {primary: '#DB995A'}}}
-                    value={email}
-                    onChangeText={setEmail}
-                    autoCorrect={false}
-                />
-                <Text style={moduleStyles.info}>Type your email here</Text>
-                <TextInput
-                    label="First Name"
-                    style={moduleStyles.input}
-                    underlineColor={'#DB995A'}
-                    selectionColor={'#DB995A'}
-                    theme={{colors: {primary: '#DB995A'}}}
-                    value={firstName}
-                    onChangeText={setFirstName}
-                    autoCorrect={false}
-                />
-                <Text style={moduleStyles.info}>Type your first name here</Text>
-                <TextInput
-                    label="Last Name"
-                    style={moduleStyles.input}
-                    underlineColor={'#DB995A'}
-                    selectionColor={'#DB995A'}
-                    theme={{colors: {primary: '#DB995A'}}}
-                    value={lastName}
-                    onChangeText={setLastName}
-                    autoCorrect={false}
-                />
-                <Text style={moduleStyles.info}>Type your last name here</Text>
-                <TextInput
-                    label="Password"
-                    secureTextEntry={true}
-                    style={moduleStyles.input}
-                    underlineColor={'#DB995A'}
-                    selectionColor={'#DB995A'}
-                    theme={{colors: {primary: '#DB995A'}}}
-                    value={password}
-                    onChangeText={setPassword}
-                    autoCorrect={false}
-                />
-                <Text style={moduleStyles.info}>Type your password here</Text>
-                <Text style={styles.text}>Select roles:</Text>
-                <View style={styles.checkboxView}>
-                {
-                    roles.map(role =>
-                        <View key={role.code + 'v'} style={styles.checkbox}>
-                        <Checkbox
-                            key={role.code}
-                            color={'orange'}
-                            status={role.checked ? 'checked' : 'unchecked'}
-                            onPress={() => handleCheck(role.code)}
-                            />
-                            <Text>{role.name}</Text>
+        <ScrollView>
+            <View style={moduleStyles.container}>
+                <Location location={`users > add `}/>
+                <ModuleNavigation elements={[
+                    {text: 'Users list', url: 'User'}
+                ]} />
+                <View style={moduleStyles.box}>
+                    <Text style={moduleStyles.header}>Add new user</Text>
+                    <TextInput
+                        label="Email"
+                        style={moduleStyles.input}
+                        underlineColor={'#DB995A'}
+                        selectionColor={'#DB995A'}
+                        theme={{colors: {primary: '#DB995A'}}}
+                        value={email}
+                        onChangeText={setEmail}
+                        autoCorrect={false}
+                    />
+                    <Text style={moduleStyles.info}>Type your email here</Text>
+                    <TextInput
+                        label="First Name"
+                        style={moduleStyles.input}
+                        underlineColor={'#DB995A'}
+                        selectionColor={'#DB995A'}
+                        theme={{colors: {primary: '#DB995A'}}}
+                        value={firstName}
+                        onChangeText={setFirstName}
+                        autoCorrect={false}
+                    />
+                    <Text style={moduleStyles.info}>Type your first name here</Text>
+                    <TextInput
+                        label="Last Name"
+                        style={moduleStyles.input}
+                        underlineColor={'#DB995A'}
+                        selectionColor={'#DB995A'}
+                        theme={{colors: {primary: '#DB995A'}}}
+                        value={lastName}
+                        onChangeText={setLastName}
+                        autoCorrect={false}
+                    />
+                    <Text style={moduleStyles.info}>Type your last name here</Text>
+                    <TextInput
+                        label="Password"
+                        secureTextEntry={true}
+                        style={moduleStyles.input}
+                        underlineColor={'#DB995A'}
+                        selectionColor={'#DB995A'}
+                        theme={{colors: {primary: '#DB995A'}}}
+                        value={password}
+                        onChangeText={setPassword}
+                        autoCorrect={false}
+                    />
+                    <Text style={moduleStyles.info}>Type your password here</Text>
+                    <Text style={styles.text}>Select roles:</Text>
+                    {
+                        !areRolesLoading ? <View style={styles.checkboxView}>
+                            {
+                                roles.map(role =>
+                                    <View key={role.code + 'v'} style={styles.checkbox}>
+                                        <Checkbox
+                                            key={role.code}
+                                            color={'orange'}
+                                            status={role.checked ? 'checked' : 'unchecked'}
+                                            onPress={() => handleCheck(role.code)}
+                                        />
+                                        <Text>{role.name}</Text>
+                                    </View>
+                                )
+                            }
+                        </View> : <View>
+                            <ActivityIndicator animating={areRolesLoading} color={'orange'} size={100}/>
                         </View>
-                    )
-                }
+                    }
+                    <Button
+                        mode="contained"
+                        style={moduleStyles.btn}
+                        onPress={register}
+                        loading={isLoadingBtn}>
+                        Register
+                    </Button>
                 </View>
-                <Button
-                    mode="contained"
-                    style={moduleStyles.btn}
-                    onPress={register}>
-                    Register
-                </Button>
+                <Snackbar
+                    visible={visibleSnackbar}
+                    style={moduleStyles.snackbarError}
+                    onDismiss={onDismissSnackBar}>
+                    {error}
+                </Snackbar>
             </View>
-            <Snackbar
-                visible={visible}
-                style={moduleStyles.snackbarError}
-                onDismiss={onDismissSnackBar}>
-                {error}
-            </Snackbar>
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     text: {
-        marginTop: '2vh',
-        marginBottom: '2vh',
+        marginTop: 2*vh,
+        marginBottom: 2*vh,
         fontSize: 18,
     },
     checkboxView: {
