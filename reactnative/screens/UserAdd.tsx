@@ -13,7 +13,7 @@ import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
 import { environment } from "../environment";
 import { RolesResponseModel } from "../models/roles/RolesResponse.model";
 import { RoleModel } from "../models/roles/Role.model";
-import { UsersAddResponseModel } from "../models/users/UsersAddResponse.model";
+import { UserResponseModel } from "../models/users/UserResponse.model";
 let { vh } = require('react-native-viewport-units');
 
 export default function UserAddScreen() {
@@ -65,7 +65,7 @@ export default function UserAddScreen() {
             })
         })
             .then(res => res.json())
-            .then((data: UsersAddResponseModel) => {
+            .then((data: UserResponseModel) => {
                 setIsLoadingBtn(false);
                 if (parseInt(data.code as string) !== 200) {
                     setError(data.message);
@@ -174,6 +174,7 @@ export default function UserAddScreen() {
                                         <Checkbox
                                             key={role.code}
                                             color={'orange'}
+                                            uncheckedColor={'gray'}
                                             status={role.checked ? 'checked' : 'unchecked'}
                                             onPress={() => handleCheck(role.code)}
                                         />

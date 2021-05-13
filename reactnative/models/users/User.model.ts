@@ -1,5 +1,5 @@
 export interface UserModel {
-    id?: string | number;
+    _id?: string | number;
     email?: string;
     firstName?: string;
     lastName?: string;
@@ -7,4 +7,5 @@ export interface UserModel {
     updatedAt?: string;
     roles?: string[];
     status?: string;
+    password?: string;
 }

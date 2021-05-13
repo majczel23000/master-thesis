@@ -58,6 +58,10 @@ export default function UserScreen() {
         setFilteredUsers(tempUsers);
     }
 
+    const goToDetails = (user: UserModel) => {
+        navigation.navigate("Root", { screen: 'UserDetails', params: { user: user }})
+    }
+
     const [page, setPage] = React.useState(0);
     const itemsPerPage = 5;
     const from = page * itemsPerPage;
@@ -86,7 +90,7 @@ export default function UserScreen() {
 
                     {
                         filteredUsers.slice(from, to).map(user =>
-                            <DataTable.Row key={user.email} onPress={() => navigation.navigate("Root", { screen: 'UserDetails', params: { user: user }})}>
+                            <DataTable.Row key={user.email} onPress={() => goToDetails(user)}>
                                 <DataTable.Cell>{user.email}</DataTable.Cell>
                                 <DataTable.Cell>{user.status}</DataTable.Cell>
                             </DataTable.Row>

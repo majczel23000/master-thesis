@@ -1,6 +1,6 @@
 import { UserModel } from "./User.model";
 
-export interface UsersAddResponseModel {
+export interface UserResponseModel {
     status?: string;
     code?: string;
     message?: string;
