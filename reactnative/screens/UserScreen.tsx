@@ -53,7 +53,7 @@ export default function UserScreen() {
     const applyFilter = (text: string) => {
         setSearchQuery(text);
         const tempUsers = users.filter(user => {
-            return user.email?.includes(text) || user.status?.includes(text);
+            return user.email?.toUpperCase().includes(text.toUpperCase()) || user.status?.toUpperCase().includes(text.toUpperCase());
         });
         setFilteredUsers(tempUsers);
     }

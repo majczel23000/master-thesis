@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#f6f6f6",
         marginLeft: 25*vw,
-        fontSize: 25
+        fontSize: 25,
     },
     img: {
         backgroundColor: "orange",
