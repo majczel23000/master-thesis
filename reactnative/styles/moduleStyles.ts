@@ -75,5 +75,9 @@ export default StyleSheet.create({
     snackbarError: {
         backgroundColor: 'red',
         color: 'white'
+    },
+    snackbarMsg: {
+        backgroundColor: 'orange',
+        color: 'white',
     }
 });

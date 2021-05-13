@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
-import {useCallback, useEffect, useState} from "react";
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useCallback, useEffect, useState } from "react";
 import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -13,6 +13,7 @@ import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
 import { environment } from "../environment";
 import { RolesResponseModel } from "../models/roles/RolesResponse.model";
 import { RoleModel } from "../models/roles/Role.model";
+import { UsersAddResponseModel } from "../models/users/UsersAddResponse.model";
 let { vh } = require('react-native-viewport-units');
 
 export default function UserAddScreen() {
@@ -22,6 +23,8 @@ export default function UserAddScreen() {
     const [lastName, setLastName] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
     const [error, setError] = useState<string | undefined>('');
+    const [snackbarMsg, setSnackbarMsg] = useState<string | undefined>('');
+    const [submitted, setSubmitted] = useState<boolean>(false);
     const [visibleSnackbar, setVisibleSnackbar] = React.useState<boolean>(false);
     const [areRolesLoading, setAreRolesLoading] = React.useState<boolean>(true);
     const [isLoadingBtn, setIsLoadingBtn] = React.useState<boolean>(false);
@@ -39,8 +42,17 @@ export default function UserAddScreen() {
     }
 
     const register = () => {
+        setSubmitted(true);
+        setError('');
+        setSnackbarMsg('');
+        if (!firstName.length || !lastName.length || !email.length || !password.length) return;
+        const rolesNames: string[] = [];
+        roles.filter(role => role.checked).forEach(role => {
+            if (role.code != null) {
+                rolesNames.push(role.code);
+            }
+        });
         setIsLoadingBtn(true);
-        const selectedRoles = roles.filter(role => role.checked);
         fetch(environment.apiUrl + 'users', {
             method: 'POST',
             headers: environment.headers,
@@ -49,9 +61,19 @@ export default function UserAddScreen() {
                 password: password,
                 firstName: firstName,
                 lastName: lastName,
-                roles: selectedRoles
+                roles: rolesNames
             })
         })
+            .then(res => res.json())
+            .then((data: UsersAddResponseModel) => {
+                setIsLoadingBtn(false);
+                if (parseInt(data.code as string) !== 200) {
+                    setError(data.message);
+                } else {
+                    setSnackbarMsg(data.message);
+                }
+                setVisibleSnackbar(true);
+            })
     }
 
     const navigation = useNavigation();
@@ -64,6 +86,9 @@ export default function UserAddScreen() {
 
     useFocusEffect(useCallback(() => {
         setAreRolesLoading(true);
+        setVisibleSnackbar(false);
+        setSnackbarMsg('');
+        setError('');
         AsyncStorage.getItem(AsyncStorageKeysEnum.TOKEN).then(result => {
             if (result !== null) {
                 fetch(environment.apiUrl + 'roles', {
@@ -100,6 +125,7 @@ export default function UserAddScreen() {
                         value={email}
                         onChangeText={setEmail}
                         autoCorrect={false}
+                        error={submitted && !email.length}
                     />
                     <Text style={moduleStyles.info}>Type your email here</Text>
                     <TextInput
@@ -111,6 +137,7 @@ export default function UserAddScreen() {
                         value={firstName}
                         onChangeText={setFirstName}
                         autoCorrect={false}
+                        error={submitted && !firstName.length}
                     />
                     <Text style={moduleStyles.info}>Type your first name here</Text>
                     <TextInput
@@ -122,6 +149,7 @@ export default function UserAddScreen() {
                         value={lastName}
                         onChangeText={setLastName}
                         autoCorrect={false}
+                        error={submitted && !lastName.length}
                     />
                     <Text style={moduleStyles.info}>Type your last name here</Text>
                     <TextInput
@@ -134,6 +162,7 @@ export default function UserAddScreen() {
                         value={password}
                         onChangeText={setPassword}
                         autoCorrect={false}
+                        error={submitted && !password.length}
                     />
                     <Text style={moduleStyles.info}>Type your password here</Text>
                     <Text style={styles.text}>Select roles:</Text>
@@ -166,9 +195,10 @@ export default function UserAddScreen() {
                 </View>
                 <Snackbar
                     visible={visibleSnackbar}
-                    style={moduleStyles.snackbarError}
-                    onDismiss={onDismissSnackBar}>
-                    {error}
+                    style={error?.length ? moduleStyles.snackbarError : snackbarMsg?.length ? moduleStyles.snackbarMsg : null }
+                    onDismiss={onDismissSnackBar}
+                    duration={3000}>
+                    {error?.length ? error : snackbarMsg?.length ? snackbarMsg : ''}
                 </Snackbar>
             </View>
         </ScrollView>
