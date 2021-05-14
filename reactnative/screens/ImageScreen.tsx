@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
 import { useNavigation } from '@react-navigation/native';
-import { ImageModel } from "../models/Image.model";
+import { ImageModel } from "../models/images/Image.model";
 import moduleStyles from "../styles/moduleStyles";
 import Location from "../components/Location";
 import { DataTable, Searchbar } from "react-native-paper";

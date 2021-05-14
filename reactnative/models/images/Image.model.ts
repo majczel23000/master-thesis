@@ -1,8 +1,9 @@
 export interface ImageModel {
+    _id?: string | number;
     code?: string;
     name?: string;
     createdAt?: string;
     updatedAt?: string;
-    image?: string;
+    imageUploaded ?: string;
     status?: string;
 }

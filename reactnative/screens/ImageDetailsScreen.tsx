@@ -1,19 +1,36 @@
 import * as React from 'react';
-import {Image, Text, View} from 'react-native';
-import { useEffect } from "react";
+import { Image, Text, View } from 'react-native';
+import { useCallback, useEffect, useState } from "react";
 import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import moduleStyles from "../styles/moduleStyles";
 import Location from "../components/Location";
 import ModuleNavigation from "../components/ModuleNavigation";
 import { Modal, Portal, Button, Provider, TextInput } from "react-native-paper";
 import detailsStyles from "../styles/detailsStyles";
-import { ImageModel } from "../models/Image.model";
+import { ImageModel } from "../models/images/Image.model";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
+import { environment } from "../environment";
+import { ImageResponseModel } from "../models/images/ImageResponse.model";
 
 export default function ImageDetailsScreen( route: { image: ImageModel } ) {
 
-    const img = route.image;
+
+    const [image, setImage] = React.useState<ImageModel>({});
+    const [name, setName] = React.useState<string>(route.image.name || 'Name');
+    const [imageUploaded, setImageUploaded] = React.useState<string>(route.image.imageUploaded || 'ImageUploaded');
+
+    const [isLoading, setIsLoading] = React.useState<boolean>(true);
+    const [visibleModal, setVisibleModal] = React.useState<boolean>(false);
+    const [visibleModalRemove, setVisibleModalRemove] = React.useState<boolean>(false);
+    const [error, setError] = useState<string>('');
+    const [snackbarMsg, setSnackbarMsg] = useState<string>('');
+    const [submitted, setSubmitted] = useState<boolean>(false);
+    const [visibleSnackbar, setVisibleSnackbar] = React.useState<boolean>(false);
+    const [isLoadingModifyBtn, setIsLoadingModifyBtn] = React.useState<boolean>(false);
+
 
     useEffect(() => {
         navigation.setOptions({
@@ -21,9 +38,34 @@ export default function ImageDetailsScreen( route: { image: ImageModel } ) {
         });
     });
 
+    useFocusEffect(useCallback(() => {
+        setIsLoading(true);
+        setVisibleSnackbar(false);
+        setSnackbarMsg('');
+        setError('');
+        AsyncStorage.getItem(AsyncStorageKeysEnum.TOKEN).then(result => {
+            if (result !== null) {
+                fetch(`${environment.apiUrl}roles/${route.image._id}`, {
+                    headers: {
+                        Accept: 'application/json',
+                        "Authorization": `Bearer ${JSON.parse(result)}`
+                    },
+                })
+                    .then(res => res.json())
+                    .then((imageData: ImageResponseModel) => {
+                        // @ts-ignore
+                        setImage(imageData.data);
+                        setName(imageData.data?.name as string);
+                        setImage(imageData.data?.imageUploaded as string);
+                    })
+                setIsLoading(false);
+            }
+        });
+    }, [route.image]))
+
+
     const navigation = useNavigation();
-    const [name, onChangeName] = React.useState(route.image.name || 'Name');
-    const [image, onChangeImage] = React.useState(route.image.image || 'Image');
+
 
     // Modal logic
     const [visible, setVisible] = React.useState(false);
