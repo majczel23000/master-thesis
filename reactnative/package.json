@@ -17,12 +17,14 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
     "react-native-gesture-handler": "~1.7.0",
+    "react-native-image-picker": "^3.6.0",
     "react-native-paper": "^4.8.1",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
     "react-native-viewport-units": "0.0.5",
-    "react-native-web": "~0.14.3"
+    "react-native-web": "~0.14.3",
+    "expo-image-picker": "~9.1.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
