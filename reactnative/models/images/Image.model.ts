@@ -4,6 +4,6 @@ export interface ImageModel {
     name?: string;
     createdAt?: string;
     updatedAt?: string;
-    imageUploaded ?: string;
+    image?: string;
     status?: string;
 }

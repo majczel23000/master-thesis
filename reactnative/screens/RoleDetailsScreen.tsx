@@ -15,23 +15,18 @@ import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
 import { environment } from "../environment";
 import { RoleResponseModel } from "../models/roles/RoleResponse.model";
 
-
-
 export default function RoleDetailsScreen( route: { role: RoleModel } ) {
 
     const [role, setRole] = React.useState<RoleModel>({});
     const [name, setName] = React.useState<string>(route.role.name || 'Name');
     const [description, setDescription] = React.useState<string>(route.role.description || 'Description');
-
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
     const [visibleModal, setVisibleModal] = React.useState<boolean>(false);
-    const [visibleModalRemove, setVisibleModalRemove] = React.useState<boolean>(false);
     const [error, setError] = useState<string>('');
     const [snackbarMsg, setSnackbarMsg] = useState<string>('');
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [visibleSnackbar, setVisibleSnackbar] = React.useState<boolean>(false);
     const [isLoadingModifyBtn, setIsLoadingModifyBtn] = React.useState<boolean>(false);
-
 
     useEffect(() => {
         navigation.setOptions({
@@ -58,8 +53,8 @@ export default function RoleDetailsScreen( route: { role: RoleModel } ) {
                         setRole(roleData.data);
                         setName(roleData.data?.name as string);
                         setDescription(roleData.data?.description as string);
+                        setIsLoading(false);
                     })
-                setIsLoading(false);
             }
         });
     }, [route.role]))
@@ -132,8 +127,6 @@ export default function RoleDetailsScreen( route: { role: RoleModel } ) {
     }
     const showModal = () => setVisibleModal(true);
     const hideModal = () => setVisibleModal(false);
-    const showModalRemove = () => setVisibleModalRemove(true);
-    const hideModalRemove = () => setVisibleModalRemove(false);
     const onDismissSnackBar = () => setVisibleSnackbar(false);
 
     return (
@@ -211,7 +204,8 @@ export default function RoleDetailsScreen( route: { role: RoleModel } ) {
                         <Button
                             mode="contained"
                             style={moduleStyles.btn}
-                            onPress={save}>
+                            onPress={save}
+                            loading={isLoadingModifyBtn}>
                             Save changes
                         </Button>
 

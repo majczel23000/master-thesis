@@ -1,20 +1,26 @@
 import * as React from 'react';
 import { Image, View } from 'react-native';
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { ImageModel } from "../models/images/Image.model";
 import moduleStyles from "../styles/moduleStyles";
 import Location from "../components/Location";
-import { DataTable, Searchbar } from "react-native-paper";
+import { ActivityIndicator, DataTable, Searchbar } from "react-native-paper";
 import ModuleNavigation from "../components/ModuleNavigation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
+import { environment } from "../environment";
+import { ImageListResponseModel } from "../../cms-pwa/src/app/shared/models/image/ImageListResponse.model";
 
 export default function ImageScreen() {
 
     const navigation = useNavigation();
     const [searchQuery, setSearchQuery] = React.useState('');
-    const onChangeSearch = (query: any) => setSearchQuery(query);
+    const [images, setImages] = React.useState<ImageModel[]>([]);
+    const [filteredImages, setfFilteredImages] = React.useState<ImageModel[]>([]);
+    const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
     useEffect(() => {
         navigation.setOptions({
@@ -22,32 +28,40 @@ export default function ImageScreen() {
         });
     });
 
-    const images: ImageModel[] = [
-        {
-            code: 'USERS_ADD',
-            name: 'adding users',
-            status: 'active',
-            image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=='
-        },
-        {
-            code: 'USERS_ADD2',
-            name: 'adding users2',
-            status: 'active',
-            image: ''
-        },
-        {
-            code: 'USERS_ADD3',
-            name: 'adding users3',
-            status: 'active',
-            image: ''
-        },
-        {
-            code: 'USERS_ADD4',
-            name: 'adding users4',
-            status: 'active',
-            image: ''
-        },
-    ];
+    useFocusEffect(useCallback(() => {
+        setIsLoading(true);
+        AsyncStorage.getItem(AsyncStorageKeysEnum.TOKEN).then(result => {
+            if (result !== null) {
+                fetch(environment.apiUrl + 'images', {
+                    headers: {
+                        Accept: 'application/json',
+                        "Authorization": `Bearer ${JSON.parse(result)}`
+                    },
+                })
+                    .then(res => res.json())
+                    .then((data: ImageListResponseModel) => {
+                        // @ts-ignore
+                        setImages(data.data);
+                        // @ts-ignore
+                        setfFilteredImages(data.data);
+                        setIsLoading(false);
+                    })
+            }
+        });
+    }, []))
+
+    const applyFilter = (text: string) => {
+        setSearchQuery(text);
+        const tempImages = images.filter(img => {
+            return img.code?.toUpperCase().includes(text.toUpperCase());
+        });
+        setfFilteredImages(tempImages);
+    }
+
+    const goToDetails = (image: ImageModel) => {
+        navigation.navigate("Root", { screen: 'ImageDetails', params: { image: image }})
+    }
+
     const [page, setPage] = React.useState(0);
     const itemsPerPage = 5;
     const from = page * itemsPerPage;
@@ -61,46 +75,45 @@ export default function ImageScreen() {
             ]} />
             <Searchbar
                 placeholder="Filter"
-                onChangeText={onChangeSearch}
+                onChangeText={(text) => applyFilter(text)}
                 style={moduleStyles.filter}
                 inputStyle={moduleStyles.filterText}
                 value={searchQuery}
             />
-            <DataTable style={moduleStyles.box}>
-                <DataTable.Header>
-                    <DataTable.Title>Code</DataTable.Title>
-                    <DataTable.Title>Name</DataTable.Title>
-                    <DataTable.Title>Status</DataTable.Title>
-                    <DataTable.Title>Image</DataTable.Title>
-                </DataTable.Header>
 
-                {
-                    images.slice(from, to).map(img =>
-                        <DataTable.Row key={img.code} onPress={() => navigation.navigate("Root", { screen: 'ImageDetails', params: { image: img }})}>
-                            <DataTable.Cell>{img.code}</DataTable.Cell>
-                            <DataTable.Cell>{img.name}</DataTable.Cell>
-                            <DataTable.Cell>{img.status}</DataTable.Cell>
-                            <DataTable.Cell>
-                                <View>
-                                    <Image
-                                        style={moduleStyles.img}
-                                        source={{
-                                            uri: img.image
-                                        }}
-                                    />
-                                </View>
-                            </DataTable.Cell>
-                        </DataTable.Row>
-                    )
-                }
+            {
+                !isLoading ? <DataTable style={moduleStyles.box}>
+                    <DataTable.Header>
+                        <DataTable.Title>Code</DataTable.Title>
+                        <DataTable.Title>Image</DataTable.Title>
+                    </DataTable.Header>
 
-                <DataTable.Pagination
-                    page={page}
-                    numberOfPages={Math.floor(images.length / itemsPerPage)}
-                    onPageChange={page => setPage(page)}
-                    label={`${from + 1}-${to} of ${images.length}`}
-                />
-            </DataTable>
+                    {
+                        filteredImages.slice(from, to).map(img =>
+                            <DataTable.Row key={img.code} onPress={() => goToDetails(img)}>
+                                <DataTable.Cell>{img.code}</DataTable.Cell>
+                                <DataTable.Cell>
+                                    <View>
+                                        <Image
+                                            style={moduleStyles.img}
+                                            source={{
+                                                uri: img.image
+                                            }}
+                                        />
+                                    </View>
+                                </DataTable.Cell>
+                            </DataTable.Row>
+                        )
+                    }
+
+                    <DataTable.Pagination
+                        page={page}
+                        numberOfPages={Math.floor(images.length / itemsPerPage)}
+                        onPageChange={page => setPage(page)}
+                        label={`${from + 1}-${page + 1 === Math.ceil(filteredImages.length / itemsPerPage) ? filteredImages.length : to} of ${filteredImages.length}`}
+                    />
+                </DataTable> : <ActivityIndicator animating={isLoading} color={'orange'} size={200}/>
+            }
         </View>
     );
 }

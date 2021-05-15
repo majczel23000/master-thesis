@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-var { vw, vh } = require('react-native-viewport-units');
+let { vw, vh } = require('react-native-viewport-units');
 
 export default StyleSheet.create({
     label: {
@@ -45,7 +45,8 @@ export default StyleSheet.create({
         backgroundColor: 'red'
     },
     img: {
-        width: 300,
-        height: 400,
+        flex: 1,
+        alignSelf: 'stretch',
+        height: 40*vh,
     }
 });

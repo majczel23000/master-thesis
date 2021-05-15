@@ -231,7 +231,7 @@ export default function UserDetailsScreen( route: { user: UserModel } ) {
                     <Button
                         mode="contained"
                         style={detailsStyles.btnNo}
-                        onPress={hideModal}>
+                        onPress={hideModalRemove}>
                         No
                     </Button>
                 </Modal>
