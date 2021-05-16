@@ -236,7 +236,7 @@ export default function UserDetailsScreen( route: { user: UserModel } ) {
                     </Button>
                 </Modal>
             </Portal>
-            <ScrollView >
+            <ScrollView>
                 <View style={moduleStyles.container}>
                     <Location location={`users > ${user.email}`}/>
                     <ModuleNavigation elements={[
