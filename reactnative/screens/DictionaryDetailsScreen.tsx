@@ -305,7 +305,7 @@ export default function DictionaryDetailsScreen( route: { dictionary: Dictionary
                                 // @ts-ignore
                                 dictionary.dictionary.map((element, j) =>
                                         // @ts-ignore
-                                        <View key={`${element.language}${j}`}>
+                                        <View key={`lang${j}`}>
                                             <Text style={detailsStyles.label}>Language {
                                                 // @ts-ignore
                                                 dictionary.dictionary.indexOf(element)
@@ -341,7 +341,7 @@ export default function DictionaryDetailsScreen( route: { dictionary: Dictionary
                                                     return (
                                                         <TextInput
                                                             // @ts-ignore
-                                                            key={`${el.value}${i}`}
+                                                            key={`el${i}`}
                                                             style={detailsStyles.input}
                                                             underlineColor={'#DB995A'}
                                                             selectionColor={'#DB995A'}
