@@ -1,20 +1,26 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { StackHeaderLeftButtonProps } from "@react-navigation/stack";
 import MenuIcon from "../components/MenuIcon";
-import { useNavigation } from '@react-navigation/native';
-import Location from "../components/Location";
-import ModuleNavigation from "../components/ModuleNavigation";
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { SettingModel } from "../models/settings/Setting.model";
 import moduleStyles from "../styles/moduleStyles";
-import { Searchbar, DataTable } from 'react-native-paper';
-import { SettingModel } from "../models/Setting.model";
+import Location from "../components/Location";
+import { ActivityIndicator, DataTable, Searchbar } from "react-native-paper";
+import ModuleNavigation from "../components/ModuleNavigation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
+import { environment } from "../environment";
+import { SettingsResponseModel } from "../models/settings/SettingsResponse.model";
 
 export default function SettingScreen() {
 
     const navigation = useNavigation();
     const [searchQuery, setSearchQuery] = React.useState('');
-    const onChangeSearch = (query: any) => setSearchQuery(query);
+    const [settings, setSettings] = React.useState<SettingModel[]>([]);
+    const [filteredSettings, setFilteredSettings] = React.useState<SettingModel[]>([]);
+    const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
     useEffect(() => {
         navigation.setOptions({
@@ -22,32 +28,40 @@ export default function SettingScreen() {
         });
     });
 
-    const settings: SettingModel[] = [
-        {
-           code: 'setting1',
-            description: 'asdasd',
-            name: 'setting 1',
-            status: 'ACTIVE',
-            type: 'number',
-            value: '1',
-        },
-        {
-            code: 'setting2',
-            description: 'xcvxcfggh',
-            name: 'setting 2',
-            status: 'ACTIVE',
-            type: 'string',
-            value: 'alamakota',
-        },
-        {
-            code: 'setting3',
-            description: 'jhhhhh',
-            name: 'setting 3',
-            status: 'ACTIVE',
-            type: 'boolean',
-            value: 'true',
-        }
-    ];
+    useFocusEffect(useCallback(() => {
+        setIsLoading(true);
+        AsyncStorage.getItem(AsyncStorageKeysEnum.TOKEN).then(result => {
+            if (result !== null) {
+                fetch(environment.apiUrl + 'settings', {
+                    headers: {
+                        Accept: 'application/json',
+                        "Authorization": `Bearer ${JSON.parse(result)}`
+                    },
+                })
+                    .then(res => res.json())
+                    .then((data: SettingsResponseModel) => {
+                        // @ts-ignore
+                        setSettings(data.data);
+                        // @ts-ignore
+                        setFilteredSettings(data.data);
+                        setIsLoading(false);
+                    })
+            }
+        });
+    }, []))
+
+    const applyFilter = (text: string) => {
+        setSearchQuery(text);
+        const tempSettings = settings.filter(setting => {
+            return setting.code?.toUpperCase().includes(text.toUpperCase());
+        });
+        setFilteredSettings(tempSettings);
+    }
+
+    const goToDetails = (setting: SettingModel) => {
+        navigation.navigate("Root", { screen: 'SettingDetails', params: { setting: setting }})
+    }
+
     const [page, setPage] = React.useState(0);
     const itemsPerPage = 5;
     const from = page * itemsPerPage;
@@ -61,12 +75,13 @@ export default function SettingScreen() {
             ]} />
             <Searchbar
                 placeholder="Filter"
-                onChangeText={onChangeSearch}
+                onChangeText={(text) => applyFilter(text)}
                 style={moduleStyles.filter}
                 inputStyle={moduleStyles.filterText}
                 value={searchQuery}
             />
-            <DataTable style={moduleStyles.box}>
+            {
+                !isLoading ? <DataTable style={moduleStyles.box}>
                 <DataTable.Header>
                     <DataTable.Title>Code</DataTable.Title>
                     <DataTable.Title>Name</DataTable.Title>
@@ -89,9 +104,11 @@ export default function SettingScreen() {
                     page={page}
                     numberOfPages={Math.floor(settings.length / itemsPerPage)}
                     onPageChange={page => setPage(page)}
-                    label={`${from + 1}-${to} of ${settings.length}`}
+                    label={`${from + 1}-${page + 1 === Math.ceil(filteredSettings.length / itemsPerPage) ? filteredSettings.length : to} of ${filteredSettings.length}`}
+
                 />
-            </DataTable>
+                </DataTable> : <ActivityIndicator animating={isLoading} color={'orange'} size={200}/>
+            }
         </View>
     );
 }

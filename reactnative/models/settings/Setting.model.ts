@@ -1,4 +1,5 @@
 export interface SettingModel {
+    _id?: string | number;
     status?: string;
     code?: string;
     name?: string;

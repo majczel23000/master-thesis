@@ -10,9 +10,9 @@ import moduleStyles from "../styles/moduleStyles";
 import { Searchbar, DataTable, ActivityIndicator } from 'react-native-paper';
 import { RoleModel } from "../models/roles/Role.model";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {AsyncStorageKeysEnum} from "../models/AsyncStorageKeys.enum";
-import {environment} from "../environment";
-import {RolesResponseModel} from "../models/roles/RolesResponse.model";
+import { AsyncStorageKeysEnum } from "../models/AsyncStorageKeys.enum";
+import { environment } from "../environment";
+import { RolesResponseModel } from "../models/roles/RolesResponse.model";
 
 export default function RoleScreen() {
 
