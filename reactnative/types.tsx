@@ -23,6 +23,9 @@ export type DrawerParamList = {
   Dictionary: undefined;
   DictionaryDetails: undefined;
   DictionaryAdd: undefined;
+  Menu: undefined;
+  MenuDetails: undefined;
+  MenuAdd: undefined;
   Profile: undefined;
 };
 
@@ -79,6 +82,16 @@ export type DictionaryDetailsParamList = {
 };
 export type DictionaryAddParamList = {
   DictionaryAddScreen: undefined;
+};
+
+export type MenuParamList = {
+  MenuScreen: undefined;
+};
+export type MenuDetailsParamList = {
+  MenuDetailsScreen: undefined;
+};
+export type MenuAddParamList = {
+  MenuAddScreen: undefined;
 };
 
 export type CarouselParamList = {

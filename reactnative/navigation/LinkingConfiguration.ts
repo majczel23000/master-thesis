@@ -105,7 +105,22 @@ export default {
             screens: {
               Profile: 'profile'
             }
-          }
+          },
+          Menu: {
+            screens: {
+              MenuScreen: 'menu'
+            }
+          },
+          MenuDetails: {
+            screens: {
+              MenuDetailsScreen: 'Menudetails'
+            }
+          },
+          MenuAdd: {
+            screens: {
+              MenuAddScreen: 'Menuadd'
+            }
+          },
         },
       },
       NotFound: '*',

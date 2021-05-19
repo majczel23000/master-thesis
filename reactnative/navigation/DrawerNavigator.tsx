@@ -11,8 +11,6 @@ import {
     SettingParamList,
     UserParamList,
     LoginParamList,
-    CarouselParamList,
-    ProfileParamList,
     UserDetailsParamList,
     UserAddParamList,
     RoleDetailsParamList,
@@ -21,7 +19,7 @@ import {
     SettingDetailsParamList,
     SettingAddParamList,
     DictionaryDetailsParamList,
-    DictionaryAddParamList
+    DictionaryAddParamList, MenuParamList, MenuAddParamList, MenuDetailsParamList
 } from '../types';
 import { StyleSheet } from 'react-native';
 import DashboardScreen from "../screens/DashboardScreen";
@@ -43,7 +41,10 @@ import ImageDetailsScreen from "../screens/ImageDetailsScreen";
 import ImageAddScreen from "../screens/ImageAddScreen";
 import SettingDetailsScreen from "../screens/SettingDetailsScreen";
 import SettingAddScreen from "../screens/SettingAddScreen";
-var { vh } = require('react-native-viewport-units');
+import MenuScreen from "../screens/MenuScreen";
+import MenuAddScreen from "../screens/MenuAddScreen";
+import MenuDetailsScreen from "../screens/MenuDetailsScreen";
+let { vh } = require('react-native-viewport-units');
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -79,13 +80,13 @@ function CustomDrawerContent(props: any) {
             {/*    onPress={() => props.navigation.navigate('Faq')}*/}
             {/*    icon={() => <IconButton icon="question_answer" color='black'> </IconButton>}*/}
             {/*/>*/}
-            {/*<DrawerItem*/}
-            {/*    label="Menus"*/}
-            {/*    style={styles.drawerItemBox}*/}
-            {/*    labelStyle={styles.drawerItemLabel}*/}
-            {/*    onPress={() => props.navigation.navigate('Menu')}*/}
-            {/*    icon={() => <IconButton icon="menu" color='black'> </IconButton>}*/}
-            {/*/>*/}
+            <DrawerItem
+                label="Menus"
+                style={styles.drawerItemBox}
+                labelStyle={styles.drawerItemLabel}
+                onPress={() => props.navigation.navigate('Menu')}
+                icon={() => <IconButton icon="menu" color='black'> </IconButton>}
+            />
             <DrawerItem
                 label="Images"
                 style={styles.drawerItemBox}
@@ -188,6 +189,18 @@ export default function DrawerNavigator() {
                 <Drawer.Screen
                     name="DictionaryAdd"
                     component={DictionaryAddNavigator}
+                />
+                <Drawer.Screen
+                    name="Menu"
+                    component={MenuNavigator}
+                />
+                <Drawer.Screen
+                    name="MenuAdd"
+                    component={MenuAddNavigator}
+                />
+                <Drawer.Screen
+                    name="MenuDetails"
+                    component={MenuDetailsNavigator}
                 />
 
             </Drawer.Navigator>
@@ -432,24 +445,6 @@ function SettingAddNavigator() {
     )
 }
 
-const CarouselStack = createStackNavigator<CarouselParamList>();
-function CarouselNavigator() {
-    return (
-        <CarouselStack.Navigator>
-            <CarouselStack.Screen
-                options={{
-                    title: 'CMS',
-                    headerTitleStyle: styles.headerTitleStyle,
-                    headerStyle: styles.headerStyle,
-                    headerTitle: props => <LoggedInHeader {...props} />
-                }}
-                name="CarouselScreen"
-                component={CarouselScreen}
-            />
-        </CarouselStack.Navigator>
-    )
-}
-
 const DictionaryStack = createStackNavigator<DictionaryParamList>();
 function DictionaryNavigator() {
     return (
@@ -467,7 +462,6 @@ function DictionaryNavigator() {
         </DictionaryStack.Navigator>
     )
 }
-
 
 const DictionaryDetailsStack = createStackNavigator<DictionaryDetailsParamList>();
 function DictionaryDetailsNavigator({ route }: { route: any}) {
@@ -506,7 +500,60 @@ function DictionaryAddNavigator() {
     )
 }
 
+const MenuStack = createStackNavigator<MenuParamList>();
+function MenuNavigator() {
+    return (
+        <MenuStack.Navigator>
+            <MenuStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="MenuScreen"
+                component={MenuScreen}
+            />
+        </MenuStack.Navigator>
+    )
+}
 
+const MenuAddStack = createStackNavigator<MenuAddParamList>();
+function MenuAddNavigator() {
+    return (
+        <MenuAddStack.Navigator>
+            <MenuAddStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="MenuAddScreen"
+                component={MenuAddScreen}
+            />
+        </MenuAddStack.Navigator>
+    )
+}
+
+const MenuDetailsStack = createStackNavigator<MenuDetailsParamList>();
+function MenuDetailsNavigator({ route }: { route: any}) {
+    return (
+        <MenuDetailsStack.Navigator>
+            <MenuDetailsStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="MenuDetailsScreen"
+            >
+                {() => <MenuDetailsScreen {...route.params} />}
+            </MenuDetailsStack.Screen>
+        </MenuDetailsStack.Navigator>
+    )
+}
 
 const styles = StyleSheet.create({
     headerTitleStyle: {
