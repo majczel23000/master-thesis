@@ -19,7 +19,13 @@ import {
     SettingDetailsParamList,
     SettingAddParamList,
     DictionaryDetailsParamList,
-    DictionaryAddParamList, MenuParamList, MenuAddParamList, MenuDetailsParamList
+    DictionaryAddParamList,
+    MenuParamList,
+    MenuAddParamList,
+    MenuDetailsParamList,
+    FaqParamList,
+    FaqAddParamList,
+    FaqDetailsParamList
 } from '../types';
 import { StyleSheet } from 'react-native';
 import DashboardScreen from "../screens/DashboardScreen";
@@ -44,6 +50,9 @@ import SettingAddScreen from "../screens/SettingAddScreen";
 import MenuScreen from "../screens/MenuScreen";
 import MenuAddScreen from "../screens/MenuAddScreen";
 import MenuDetailsScreen from "../screens/MenuDetailsScreen";
+import FaqScreen from "../screens/FaqScreen";
+import FaqAddScreen from "../screens/FaqAddScreen";
+import FaqDetailsScreen from "../screens/FaqDetailsScreen";
 let { vh } = require('react-native-viewport-units');
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -107,6 +116,13 @@ function CustomDrawerContent(props: any) {
                 labelStyle={styles.drawerItemLabel}
                 onPress={() => props.navigation.navigate('Dictionary')}
                 icon={() => <IconButton icon="book" color='black'> </IconButton>}
+            />
+            <DrawerItem
+                label="Faqs"
+                style={styles.drawerItemBox}
+                labelStyle={styles.drawerItemLabel}
+                onPress={() => props.navigation.navigate('Faq')}
+                icon={() => <IconButton icon="frequently-asked-questions" color='black'> </IconButton>}
             />
             <DrawerItem
                 label="Profile"
@@ -201,6 +217,18 @@ export default function DrawerNavigator() {
                 <Drawer.Screen
                     name="MenuDetails"
                     component={MenuDetailsNavigator}
+                />
+                <Drawer.Screen
+                    name="Faq"
+                    component={FaqNavigator}
+                />
+                <Drawer.Screen
+                    name="FaqAdd"
+                    component={FaqAddNavigator}
+                />
+                <Drawer.Screen
+                    name="FaqDetails"
+                    component={FaqDetailsNavigator}
                 />
 
             </Drawer.Navigator>
@@ -552,6 +580,61 @@ function MenuDetailsNavigator({ route }: { route: any}) {
                 {() => <MenuDetailsScreen {...route.params} />}
             </MenuDetailsStack.Screen>
         </MenuDetailsStack.Navigator>
+    )
+}
+
+const FaqStack = createStackNavigator<FaqParamList>();
+function FaqNavigator() {
+    return (
+        <FaqStack.Navigator>
+            <FaqStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="FaqScreen"
+                component={FaqScreen}
+            />
+        </FaqStack.Navigator>
+    )
+}
+
+const FaqAddStack = createStackNavigator<FaqAddParamList>();
+function FaqAddNavigator() {
+    return (
+        <FaqAddStack.Navigator>
+            <FaqAddStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="FaqAddScreen"
+                component={FaqAddScreen}
+            />
+        </FaqAddStack.Navigator>
+    )
+}
+
+const FaqDetailsStack = createStackNavigator<FaqDetailsParamList>();
+function FaqDetailsNavigator({ route }: { route: any}) {
+    return (
+        <FaqDetailsStack.Navigator>
+            <FaqDetailsStack.Screen
+                options={{
+                    title: 'CMS',
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerStyle: styles.headerStyle,
+                    headerTitle: props => <LoggedInHeader {...props} />
+                }}
+                name="FaqDetailsScreen"
+            >
+                {() => <FaqDetailsScreen {...route.params} />}
+            </FaqDetailsStack.Screen>
+        </FaqDetailsStack.Navigator>
     )
 }
 

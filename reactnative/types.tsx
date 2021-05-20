@@ -27,6 +27,9 @@ export type DrawerParamList = {
   MenuDetails: undefined;
   MenuAdd: undefined;
   Profile: undefined;
+  Faq: undefined;
+  FaqDetails: undefined;
+  FaqAdd: undefined;
 };
 
 export type LoginParamList = {
@@ -92,6 +95,16 @@ export type MenuDetailsParamList = {
 };
 export type MenuAddParamList = {
   MenuAddScreen: undefined;
+};
+
+export type FaqParamList = {
+  FaqScreen: undefined;
+};
+export type FaqDetailsParamList = {
+  FaqDetailsScreen: undefined;
+};
+export type FaqAddParamList = {
+  FaqAddScreen: undefined;
 };
 
 export type CarouselParamList = {

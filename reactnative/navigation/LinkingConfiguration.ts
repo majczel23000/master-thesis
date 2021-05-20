@@ -121,6 +121,21 @@ export default {
               MenuAddScreen: 'Menuadd'
             }
           },
+          Faq: {
+            screens: {
+              FaqScreen: 'faq'
+            }
+          },
+          FaqDetails: {
+            screens: {
+              FaqDetailsScreen: 'Faqdetails'
+            }
+          },
+          FaqAdd: {
+            screens: {
+              FaqAddScreen: 'Faqadd'
+            }
+          },
         },
       },
       NotFound: '*',
