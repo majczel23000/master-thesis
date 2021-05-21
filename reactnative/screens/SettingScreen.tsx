@@ -102,7 +102,7 @@ export default function SettingScreen() {
 
                 <DataTable.Pagination
                     page={page}
-                    numberOfPages={Math.floor(settings.length / itemsPerPage)}
+                    numberOfPages={Math.ceil(filteredSettings.length / itemsPerPage)}
                     onPageChange={page => setPage(page)}
                     label={`${from + 1}-${page + 1 === Math.ceil(filteredSettings.length / itemsPerPage) ? filteredSettings.length : to} of ${filteredSettings.length}`}
 

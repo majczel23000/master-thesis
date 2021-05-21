@@ -104,11 +104,10 @@ export default function ImageScreen() {
                                 </DataTable.Cell>
                             </DataTable.Row>
                         )
-                    }
-
+                    }   
                     <DataTable.Pagination
                         page={page}
-                        numberOfPages={Math.floor(images.length / itemsPerPage)}
+                        numberOfPages={Math.ceil(filteredImages.length / itemsPerPage)}
                         onPageChange={page => setPage(page)}
                         label={`${from + 1}-${page + 1 === Math.ceil(filteredImages.length / itemsPerPage) ? filteredImages.length : to} of ${filteredImages.length}`}
                     />

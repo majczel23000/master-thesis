@@ -99,7 +99,7 @@ export default function MenuScreen() {
 
                         <DataTable.Pagination
                             page={page}
-                            numberOfPages={Math.floor(filteredMenus.length / itemsPerPage)}
+                            numberOfPages={Math.ceil(filteredMenus.length / itemsPerPage)}
                             onPageChange={page => setPage(page)}
                             label={`${from + 1}-${page + 1 === Math.ceil(filteredMenus.length / itemsPerPage) ? filteredMenus.length : to} of ${filteredMenus.length}`}
                         />

@@ -29,7 +29,6 @@ import {
 } from '../types';
 import { StyleSheet } from 'react-native';
 import DashboardScreen from "../screens/DashboardScreen";
-import CarouselScreen from "../screens/CarouselScreen";
 import isLoggedIn from "../hooks/isLoggedIn";
 import DictionaryScreen from "../screens/DictionaryScreen";
 import DictionaryDetailsScreen from "../screens/DictionaryDetailsScreen";

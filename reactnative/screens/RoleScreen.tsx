@@ -93,9 +93,11 @@ export default function RoleScreen() {
 
                     <DataTable.Pagination
                         page={page}
-                        numberOfPages={Math.floor(roles.length / itemsPerPage)}
+                        numberOfPages={Math.ceil(filteredRoles.length / itemsPerPage)}
                         onPageChange={page => setPage(page)}
                         label={`${from + 1}-${page + 1 === Math.ceil(filteredRoles.length / itemsPerPage) ? filteredRoles.length : to} of ${filteredRoles.length}`}
+
+
                     />
                 </DataTable> : <ActivityIndicator animating={isLoading} color={'orange'} size={200}/>
             }
