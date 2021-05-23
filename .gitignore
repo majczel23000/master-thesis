@@ -4,3 +4,6 @@
 /reactnative/.expo/web
 /reactnative/.expo-shared
 .expo
+/cms-pwa/.firebase
+/cms-pwa/.firebaserc
+/cms-pwa/firebase.json
