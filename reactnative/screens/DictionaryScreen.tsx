@@ -99,7 +99,7 @@ export default function DictionaryScreen() {
 
                         <DataTable.Pagination
                             page={page}
-                            numberOfPages={Math.floor(filteredDictionaries.length / itemsPerPage)}
+                            numberOfPages={Math.ceil(filteredDictionaries.length / itemsPerPage)}
                             onPageChange={page => setPage(page)}
                             label={`${from + 1}-${page + 1 === Math.ceil(filteredDictionaries.length / itemsPerPage) ? filteredDictionaries.length : to} of ${filteredDictionaries.length}`}
                         />

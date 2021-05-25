@@ -1,13 +1,13 @@
-package cms.cms.ui.share
+package cms.cms.ui.image
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ShareViewModel : ViewModel() {
+class ImageViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is share Fragment"
+        value = "This is image view"
     }
     val text: LiveData<String> = _text
 }

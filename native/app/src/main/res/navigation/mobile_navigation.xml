@@ -37,13 +37,19 @@
 
     <fragment
         android:id="@+id/nav_dictionaries"
-        android:name="cms.cms.ui.share.ShareFragment"
+        android:name="cms.cms.ui.dictionary.DictionaryFragment"
         android:label="Dictionaries"
-        tools:layout="@layout/fragment_share" />
+        tools:layout="@layout/fragment_dictionary" />
 
     <fragment
         android:id="@+id/nav_images"
-        android:name="cms.cms.ui.send.SendFragment"
+        android:name="cms.cms.ui.image.ImageFragment"
         android:label="Images"
-        tools:layout="@layout/fragment_send" />
+        tools:layout="@layout/fragment_image" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="cms.cms.ui.setting.SettingFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

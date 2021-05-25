@@ -99,7 +99,7 @@ export default function FaqsScreen() {
 
                         <DataTable.Pagination
                             page={page}
-                            numberOfPages={Math.floor(filteredFaqs.length / itemsPerPage)}
+                            numberOfPages={Math.ceil(filteredFaqs.length / itemsPerPage)}
                             onPageChange={page => setPage(page)}
                             label={`${from + 1}-${page + 1 === Math.ceil(filteredFaqs.length / itemsPerPage) ? filteredFaqs.length : to} of ${filteredFaqs.length}`}
                         />
