@@ -10,31 +10,31 @@
             android:title="Dashboard" />
         <item
             android:id="@+id/nav_users"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_user"
             android:title="Users" />
         <item
             android:id="@+id/nav_roles"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_role"
             android:title="Roles" />
         <item
             android:id="@+id/nav_faqs"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_faq"
             android:title="Faqs" />
         <item
             android:id="@+id/nav_menus"
-            android:icon="@drawable/ic_menu_share"
+            android:icon="@drawable/ic_menu"
             android:title="Menus" />
         <item
             android:id="@+id/nav_images"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/ic_image"
             android:title="Images" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/ic_settings"
             android:title="Settings" />
         <item
             android:id="@+id/nav_dictionaries"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/ic_dictionaries"
             android:title="Dictionaries" />
     </group>
 

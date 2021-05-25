@@ -7,37 +7,43 @@
 
     <fragment
         android:id="@+id/nav_dashboard"
-        android:name="cms.cms.ui.home.HomeFragment"
+        android:name="cms.cms.ui.dashboard.DashboardFragment"
         android:label="CMS"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/nav_users"
-        android:name="cms.cms.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:name="cms.cms.ui.user.UserFragment"
+        android:label="Users"
+        tools:layout="@layout/fragment_user" />
 
     <fragment
         android:id="@+id/nav_roles"
-        android:name="cms.cms.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:name="cms.cms.ui.role.RoleFragment"
+        android:label="Roles"
+        tools:layout="@layout/fragment_role" />
 
     <fragment
         android:id="@+id/nav_faqs"
-        android:name="cms.cms.ui.tools.ToolsFragment"
-        android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
+        android:name="cms.cms.ui.faq.FaqFragment"
+        android:label="Faqs"
+        tools:layout="@layout/fragment_faq" />
+
+    <fragment
+        android:id="@+id/nav_menus"
+        android:name="cms.cms.ui.menu.MenuFragment"
+        android:label="Menus"
+        tools:layout="@layout/fragment_menu" />
 
     <fragment
         android:id="@+id/nav_dictionaries"
         android:name="cms.cms.ui.share.ShareFragment"
-        android:label="@string/menu_share"
+        android:label="Dictionaries"
         tools:layout="@layout/fragment_share" />
 
     <fragment
         android:id="@+id/nav_images"
         android:name="cms.cms.ui.send.SendFragment"
-        android:label="@string/menu_send"
+        android:label="Images"
         tools:layout="@layout/fragment_send" />
 </navigation>
