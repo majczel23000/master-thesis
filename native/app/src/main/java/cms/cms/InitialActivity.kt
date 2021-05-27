@@ -18,7 +18,7 @@ class InitialActivity : AppCompatActivity() {
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
         var loggedIn = sharedPref.getBoolean("LOGGED_IN", false)
         // TODO: remove mock data
-        loggedIn = false;
+        loggedIn = true;
 
         if (!loggedIn) {
             val intent = Intent(this, LoginActivity::class.java)

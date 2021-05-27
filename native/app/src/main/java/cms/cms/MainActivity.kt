@@ -42,30 +42,6 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_faqs, R.id.nav_menus, R.id.nav_dictionaries, R.id.nav_images,  R.id.nav_settings), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        var sp = getSharedPreferences("SP", Context.MODE_PRIVATE)
-        var token = sp.getString("TOKEN", "Empty")
-        Log.d("TOKEN", token)
-
-        // Create Retrofit
-        val retrofit = Retrofit.Builder()
-            .baseUrl(constants.API_URL)
-            .build()
-
-        // Create Service
-        val service = retrofit.create(APIService::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = service.getUsers("Bearer " + token)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    val jsonResponse2 = JsonParser.parseString(response.body()?.string()).toString()
-                    Log.d("Pretty Printed JSON", jsonResponse2)
-
-                } else {
-                    Log.e("RETROFIT_ERROR", response.toString())
-                }
-            }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

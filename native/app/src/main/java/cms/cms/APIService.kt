@@ -15,4 +15,9 @@ interface APIService {
         "Content-type: application/json"])
     @GET("/users")
     suspend fun getUsers(@Header("Authorization") authorization: String?): Response<ResponseBody>
+
+    @Headers(value = ["Accept: application/json",
+        "Content-type: application/json"])
+    @GET("/roles")
+    suspend fun getRoles(@Header("Authorization") authorization: String?): Response<ResponseBody>
 }
