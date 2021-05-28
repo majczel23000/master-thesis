@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_user" />
 
     <fragment
+        android:id="@+id/nav_users_add"
+        android:name="cms.cms.ui.user.UserAddFragment"
+        android:label="User Add"
+        tools:layout="@layout/fragment_user_add" />
+
+    <fragment
         android:id="@+id/nav_roles"
         android:name="cms.cms.ui.role.RoleFragment"
         android:label="Roles"

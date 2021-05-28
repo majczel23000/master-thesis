@@ -11,7 +11,8 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import cms.cms.APIService
 import cms.cms.R
 import cms.cms.constants
@@ -27,7 +28,6 @@ import retrofit2.Retrofit
 
 class UserFragment : Fragment() {
 
-    private lateinit var userViewModel: UserViewModel
     private lateinit var usersData: UsersResponse
     private var table: TableLayout? = null
     private lateinit var paginationText: TextView
@@ -68,8 +68,6 @@ class UserFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        userViewModel =
-                ViewModelProviders.of(this).get(UserViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_user, container, false)
         table = root.findViewById(R.id.users_table)
         paginationText = root.findViewById(R.id.users_pagination)
@@ -92,6 +90,12 @@ class UserFragment : Fragment() {
                 rows.clear()
                 displayData()
             }
+        }
+        val addUserBtn: Button = root.findViewById(R.id.add_user_btn)
+        addUserBtn.setOnClickListener{
+            val transaction = activity!!.supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.nav_host_fragment, UserAddFragment())
+            transaction.commit()
         }
         return root
     }

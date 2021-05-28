@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
             val cl: ConstraintLayout = findViewById(R.id.login_parent)
             val snack = Snackbar.make(cl,"Please fill all fields", Snackbar.LENGTH_LONG)
             snack.show()
-            return;
+            return
         }
         // Make api call
         // Create Retrofit
