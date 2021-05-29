@@ -59,14 +59,19 @@ interface APIService {
     suspend fun getRole(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
 
     @Headers(value = ["Accept: application/json",
+        "Content-type: application/json"])
+    @PUT("/roles/{id}")
+    suspend fun modifyRole(@Body requestBody: RequestBody, @Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
+
+    @Headers(value = ["Accept: application/json",
         "Content-Type: application/json"])
     @POST("/roles/{id}/activate")
-    suspend fun activateRole(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
+    suspend fun activateRole(@Path("id") id: String?, @Header("Authorization") authorization: String?, @Body requestBody: RequestBody): Response<ResponseBody>
 
     @Headers(value = ["Accept: application/json",
         "Content-Type: application/json"])
     @POST("/roles/{id}/deactivate")
-    suspend fun deactivateRole(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
+    suspend fun deactivateRole(@Path("id") id: String?, @Header("Authorization") authorization: String?, @Body requestBody: RequestBody): Response<ResponseBody>
 
     // ============== SETTINGS
     @Headers(value = ["Accept: application/json",

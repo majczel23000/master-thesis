@@ -3,18 +3,116 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
- 
-    <TextView
-        android:id="@+id/text_role"
+    android:layout_height="match_parent"
+    android:background="#f6f6f6">
+
+    <ScrollView
+        android:id="@+id/role_list_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:weightSum="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/text_role"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="5"
+                android:fontFamily="monospace"
+                android:text="Location: roles"
+                android:textAlignment="textStart"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/loading_spinner"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:indeterminateTint="@android:color/holo_orange_dark"
+                android:indeterminateTintMode="src_atop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TableLayout
+                android:id="@+id/roles_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_weight="80"
+                android:visibility="gone"
+                android:background="@android:color/white"
+                android:padding="15dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Code" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Status" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:background="@android:color/darker_gray"
+                    android:paddingTop="1dp" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:paddingTop="1dp"
+                    android:textAlignment="center">
+
+                    <TextView
+                        android:id="@+id/roles_pagination"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/white"
+                        android:backgroundTint="@android:color/white"
+                        android:text="1-6 of 20"
+                        android:textAlignment="center" />
+
+                    <Button
+                        android:id="@+id/roles_pagination_prev_btn"
+                        android:layout_marginHorizontal="5dp"
+                        android:backgroundTint="@android:color/white"
+                        android:text="prev"
+                        android:textColor="@android:color/background_dark" />
+
+                    <Button
+                        android:id="@+id/roles_pagination_next_btn"
+                        android:backgroundTint="@android:color/white"
+                        android:text="next"
+                        android:textColor="@android:color/background_dark"/>
+
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
