@@ -48,6 +48,18 @@
         tools:layout="@layout/fragment_faq" />
 
     <fragment
+        android:id="@+id/nav_faqs_add"
+        android:name="cms.cms.ui.faq.FaqAddFragment"
+        android:label="Faq Add"
+        tools:layout="@layout/fragment_user_add" />
+
+    <fragment
+        android:id="@+id/nav_faqs_details"
+        android:name="cms.cms.ui.faq.FaqDetailsFragment"
+        android:label="Faq Details"
+        tools:layout="@layout/fragment_faq_details" />
+
+    <fragment
         android:id="@+id/nav_menus"
         android:name="cms.cms.ui.menu.MenuFragment"
         android:label="Menus"

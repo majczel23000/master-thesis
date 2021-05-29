@@ -20,7 +20,7 @@ data class FaqData(
         val code: String,
         val name: String,
         val description: String,
-        val status: String,
+        var status: String,
         val elements: Array<FaqElement>,
         val _id: String
 ) {}

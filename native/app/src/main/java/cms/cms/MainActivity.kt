@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_roles,
                 R.id.nav_roles_details,
                 R.id.nav_faqs,
+                R.id.nav_faqs_add,
+                R.id.nav_faqs_details,
                 R.id.nav_menus,
                 R.id.nav_dictionaries,
                 R.id.nav_images,
