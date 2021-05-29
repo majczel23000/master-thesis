@@ -6,13 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import cms.cms.APIService
 import cms.cms.R
 import cms.cms.constants
@@ -29,13 +25,14 @@ import retrofit2.Retrofit
 class UserFragment : Fragment() {
 
     private lateinit var usersData: UsersResponse
-    private var table: TableLayout? = null
+    private lateinit var table: TableLayout
     private lateinit var paginationText: TextView
     private lateinit var nextBtn: Button
     private lateinit var prevBtn: Button
     private var page: Int = 1
     private var itemsPerPage: Int = 5
     private var rows: ArrayList<TableRow> = arrayListOf<TableRow>()
+    private lateinit var spinner: ProgressBar
 
     override fun onResume() {
         super.onResume()
@@ -56,6 +53,8 @@ class UserFragment : Fragment() {
                     val jsonResponse = JsonParser.parseString(response.body()?.string()).toString()
                     usersData = Gson().fromJson<UsersResponse>(jsonResponse, UsersResponse::class.java)
                     displayData()
+                    spinner.visibility = View.GONE
+                    table.visibility = View.VISIBLE
                 } else {
                     Log.e("RETROFIT_ERROR", response.toString())
                 }
@@ -70,6 +69,7 @@ class UserFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_user, container, false)
         table = root.findViewById(R.id.users_table)
+        spinner = root.findViewById(R.id.loading_spinner)
         paginationText = root.findViewById(R.id.users_pagination)
         nextBtn = root.findViewById(R.id.users_pagination_next_btn)
         prevBtn = root.findViewById(R.id.users_pagination_prev_btn)
@@ -93,9 +93,9 @@ class UserFragment : Fragment() {
         }
         val addUserBtn: Button = root.findViewById(R.id.add_user_btn)
         addUserBtn.setOnClickListener{
-            val transaction = activity!!.supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment, UserAddFragment())
-            transaction.commit()
+            val navController = activity?.findNavController(R.id.nav_host_fragment)
+            navController?.navigateUp()
+            navController?.navigate(R.id.nav_users_add)
         }
         return root
     }
@@ -121,7 +121,12 @@ class UserFragment : Fragment() {
             rows.add(row)
             row.setOnClickListener{
                 // TODO: przejscie na detale wedlug tego _id
-
+                val navController = activity?.findNavController(R.id.nav_host_fragment)
+                navController?.navigateUp()
+                val bundle = Bundle()
+                val id: String = user._id
+                bundle.putString("id", id)
+                navController?.navigate(R.id.nav_users_details, bundle)
             }
         }
         paginationText.setText("${(page-1)*itemsPerPage + 1} - ${(page-1)*itemsPerPage + itemsPerPage} of ${usersData.data.size}")

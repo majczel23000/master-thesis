@@ -13,13 +13,13 @@ data class LoginData(
 ) {}
 
 data class UserData(
-    val createdAt: String,
-    val updatedAt: String,
-    val email: String,
-    val firstName: String,
-    val lastName: String,
-    val password: String,
-    val roles: Array<String>,
-    val status: String,
-    val _id: String
+        val createdAt: String,
+        val updatedAt: String,
+        val email: String,
+        val firstName: String,
+        val lastName: String,
+        val password: String,
+        val roles: Array<String>,
+        var status: String,
+        val _id: String
 ) {}

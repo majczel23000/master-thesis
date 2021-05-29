@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import cms.cms.APIService
 import cms.cms.R
 import cms.cms.constants
@@ -25,7 +26,7 @@ import org.json.JSONObject
 import retrofit2.Retrofit
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
-
+import org.json.JSONArray
 
 class UserAddFragment : Fragment() {
 
@@ -38,6 +39,7 @@ class UserAddFragment : Fragment() {
     private lateinit var firstName: EditText
     private lateinit var lastName: EditText
     private lateinit var cl: ConstraintLayout
+    private lateinit var sv: ScrollView
 
     override fun onResume() {
         super.onResume()
@@ -70,6 +72,7 @@ class UserAddFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_user_add, container, false)
         cl = root.findViewById(R.id.user_add_parent)
+        sv = root.findViewById(R.id.user_add_scrollview)
         tableRoles = root.findViewById(R.id.table_roles)
         email = root.findViewById(R.id.add_user_email)
         firstName = root.findViewById(R.id.add_user_firstname)
@@ -81,16 +84,16 @@ class UserAddFragment : Fragment() {
         }
         val userListBtn: Button = root.findViewById(R.id.users_list_btn)
         userListBtn.setOnClickListener{
-            val transaction = activity!!.supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment, UserFragment())
-            transaction.commit()
+            val navController = activity?.findNavController(R.id.nav_host_fragment)
+            navController?.navigateUp()
+            navController?.navigate(R.id.nav_users)
         }
         return root
     }
 
     fun displayRoles() {
         var i = 0
-        var row: TableRow = TableRow(activity)
+        var row = TableRow(activity)
         for (role in rolesData.data) {
             val checkbox = CheckBox(activity)
             checkbox.setText(role.code)
@@ -103,7 +106,7 @@ class UserAddFragment : Fragment() {
                     selectedRoles.remove(role.code)
                 }
             }
-            if (i === 0) {
+            if (i == 0) {
                 row = TableRow(activity)
                 row.setPadding(0, 10, 0, 10)
                 row.addView(checkbox)
@@ -117,47 +120,41 @@ class UserAddFragment : Fragment() {
     }
 
     fun registerUser() {
-        if (email.text.toString().length === 0 || firstName.text.toString().length === 0 ||
-            lastName.text.toString().length === 0 || password.text.toString().length === 0) {
+        if (email.text.toString().isEmpty() || firstName.text.toString().isEmpty() ||
+                lastName.text.toString().isEmpty() || password.text.toString().isEmpty()) {
             val snack = Snackbar.make(cl,"Please fill all fields", Snackbar.LENGTH_LONG)
             snack.show()
             return
         }
 
-        // Make api call
-        // Create Retrofit
+        // API CALL
         val retrofit = Retrofit.Builder()
             .baseUrl(constants.API_URL)
             .build()
-
-        // Create Service
         val service = retrofit.create(APIService::class.java)
-
-        // Create JSON using JSONObject
         val jsonObject = JSONObject()
+        val jsonRoles = JSONArray(selectedRoles)
         jsonObject.put("email", email.text.toString())
         jsonObject.put("password", password.text.toString())
         jsonObject.put("firstName", firstName.text.toString())
         jsonObject.put("lastName", lastName.text.toString())
-        jsonObject.put("roles", selectedRoles)
-
-        // Convert JSONObject to String
+        jsonObject.put("roles", jsonRoles)
         val jsonObjectString = jsonObject.toString()
-
-        // Create RequestBody
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
-
         CoroutineScope(Dispatchers.IO).launch {
-            // Do the POST request and get response
             val response = service.addUser(requestBody)
-
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     val jsonResponse = JsonParser.parseString(response.body()?.string()).toString()
-                    Log.d("t", jsonResponse)
                     val addData = Gson().fromJson<UserResponse>(jsonResponse, UserResponse::class.java)
                     val snack = Snackbar.make(cl, addData.message, Snackbar.LENGTH_LONG)
                     snack.show()
+                    sv.fullScroll(ScrollView.FOCUS_UP)
+                    email.setText("")
+                    firstName.setText("")
+                    lastName.setText("")
+                    password.setText("")
+                    selectedRoles.clear()
                 } else {
                     val snack = Snackbar.make(cl,constants.GLOBAL_ERROR, Snackbar.LENGTH_LONG)
                     snack.show()

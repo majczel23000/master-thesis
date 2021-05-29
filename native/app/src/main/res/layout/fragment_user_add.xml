@@ -8,6 +8,7 @@
     android:id="@+id/user_add_parent">
 
     <ScrollView
+        android:id="@+id/user_add_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <LinearLayout

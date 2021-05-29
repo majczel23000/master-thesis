@@ -22,6 +22,31 @@ interface APIService {
     @POST("/users")
     suspend fun addUser(@Body requestBody: RequestBody): Response<ResponseBody>
 
+    @Headers(value = ["Accept: application/json",
+        "Content-type: application/json"])
+    @GET("/users/{id}")
+    suspend fun getUser(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
+
+    @Headers(value = ["Accept: application/json",
+        "Content-type: application/json"])
+    @PUT("/users/{id}")
+    suspend fun modifyUser(@Body requestBody: RequestBody, @Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
+
+    @Headers(value = ["Accept: application/json",
+        "Content-Type: application/json"])
+    @POST("/users/{id}/activate")
+    suspend fun activateUser(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
+
+    @Headers(value = ["Accept: application/json",
+        "Content-Type: application/json"])
+    @POST("/users/{id}/deactivate")
+    suspend fun deactivateUser(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
+
+    @Headers(value = ["Accept: application/json",
+        "Content-Type: application/json"])
+    @DELETE("/users/{id}")
+    suspend fun removeUser(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
+
     // ============== ROLES
     @Headers(value = ["Accept: application/json",
         "Content-type: application/json"])
