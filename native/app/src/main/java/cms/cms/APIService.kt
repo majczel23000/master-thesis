@@ -82,7 +82,7 @@ interface APIService {
     @Headers(value = ["Accept: application/json",
         "Content-Type: application/json"])
     @POST("/settings")
-    suspend fun addSetting(@Body requestBody: RequestBody): Response<ResponseBody>
+    suspend fun addSetting(@Body requestBody: RequestBody, @Header("Authorization") authorization: String?): Response<ResponseBody>
 
     @Headers(value = ["Accept: application/json",
         "Content-type: application/json"])
@@ -118,7 +118,7 @@ interface APIService {
     @Headers(value = ["Accept: application/json",
         "Content-Type: application/json"])
     @POST("/faqs")
-    suspend fun addFaq(@Body requestBody: RequestBody): Response<ResponseBody>
+    suspend fun addFaq(@Body requestBody: RequestBody, @Header("Authorization") authorization: String?): Response<ResponseBody>
 
     @Headers(value = ["Accept: application/json",
         "Content-type: application/json"])
@@ -154,7 +154,7 @@ interface APIService {
     @Headers(value = ["Accept: application/json",
         "Content-Type: application/json"])
     @POST("/menus")
-    suspend fun addMenu(@Body requestBody: RequestBody): Response<ResponseBody>
+    suspend fun addMenu(@Body requestBody: RequestBody, @Header("Authorization") authorization: String?): Response<ResponseBody>
 
     @Headers(value = ["Accept: application/json",
         "Content-type: application/json"])
@@ -190,7 +190,7 @@ interface APIService {
     @Headers(value = ["Accept: application/json",
         "Content-Type: application/json"])
     @POST("/images")
-    suspend fun addImage(@Body requestBody: RequestBody): Response<ResponseBody>
+    suspend fun addImage(@Body requestBody: RequestBody, @Header("Authorization") authorization: String?): Response<ResponseBody>
 
     @Headers(value = ["Accept: application/json",
         "Content-type: application/json"])
@@ -226,7 +226,7 @@ interface APIService {
     @Headers(value = ["Accept: application/json",
         "Content-Type: application/json"])
     @POST("/dictionaries")
-    suspend fun addDictionary(@Body requestBody: RequestBody): Response<ResponseBody>
+    suspend fun addDictionary(@Body requestBody: RequestBody, @Header("Authorization") authorization: String?): Response<ResponseBody>
 
     @Headers(value = ["Accept: application/json",
         "Content-type: application/json"])
