@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +17,10 @@ import androidx.navigation.findNavController
 import cms.cms.APIService
 import cms.cms.R
 import cms.cms.constants
+import cms.cms.models.DictionaryElement
+import cms.cms.models.DictionaryLanguage
 import cms.cms.models.DictionaryResponse
+import cms.cms.models.MenuElement
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -26,6 +31,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -37,6 +43,7 @@ class DictionaryDetailsFragment : Fragment() {
     private lateinit var dictionaryData: DictionaryResponse
     private lateinit var modifyDictionaryBtn: Button
     private lateinit var removeDictionaryBtn: Button
+    private lateinit var addLanguageBtn: Button
     private lateinit var name: EditText
     private lateinit var description: EditText
     private lateinit var createdAt: TextView
@@ -49,6 +56,8 @@ class DictionaryDetailsFragment : Fragment() {
     private lateinit var sv: ScrollView
     private lateinit var ll: LinearLayout
     private lateinit var spinner: ProgressBar
+    private lateinit var elementsll: LinearLayout
+    private lateinit var languages: Array<DictionaryLanguage>
 
     override fun onResume() {
         super.onResume()
@@ -73,8 +82,10 @@ class DictionaryDetailsFragment : Fragment() {
                     status.text = dictionaryData.data.status
                     locationText.text = "Location: dictionaries > ${dictionaryData.data.code}"
                     title.text = "Dictionary details: ${dictionaryData.data.code}"
+                    languages = dictionaryData.data.dictionary
                     spinner.visibility = View.GONE
                     ll.visibility = View.VISIBLE
+                    displayLanguages()
                 } else {
                     Log.e("RETROFIT_ERROR", response.toString())
                 }
@@ -91,6 +102,7 @@ class DictionaryDetailsFragment : Fragment() {
         cl = root.findViewById(R.id.dictionary_details_parent)
         sv = root.findViewById(R.id.dictionary_details_scrollview)
         ll = root.findViewById(R.id.dictionary_details_layout)
+        elementsll = root.findViewById(R.id.elements_ll_menu)
         spinner = root.findViewById(R.id.loading_spinner)
         locationText = root.findViewById(R.id.dictionary_details_location_text)
         title = root.findViewById(R.id.dictionary_details_title)
@@ -110,6 +122,10 @@ class DictionaryDetailsFragment : Fragment() {
         removeDictionaryBtn = root.findViewById(R.id.remove_dictionary_btn)
         removeDictionaryBtn.setOnClickListener{
             removeDictionary()
+        }
+        addLanguageBtn = root.findViewById(R.id.add_language_btn_dictionary)
+        addLanguageBtn.setOnClickListener{
+            addLanguage()
         }
         val DictionaryListBtn: Button = root.findViewById(R.id.dictionary_list_btn)
         DictionaryListBtn.setOnClickListener{
@@ -138,8 +154,28 @@ class DictionaryDetailsFragment : Fragment() {
                 .build()
         val service = retrofit.create(APIService::class.java)
         val jsonObject = JSONObject()
+        var arr: Array<JSONObject> = emptyArray()
+        for (lang in languages) {
+            val jsonLang = JSONObject()
+            var arrEl: Array<JSONObject> = emptyArray()
+            for (el in lang.elements) {
+                val jsonEl = JSONObject()
+                jsonEl.put("value", el.value)
+                val listEl = arrEl.toMutableList()
+                listEl.add(jsonEl)
+                arrEl = listEl.toTypedArray()
+            }
+            jsonLang.put("language", lang.language)
+            jsonLang.put("elements", JSONArray(arrEl))
+            var listLang = arr.toMutableList()
+            listLang.add(jsonLang)
+            arr = listLang.toTypedArray()
+        }
+        val jsonElements = JSONArray(arr)
         jsonObject.put("name", name.text.toString())
         jsonObject.put("description", description.text.toString())
+        jsonObject.put("dictionary", jsonElements)
+        Log.d("JSON", jsonObject.toString())
         val jsonObjectString = jsonObject.toString()
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
         CoroutineScope(Dispatchers.IO).launch {
@@ -250,6 +286,71 @@ class DictionaryDetailsFragment : Fragment() {
         }
         val alertDialog = builder.create()
         alertDialog.show()
+    }
+
+    fun displayLanguages() {
+        elementsll.removeAllViews()
+        for (lang in languages) {
+            val languageT = TextView(activity)
+            languageT.text = "Language ${languages.indexOf(lang)+1}"
+            val languageE = EditText(activity)
+            languageE.setText(lang.language)
+            languageE.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    lang.language = s.toString()
+                }
+            })
+            val removeLanguageBtn = Button(activity)
+            removeLanguageBtn.text = "Remove language"
+            removeLanguageBtn.setOnClickListener{
+                val res = languages.toMutableList()
+                res.removeAt(languages.indexOf(lang))
+                languages = res.toTypedArray()
+                displayLanguages()
+            }
+            val addLanguageBtn = Button(activity)
+            addLanguageBtn.text = "Add element"
+            addLanguageBtn.setOnClickListener{
+                val res = lang.elements.toMutableList()
+                res.add(DictionaryElement("id", "Value"))
+                lang.elements = res.toTypedArray()
+                displayLanguages()
+            }
+            elementsll.addView(languageT)
+            elementsll.addView(languageE)
+            elementsll.addView(removeLanguageBtn)
+            elementsll.addView(addLanguageBtn)
+
+            for(el in lang.elements) {
+                val elT = TextView(activity)
+                elT.text = "Element ${languages.indexOf(lang)+1}.${lang.elements.indexOf(el)+1}"
+                val elE = EditText(activity)
+                elE.setText(el.value)
+                val removeElementBtn = Button(activity)
+                removeElementBtn.text = "Remove element"
+                removeElementBtn.setOnClickListener{
+                    val res = lang.elements.toMutableList()
+                    res.removeAt(lang.elements.indexOf(el))
+                    lang.elements = res.toTypedArray()
+                    displayLanguages()
+                }
+                elementsll.addView(elT)
+                elementsll.addView(elE)
+                elementsll.addView(removeElementBtn)
+            }
+        }
+    }
+
+    fun addLanguage() {
+        val list = languages.toMutableList()
+        val el = DictionaryLanguage("a", "Lan", emptyArray())
+        list.add(el)
+        languages = list.toTypedArray()
+        displayLanguages()
     }
 
 }

@@ -238,6 +238,33 @@
                     android:textAlignment="center"
                     android:textSize="18sp" />
 
+                <TextView
+                    android:id="@+id/textView_elements_dictionary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@android:color/darker_gray"
+                    android:paddingVertical="5dp"
+                    android:text="Elements:"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/add_language_btn_dictionary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/holo_blue_light"
+                    android:shadowRadius="2"
+                    android:text="Add language" />
+
+                <LinearLayout
+                    android:id="@+id/elements_ll_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
                 <Button
                     android:id="@+id/modify_dictionary_btn"
                     android:layout_width="match_parent"

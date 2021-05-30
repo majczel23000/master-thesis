@@ -27,8 +27,8 @@ data class DictionaryData(
 
 data class DictionaryLanguage(
         val _id: String,
-        val language: String,
-        val elements: Array<DictionaryElement>
+        var language: String,
+        var elements: Array<DictionaryElement>
 )
 
 data class DictionaryElement(

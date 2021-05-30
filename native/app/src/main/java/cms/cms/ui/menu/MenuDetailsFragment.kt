@@ -155,8 +155,8 @@ class MenuDetailsFragment : Fragment() {
         var arr: Array<JSONObject> = emptyArray()
         for (el in elements) {
             val jsonEl = JSONObject()
-            jsonEl.put("URL", el.url)
-            jsonEl.put("Text", el.text)
+            jsonEl.put("url", el.url)
+            jsonEl.put("text", el.text)
             val list = arr.toMutableList()
             list.add(jsonEl)
             arr = list.toTypedArray()
