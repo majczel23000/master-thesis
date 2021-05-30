@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_faqs_add,
                 R.id.nav_faqs_details,
                 R.id.nav_menus,
+                R.id.nav_menus_add,
+                R.id.nav_menus_details,
                 R.id.nav_dictionaries,
                 R.id.nav_dictionaries_add,
                 R.id.nav_dictionaries_details,

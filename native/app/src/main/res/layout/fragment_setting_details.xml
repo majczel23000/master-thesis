@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@android:color/white"
                 android:text="Settings list"
                 android:textColor="@android:color/black" />
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"
+                android:layout_marginBottom="10dp"
                 android:backgroundTint="@android:color/white"
                 android:text="Add setting"
                 android:textColor="@android:color/black" />

@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f6f6f6"
-    android:id="@+id/faq_details_parent">
+    android:id="@+id/menu_details_parent">
 
     <ScrollView
-        android:id="@+id/faq_details_scrollview"
+        android:id="@+id/menu_details_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/faq_details_location_text"
+                android:id="@+id/menu_details_location_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -28,7 +28,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="5"
                 android:fontFamily="monospace"
-                android:text="Location: faqs > faq details"
+                android:text="Location: menus > menu details"
                 android:textAlignment="textStart"
                 android:textSize="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -44,26 +44,26 @@
                 android:background="@android:color/holo_orange_dark"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/faq_details_location_text">
+                app:layout_constraintTop_toBottomOf="@+id/menu_details_location_text">
 
                 <Button
-                    android:id="@+id/faqs_list_btn"
+                    android:id="@+id/menus_list_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="@android:color/white"
-                    android:text="Faqgs list"
+                    android:text="Menus list"
                     android:textColor="@android:color/black" />
 
                 <Button
-                    android:id="@+id/faqs_add_btn"
+                    android:id="@+id/menus_add_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginBottom="10dp"
                     android:backgroundTint="@android:color/white"
-                    android:text="Add faq"
+                    android:text="Add menu"
                     android:textColor="@android:color/black" />
 
             </LinearLayout>
@@ -82,7 +82,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
-                android:id="@+id/faq_details_layout"
+                android:id="@+id/menu_details_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
@@ -97,12 +97,12 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/faq_details_title"
+                    android:id="@+id/menu_details_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:gravity="center"
-                    android:text="Faq details"
+                    android:text="menu details"
                     android:textColor="@android:color/black"
                     android:textSize="22sp"
                     android:textStyle="bold"
@@ -122,7 +122,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/faq_details_code"
+                    android:id="@+id/menu_details_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -142,7 +142,7 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/faq_details_name"
+                    android:id="@+id/menu_details_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -164,7 +164,7 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/faq_details_description"
+                    android:id="@+id/menu_details_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -187,7 +187,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/faq_details_created_at"
+                    android:id="@+id/menu_details_created_at"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -207,7 +207,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/faq_details_updated_at"
+                    android:id="@+id/menu_details_updated_at"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -228,7 +228,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/faq_details_status"
+                    android:id="@+id/menu_details_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -239,7 +239,7 @@
                     android:textSize="18sp" />
 
                 <Button
-                    android:id="@+id/modify_faq_btn"
+                    android:id="@+id/modify_menu_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/holo_orange_dark"
@@ -247,7 +247,7 @@
                     android:text="Modify" />
 
                 <Button
-                    android:id="@+id/remove_faq_btn"
+                    android:id="@+id/remove_menu_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/holo_orange_dark"

@@ -66,6 +66,18 @@
         tools:layout="@layout/fragment_menu" />
 
     <fragment
+        android:id="@+id/nav_menus_add"
+        android:name="cms.cms.ui.menu.MenuAddFragment"
+        android:label="Menus Add"
+        tools:layout="@layout/fragment_menu_add" />
+
+    <fragment
+        android:id="@+id/nav_menus_details"
+        android:name="cms.cms.ui.menu.MenuDetailsFragment"
+        android:label="Menus Add"
+        tools:layout="@layout/fragment_menu_details" />
+
+    <fragment
         android:id="@+id/nav_dictionaries"
         android:name="cms.cms.ui.dictionary.DictionaryFragment"
         android:label="Dictionaries"
@@ -74,13 +86,13 @@
     <fragment
         android:id="@+id/nav_dictionaries_add"
         android:name="cms.cms.ui.dictionary.DictionaryAddFragment"
-        android:label="Dictionaries"
+        android:label="Dictionaries Add"
         tools:layout="@layout/fragment_dictionary_add" />
 
     <fragment
         android:id="@+id/nav_dictionaries_details"
         android:name="cms.cms.ui.dictionary.DictionaryDetailsFragment"
-        android:label="Dictionaries"
+        android:label="Dictionaries Details"
         tools:layout="@layout/fragment_dictionary_details" />
 
     <fragment

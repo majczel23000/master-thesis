@@ -26,7 +26,6 @@ import retrofit2.Retrofit
 
 class FaqFragment : Fragment() {
 
-
     private lateinit var faqsData: FaqsResponse
     private lateinit var table: TableLayout
     private lateinit var paginationText: TextView

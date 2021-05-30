@@ -29,4 +29,4 @@ data class MenuElement(
         val _id: String,
         val text: String,
         val url: String
-)
+) {}
