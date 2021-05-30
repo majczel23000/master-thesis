@@ -1,37 +1,37 @@
 package cms.cms.models
 
-data class MenusResponse(
+data class DictionariesResponse(
     val code: Integer,
     val status: Boolean,
     val message: String,
-    val data: Array<MenuData>
+    val data: Array<DictionaryData>
 ) {}
 
-data class MenuResponse(
+data class DictionaryResponse(
         val code: Integer,
         val status: Boolean,
         val message: String,
-        val data: MenuData
+        val data: DictionaryData
 ) {}
 
-data class MenuData(
+data class DictionaryData(
         val createdAt: String,
         val updatedAt: String,
         val code: String,
         val name: String,
         val description: String,
-        val status: String,
-        val dictionary: Array<MenuLanguage>,
+        var status: String,
+        val dictionary: Array<DictionaryLanguage>,
         val _id: String
 ) {}
 
-data class MenuLanguage(
+data class DictionaryLanguage(
         val _id: String,
         val language: String,
-        val elements: Array<MenuElement>
+        val elements: Array<DictionaryElement>
 )
 
-data class MenuElement(
+data class DictionaryElement(
         val _id: String,
         val value: String
 )

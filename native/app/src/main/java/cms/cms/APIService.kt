@@ -251,5 +251,5 @@ interface APIService {
     @Headers(value = ["Accept: application/json",
         "Content-Type: application/json"])
     @DELETE("/dictionaries/{id}")
-    suspend fun removDictionary(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
+    suspend fun removeDictionary(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
 }

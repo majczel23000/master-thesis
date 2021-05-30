@@ -72,6 +72,18 @@
         tools:layout="@layout/fragment_dictionary" />
 
     <fragment
+        android:id="@+id/nav_dictionaries_add"
+        android:name="cms.cms.ui.dictionary.DictionaryAddFragment"
+        android:label="Dictionaries"
+        tools:layout="@layout/fragment_dictionary_add" />
+
+    <fragment
+        android:id="@+id/nav_dictionaries_details"
+        android:name="cms.cms.ui.dictionary.DictionaryDetailsFragment"
+        android:label="Dictionaries"
+        tools:layout="@layout/fragment_dictionary_details" />
+
+    <fragment
         android:id="@+id/nav_images"
         android:name="cms.cms.ui.image.ImageFragment"
         android:label="Images"
