@@ -75,6 +75,7 @@
                 android:layout_gravity="center"
                 android:indeterminateTint="@android:color/holo_orange_dark"
                 android:indeterminateTintMode="src_atop"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -91,7 +92,6 @@
                 android:gravity="center|center_horizontal"
                 android:orientation="vertical"
                 android:padding="20dp"
-                android:visibility="gone"
                 android:weightSum="10"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -238,6 +238,33 @@
                     android:textAlignment="center"
                     android:textSize="18sp" />
 
+                <TextView
+                    android:id="@+id/textView_elements"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@android:color/darker_gray"
+                    android:paddingVertical="5dp"
+                    android:text="Elements:"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/add_element_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/holo_blue_light"
+                    android:shadowRadius="2"
+                    android:text="Add element" />
+
+                <LinearLayout
+                    android:id="@+id/elements_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
                 <Button
                     android:id="@+id/modify_faq_btn"
                     android:layout_width="match_parent"
@@ -250,7 +277,7 @@
                     android:id="@+id/remove_faq_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@android:color/holo_orange_dark"
+                    android:backgroundTint="@android:color/holo_red_dark"
                     android:shadowRadius="2"
                     android:text="Remove" />
 

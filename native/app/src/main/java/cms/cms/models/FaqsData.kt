@@ -27,6 +27,6 @@ data class FaqData(
 
 data class FaqElement(
         val _id: String,
-        val question: String,
-        val answear: String
+        var question: String,
+        var answear: String
 )

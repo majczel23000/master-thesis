@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ import androidx.navigation.findNavController
 import cms.cms.APIService
 import cms.cms.R
 import cms.cms.constants
+import cms.cms.models.FaqElement
 import cms.cms.models.FaqResponse
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -26,6 +29,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -37,6 +41,7 @@ class FaqDetailsFragment : Fragment() {
     private lateinit var faqData: FaqResponse
     private lateinit var modifyFaqBtn: Button
     private lateinit var removeFaqBtn: Button
+    private lateinit var addElementBtn: Button
     private lateinit var name: EditText
     private lateinit var description: EditText
     private lateinit var createdAt: TextView
@@ -48,7 +53,9 @@ class FaqDetailsFragment : Fragment() {
     private lateinit var cl: ConstraintLayout
     private lateinit var sv: ScrollView
     private lateinit var ll: LinearLayout
+    private lateinit var elementsll: LinearLayout
     private lateinit var spinner: ProgressBar
+    private lateinit var elements: Array<FaqElement>
 
     override fun onResume() {
         super.onResume()
@@ -73,6 +80,8 @@ class FaqDetailsFragment : Fragment() {
                     status.text = faqData.data.status
                     locationText.text = "Location: faqs > ${faqData.data.code}"
                     title.text = "Faq details: ${faqData.data.code}"
+                    elements = faqData.data.elements
+                    displayElements()
                     spinner.visibility = View.GONE
                     ll.visibility = View.VISIBLE
                 } else {
@@ -91,6 +100,7 @@ class FaqDetailsFragment : Fragment() {
         cl = root.findViewById(R.id.faq_details_parent)
         sv = root.findViewById(R.id.faq_details_scrollview)
         ll = root.findViewById(R.id.faq_details_layout)
+        elementsll = root.findViewById(R.id.elements_ll)
         spinner = root.findViewById(R.id.loading_spinner)
         locationText = root.findViewById(R.id.faq_details_location_text)
         title = root.findViewById(R.id.faq_details_title)
@@ -110,6 +120,10 @@ class FaqDetailsFragment : Fragment() {
         removeFaqBtn = root.findViewById(R.id.remove_faq_btn)
         removeFaqBtn.setOnClickListener{
             removeFaq()
+        }
+        addElementBtn = root.findViewById(R.id.add_element_btn)
+        addElementBtn.setOnClickListener{
+            addElement()
         }
         val FaqListBtn: Button = root.findViewById(R.id.faqs_list_btn)
         FaqListBtn.setOnClickListener{
@@ -138,8 +152,19 @@ class FaqDetailsFragment : Fragment() {
                 .build()
         val service = retrofit.create(APIService::class.java)
         val jsonObject = JSONObject()
+        var arr: Array<JSONObject> = emptyArray()
+        for (el in elements) {
+            val jsonEl = JSONObject()
+            jsonEl.put("question", el.question)
+            jsonEl.put("answear", el.answear)
+            val list = arr.toMutableList()
+            list.add(jsonEl)
+            arr = list.toTypedArray()
+        }
+        val jsonElements = JSONArray(arr)
         jsonObject.put("name", name.text.toString())
         jsonObject.put("description", description.text.toString())
+        jsonObject.put("elements", jsonElements)
         val jsonObjectString = jsonObject.toString()
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
         CoroutineScope(Dispatchers.IO).launch {
@@ -250,6 +275,63 @@ class FaqDetailsFragment : Fragment() {
         }
         val alertDialog = builder.create()
         alertDialog.show()
+    }
+
+    fun displayElements() {
+        elementsll.removeAllViews()
+        for (el in elements) {
+            val questionT = TextView(activity)
+            questionT.text = "Question ${elements.indexOf(el)}"
+            val answerT = TextView(activity)
+            answerT.text = "Answer ${elements.indexOf(el)}"
+            val questionE = EditText(activity)
+            questionE.setText(el.question)
+            questionE.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    el.question = s.toString()
+                }
+            })
+            val answerE = EditText(activity)
+            answerE.setText(el.answear)
+            answerE.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    el.answear = s.toString()
+                }
+            })
+            val removeBtn = Button(activity)
+            removeBtn.text = "Remove element"
+            elementsll.addView(questionT)
+            elementsll.addView(questionE)
+            elementsll.addView(answerT)
+            elementsll.addView(answerE)
+            elementsll.addView(removeBtn)
+            removeBtn.setOnClickListener{
+                elementsll.removeView(questionT)
+                elementsll.removeView(questionE)
+                elementsll.removeView(answerT)
+                elementsll.removeView(answerE)
+                elementsll.removeView(removeBtn)
+                val res = elements.toMutableList()
+                res.removeAt(elements.indexOf(el))
+                elements = res.toTypedArray()
+            }
+        }
+    }
+
+    fun addElement() {
+        val list = elements.toMutableList()
+        val el = FaqElement("a", "Question", "Answer")
+        list.add(el)
+        elements = list.toTypedArray()
+        displayElements()
     }
 
 }
