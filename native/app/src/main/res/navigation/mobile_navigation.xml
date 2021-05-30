@@ -102,6 +102,18 @@
         tools:layout="@layout/fragment_image" />
 
     <fragment
+        android:id="@+id/nav_images_add"
+        android:name="cms.cms.ui.image.ImageAddFragment"
+        android:label="Images Add"
+        tools:layout="@layout/fragment_image_add" />
+
+    <fragment
+        android:id="@+id/nav_images_details"
+        android:name="cms.cms.ui.image.ImageDetailsFragment"
+        android:label="Images Details"
+        tools:layout="@layout/fragment_image_details" />
+
+    <fragment
         android:id="@+id/nav_settings"
         android:name="cms.cms.ui.setting.SettingFragment"
         android:label="Settings"
