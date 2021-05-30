@@ -125,8 +125,8 @@ class FaqDetailsFragment : Fragment() {
         addElementBtn.setOnClickListener{
             addElement()
         }
-        val FaqListBtn: Button = root.findViewById(R.id.faqs_list_btn)
-        FaqListBtn.setOnClickListener{
+        val faqListBtn: Button = root.findViewById(R.id.faqs_list_btn)
+        faqListBtn.setOnClickListener{
             val navController = activity?.findNavController(R.id.nav_host_fragment)
             navController?.navigateUp()
             navController?.navigate(R.id.nav_faqs)

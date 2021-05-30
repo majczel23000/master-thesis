@@ -27,6 +27,6 @@ data class MenuData(
 
 data class MenuElement(
         val _id: String,
-        val text: String,
+        var text: String,
         val url: String
 ) {}

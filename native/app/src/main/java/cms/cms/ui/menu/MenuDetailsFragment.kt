@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ import androidx.navigation.findNavController
 import cms.cms.APIService
 import cms.cms.R
 import cms.cms.constants
+import cms.cms.models.MenuElement
 import cms.cms.models.MenuResponse
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -26,6 +29,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -37,6 +41,7 @@ class MenuDetailsFragment : Fragment() {
     private lateinit var menuData: MenuResponse
     private lateinit var modifyMenuBtn: Button
     private lateinit var removeMenuBtn: Button
+    private lateinit var addElementBtn: Button
     private lateinit var name: EditText
     private lateinit var description: EditText
     private lateinit var createdAt: TextView
@@ -49,6 +54,8 @@ class MenuDetailsFragment : Fragment() {
     private lateinit var sv: ScrollView
     private lateinit var ll: LinearLayout
     private lateinit var spinner: ProgressBar
+    private lateinit var elementsll: LinearLayout
+    private lateinit var elements: Array<MenuElement>
 
     override fun onResume() {
         super.onResume()
@@ -75,6 +82,8 @@ class MenuDetailsFragment : Fragment() {
                     title.text = "Menu details: ${menuData.data.code}"
                     spinner.visibility = View.GONE
                     ll.visibility = View.VISIBLE
+                    elements = menuData.data.elements
+                    displayElements()
                 } else {
                     Log.e("RETROFIT_ERROR", response.toString())
                 }
@@ -91,6 +100,7 @@ class MenuDetailsFragment : Fragment() {
         cl = root.findViewById(R.id.menu_details_parent)
         sv = root.findViewById(R.id.menu_details_scrollview)
         ll = root.findViewById(R.id.menu_details_layout)
+        elementsll = root.findViewById(R.id.elements_ll_menu)
         spinner = root.findViewById(R.id.loading_spinner)
         locationText = root.findViewById(R.id.menu_details_location_text)
         title = root.findViewById(R.id.menu_details_title)
@@ -110,6 +120,10 @@ class MenuDetailsFragment : Fragment() {
         removeMenuBtn = root.findViewById(R.id.remove_menu_btn)
         removeMenuBtn.setOnClickListener{
             removeMenu()
+        }
+        addElementBtn = root.findViewById(R.id.add_element_btn_menu)
+        addElementBtn.setOnClickListener{
+            addElement()
         }
         val menuListBtn: Button = root.findViewById(R.id.menus_list_btn)
         menuListBtn.setOnClickListener{
@@ -138,8 +152,19 @@ class MenuDetailsFragment : Fragment() {
                 .build()
         val service = retrofit.create(APIService::class.java)
         val jsonObject = JSONObject()
+        var arr: Array<JSONObject> = emptyArray()
+        for (el in elements) {
+            val jsonEl = JSONObject()
+            jsonEl.put("URL", el.url)
+            jsonEl.put("Text", el.text)
+            val list = arr.toMutableList()
+            list.add(jsonEl)
+            arr = list.toTypedArray()
+        }
+        val jsonElements = JSONArray(arr)
         jsonObject.put("name", name.text.toString())
         jsonObject.put("description", description.text.toString())
+        jsonObject.put("elements", jsonElements)
         val jsonObjectString = jsonObject.toString()
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
         CoroutineScope(Dispatchers.IO).launch {
@@ -251,5 +276,63 @@ class MenuDetailsFragment : Fragment() {
         val alertDialog = builder.create()
         alertDialog.show()
     }
+
+    fun displayElements() {
+        elementsll.removeAllViews()
+        for (el in elements) {
+            val urlT = TextView(activity)
+            urlT.text = "Url ${elements.indexOf(el)}"
+            val textT = TextView(activity)
+            textT.text = "Text ${elements.indexOf(el)}"
+            val urlE = EditText(activity)
+            urlE.setText(el.url)
+            urlE.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    el.text = s.toString()
+                }
+            })
+            val textE = EditText(activity)
+            textE.setText(el.text)
+            textE.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    el.text = s.toString()
+                }
+            })
+            val removeBtn = Button(activity)
+            removeBtn.text = "Remove element"
+            elementsll.addView(urlT)
+            elementsll.addView(urlE)
+            elementsll.addView(textT)
+            elementsll.addView(textE)
+            elementsll.addView(removeBtn)
+            removeBtn.setOnClickListener{
+                elementsll.removeView(urlT)
+                elementsll.removeView(urlE)
+                elementsll.removeView(textT)
+                elementsll.removeView(textE)
+                elementsll.removeView(removeBtn)
+                val res = elements.toMutableList()
+                res.removeAt(elements.indexOf(el))
+                elements = res.toTypedArray()
+            }
+        }
+    }
+
+    fun addElement() {
+        val list = elements.toMutableList()
+        val el = MenuElement("a", "Url", "Text")
+        list.add(el)
+        elements = list.toTypedArray()
+        displayElements()
+    }
+
 
 }
