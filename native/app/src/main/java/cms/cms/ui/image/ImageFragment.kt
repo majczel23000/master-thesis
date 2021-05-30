@@ -1,20 +1,19 @@
 package cms.cms.ui.image
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import cms.cms.APIService
 import cms.cms.R
 import cms.cms.constants
-import cms.cms.models.FaqsResponse
 import cms.cms.models.ImagesResponse
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -25,7 +24,6 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 
 class ImageFragment : Fragment() {
-
 
     private lateinit var imagesData: ImagesResponse
     private lateinit var table: TableLayout
@@ -113,13 +111,22 @@ class ImageFragment : Fragment() {
             row.setPadding(0, 25, 0, 25)
             val textCode = TextView(activity)
             textCode.setText(image.code)
-            val textImage = TextView(activity)
-            textImage.setText(image.image)
+            val imageView = ImageView(activity)
+            var str: String
+            if (image.image.contains(',')) {
+                str = image.image.split(',')[1]
+            } else {
+                str = image.image
+            }
+            val decodedString = Base64.decode(str, Base64.DEFAULT)
+            val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+            imageView.setImageBitmap(decodedByte)
             val params: TableRow.LayoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
-            textImage.setLayoutParams(params)
+            imageView.setLayoutParams(params)
+            imageView.layoutParams.height = 300
             textCode.setLayoutParams(params)
             row.addView(textCode)
-            row.addView(textImage)
+            row.addView(imageView)
             table?.addView(row, 2)
             rows.add(row)
             row.setOnClickListener {

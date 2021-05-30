@@ -20,6 +20,6 @@ data class ImageData(
         val code: String,
         val name: String,
         val image: String,
-        val status: String,
+        var status: String,
         val _id: String
 ) {}

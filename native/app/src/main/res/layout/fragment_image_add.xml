@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f6f6f6"
-    android:id="@+id/iamge_add_parent">
+    android:id="@+id/image_add_parent">
 
     <ScrollView
         android:id="@+id/image_add_scrollview"
@@ -44,10 +44,10 @@
                 android:background="@android:color/holo_orange_dark"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_iamge">
+                app:layout_constraintTop_toBottomOf="@+id/text_image">
 
                 <Button
-                    android:id="@+id/iamge_list_btn"
+                    android:id="@+id/image_list_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
@@ -121,27 +121,21 @@
                     android:layout_marginBottom="20dp"
                     android:text="Type name here" />
 
-                <EditText
-                    android:id="@+id/add__description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Description"
-                    android:inputType="text"
-                    android:textColorHighlight="@android:color/holo_orange_dark"
-                    android:textColorLink="@android:color/holo_orange_dark"
-                    android:textCursorDrawable="@android:color/holo_orange_dark" />
-
-                <TextView
-                    android:id="@+id/textdesc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:text="Type description here" />
-
+                <ImageView
+                    android:id="@+id/choosen_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <Button
-                    android:id="@+id/add_faq_btn"
+                    android:id="@+id/choose_img_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/holo_orange_dark"
+                    android:shadowRadius="2"
+                    android:text="Choose image" />
+
+                <Button
+                    android:id="@+id/add_image_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/holo_orange_dark"

@@ -110,6 +110,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageView
+                    android:id="@+id/imageview_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
                 <TextView
                     android:id="@+id/textView_code"
                     android:layout_width="match_parent"
@@ -141,35 +146,11 @@
                     android:textAlignment="center"
                     android:textSize="18sp" />
 
-                <EditText
+                <TextView
                     android:id="@+id/image_details_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Name"
-                    android:inputType="text"
-                    android:textColorHighlight="@android:color/holo_orange_dark"
-                    android:textColorLink="@android:color/holo_orange_dark"
-                    android:textCursorDrawable="@android:color/holo_orange_dark" />
-
-                <TextView
-                    android:id="@+id/textView_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:background="@android:color/darker_gray"
-                    android:paddingVertical="5dp"
-                    android:text="Description:"
-                    android:textAlignment="center"
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/image_details_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Description"
-                    android:inputType="text"
                     android:textColorHighlight="@android:color/holo_orange_dark"
                     android:textColorLink="@android:color/holo_orange_dark"
                     android:textCursorDrawable="@android:color/holo_orange_dark" />
@@ -237,14 +218,6 @@
                     android:text="ACTIVE"
                     android:textAlignment="center"
                     android:textSize="18sp" />
-
-                <Button
-                    android:id="@+id/modify_image_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@android:color/holo_orange_dark"
-                    android:shadowRadius="2"
-                    android:text="Modify" />
 
                 <Button
                     android:id="@+id/remove_image_btn"

@@ -198,11 +198,6 @@ interface APIService {
     suspend fun getImage(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
 
     @Headers(value = ["Accept: application/json",
-        "Content-type: application/json"])
-    @PUT("/images/{id}")
-    suspend fun modifyImage(@Body requestBody: RequestBody, @Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
-
-    @Headers(value = ["Accept: application/json",
         "Content-Type: application/json"])
     @POST("/images/{id}/activate")
     suspend fun activateImage(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
@@ -215,7 +210,7 @@ interface APIService {
     @Headers(value = ["Accept: application/json",
         "Content-Type: application/json"])
     @DELETE("/images/{id}")
-    suspend fun removImage(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
+    suspend fun removeImage(@Path("id") id: String?, @Header("Authorization") authorization: String?): Response<ResponseBody>
 
     // ============== DICTIONARIES
     @Headers(value = ["Accept: application/json",
