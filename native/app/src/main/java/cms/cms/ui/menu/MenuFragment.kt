@@ -2,6 +2,8 @@ package cms.cms.ui.menu
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import androidx.navigation.findNavController
 import cms.cms.APIService
 import cms.cms.R
 import cms.cms.constants
+import cms.cms.models.MenuData
 import cms.cms.models.MenusResponse
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -32,6 +35,8 @@ class MenuFragment : Fragment() {
     private var itemsPerPage: Int = 5
     private var rows: ArrayList<TableRow> = arrayListOf<TableRow>()
     private lateinit var spinner: ProgressBar
+    private lateinit var filter: EditText
+    private lateinit var filteredMenus: List<MenuData>
 
     override fun onResume() {
         super.onResume()
@@ -51,9 +56,11 @@ class MenuFragment : Fragment() {
                 if (response.isSuccessful) {
                     val jsonResponse = JsonParser.parseString(response.body()?.string()).toString()
                     menusData = Gson().fromJson<MenusResponse>(jsonResponse, MenusResponse::class.java)
-                    displayData()
+                    displayData(menusData.data.toMutableList())
+                    filteredMenus = menusData.data.toMutableList()
                     spinner.visibility = View.GONE
                     table.visibility = View.VISIBLE
+                    filter.visibility = View.VISIBLE
                 } else {
                     Log.e("RETROFIT_ERROR", response.toString())
                 }
@@ -72,13 +79,28 @@ class MenuFragment : Fragment() {
         paginationText = root.findViewById(R.id.menus_pagination)
         nextBtn = root.findViewById(R.id.menus_pagination_next_btn)
         prevBtn = root.findViewById(R.id.menus_pagination_prev_btn)
+        filter = root.findViewById(R.id.menus_filter_edittext)
+        filter.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                for (row in rows) {
+                    table!!.removeView(row)
+                }
+                rows.clear()
+                filteredMenus = menusData.data.filter { it.code.contains(s.toString()) || it.status.contains(s.toString()) }
+                displayData(filteredMenus)
+            }
+        })
         nextBtn.setOnClickListener {
             page += 1;
             for (row in rows) {
                 table!!.removeView(row)
             }
             rows.clear()
-            displayData()
+            displayData(filteredMenus)
         }
         prevBtn.setOnClickListener {
             if (page > 1) {
@@ -87,7 +109,7 @@ class MenuFragment : Fragment() {
                     table!!.removeView(row)
                 }
                 rows.clear()
-                displayData()
+                displayData(filteredMenus)
             }
         }
         val addMenuBtn: Button = root.findViewById(R.id.add_menu_btn)
@@ -99,12 +121,12 @@ class MenuFragment : Fragment() {
         return root
     }
 
-    fun displayData() {
+    fun displayData(data: List<MenuData>) {
         var to = (page - 1) * itemsPerPage + itemsPerPage - 1
-        if (to > menusData.data.size) {
-            to = menusData.data.size - 1
+        if (to > data.size) {
+            to = data.size - 1
         }
-        for (menu in menusData.data.slice((page - 1) * itemsPerPage..to)) {
+        for (menu in data.slice((page - 1) * itemsPerPage..to)) {
             val row = TableRow(activity)
             row.setPadding(0, 25, 0, 25)
             val textCode = TextView(activity)
@@ -128,6 +150,6 @@ class MenuFragment : Fragment() {
                 navController?.navigate(R.id.nav_menus_details, bundle)
             }
         }
-        paginationText.setText("${(page - 1) * itemsPerPage + 1} - ${(page - 1) * itemsPerPage + itemsPerPage} of ${menusData.data.size}")
+        paginationText.setText("${(page - 1) * itemsPerPage + 1} - ${(page - 1) * itemsPerPage + itemsPerPage} of ${data.size}")
     }
 }

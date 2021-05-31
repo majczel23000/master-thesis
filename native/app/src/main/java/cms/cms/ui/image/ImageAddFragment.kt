@@ -29,14 +29,10 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.Retrofit
-import android.opengl.ETC1.encodeImage
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import android.util.Base64
-import android.util.Log
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
-
 
 class ImageAddFragment: Fragment() {
     private var token: String? = ""

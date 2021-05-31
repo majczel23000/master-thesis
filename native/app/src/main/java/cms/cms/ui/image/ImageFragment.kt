@@ -3,6 +3,8 @@ package cms.cms.ui.image
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +16,7 @@ import androidx.navigation.findNavController
 import cms.cms.APIService
 import cms.cms.R
 import cms.cms.constants
+import cms.cms.models.ImageData
 import cms.cms.models.ImagesResponse
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -34,6 +37,8 @@ class ImageFragment : Fragment() {
     private var itemsPerPage: Int = 5
     private var rows: ArrayList<TableRow> = arrayListOf<TableRow>()
     private lateinit var spinner: ProgressBar
+    private lateinit var filter: EditText
+    private lateinit var filteredImages: List<ImageData>
 
     override fun onResume() {
         super.onResume()
@@ -53,9 +58,11 @@ class ImageFragment : Fragment() {
                 if (response.isSuccessful) {
                     val jsonResponse = JsonParser.parseString(response.body()?.string()).toString()
                     imagesData = Gson().fromJson<ImagesResponse>(jsonResponse, ImagesResponse::class.java)
-                    displayData()
+                    displayData(imagesData.data.toMutableList())
+                    filteredImages = imagesData.data.toMutableList()
                     spinner.visibility = View.GONE
                     table.visibility = View.VISIBLE
+                    filter.visibility = View.VISIBLE
                 } else {
                     Log.e("RETROFIT_ERROR", response.toString())
                 }
@@ -74,13 +81,28 @@ class ImageFragment : Fragment() {
         paginationText = root.findViewById(R.id.images_pagination)
         nextBtn = root.findViewById(R.id.images_pagination_next_btn)
         prevBtn = root.findViewById(R.id.images_pagination_prev_btn)
+        filter = root.findViewById(R.id.images_filter_edittext)
+        filter.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                for (row in rows) {
+                    table!!.removeView(row)
+                }
+                rows.clear()
+                filteredImages = imagesData.data.filter { it.code.contains(s.toString()) }
+                displayData(filteredImages)
+            }
+        })
         nextBtn.setOnClickListener {
             page += 1;
             for (row in rows) {
                 table!!.removeView(row)
             }
             rows.clear()
-            displayData()
+            displayData(filteredImages)
         }
         prevBtn.setOnClickListener {
             if (page > 1) {
@@ -89,7 +111,7 @@ class ImageFragment : Fragment() {
                     table!!.removeView(row)
                 }
                 rows.clear()
-                displayData()
+                displayData(filteredImages)
             }
         }
         val addImageBtn: Button = root.findViewById(R.id.add_image_btn)
@@ -101,12 +123,12 @@ class ImageFragment : Fragment() {
         return root
     }
 
-    fun displayData() {
+    fun displayData(data: List<ImageData>) {
         var to = (page - 1) * itemsPerPage + itemsPerPage - 1
-        if (to > imagesData.data.size) {
-            to = imagesData.data.size - 1
+        if (to > data.size) {
+            to = data.size - 1
         }
-        for (image in imagesData.data.slice((page - 1) * itemsPerPage..to)) {
+        for (image in data.slice((page - 1) * itemsPerPage..to)) {
             val row = TableRow(activity)
             row.setPadding(0, 25, 0, 25)
             val textCode = TextView(activity)
@@ -139,6 +161,6 @@ class ImageFragment : Fragment() {
                 navController?.navigate(R.id.nav_images_details, bundle)
             }
         }
-        paginationText.setText("${(page - 1) * itemsPerPage + 1} - ${(page - 1) * itemsPerPage + itemsPerPage} of ${imagesData.data.size}")
+        paginationText.setText("${(page - 1) * itemsPerPage + 1} - ${(page - 1) * itemsPerPage + itemsPerPage} of ${data.size}")
     }
 }

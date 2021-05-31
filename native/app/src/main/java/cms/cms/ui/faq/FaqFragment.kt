@@ -2,20 +2,20 @@ package cms.cms.ui.faq
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import cms.cms.APIService
 import cms.cms.R
 import cms.cms.constants
+import cms.cms.models.FaqData
 import cms.cms.models.FaqsResponse
-import cms.cms.models.UsersResponse
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.coroutines.CoroutineScope
@@ -35,6 +35,8 @@ class FaqFragment : Fragment() {
     private var itemsPerPage: Int = 5
     private var rows: ArrayList<TableRow> = arrayListOf<TableRow>()
     private lateinit var spinner: ProgressBar
+    private lateinit var filter: EditText
+    private lateinit var filteredFaqs: List<FaqData>
 
     override fun onResume() {
         super.onResume()
@@ -54,9 +56,11 @@ class FaqFragment : Fragment() {
                 if (response.isSuccessful) {
                     val jsonResponse = JsonParser.parseString(response.body()?.string()).toString()
                     faqsData = Gson().fromJson<FaqsResponse>(jsonResponse, FaqsResponse::class.java)
-                    displayData()
+                    displayData(faqsData.data.toMutableList())
+                    filteredFaqs = faqsData.data.toMutableList()
                     spinner.visibility = View.GONE
                     table.visibility = View.VISIBLE
+                    filter.visibility = View.VISIBLE
                 } else {
                     Log.e("RETROFIT_ERROR", response.toString())
                 }
@@ -75,13 +79,28 @@ class FaqFragment : Fragment() {
         paginationText = root.findViewById(R.id.faqs_pagination)
         nextBtn = root.findViewById(R.id.faqs_pagination_next_btn)
         prevBtn = root.findViewById(R.id.faqs_pagination_prev_btn)
+        filter = root.findViewById(R.id.faqs_filter_edittext)
+        filter.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                for (row in rows) {
+                    table!!.removeView(row)
+                }
+                rows.clear()
+                filteredFaqs = faqsData.data.filter { it.code.contains(s.toString()) || it.status.contains(s.toString()) }
+                displayData(filteredFaqs)
+            }
+        })
         nextBtn.setOnClickListener {
             page += 1;
             for (row in rows) {
                 table!!.removeView(row)
             }
             rows.clear()
-            displayData()
+            displayData(filteredFaqs)
         }
         prevBtn.setOnClickListener {
             if (page > 1) {
@@ -90,7 +109,7 @@ class FaqFragment : Fragment() {
                     table!!.removeView(row)
                 }
                 rows.clear()
-                displayData()
+                displayData(filteredFaqs)
             }
         }
         val addFaqBtn: Button = root.findViewById(R.id.add_faq_btn)
@@ -102,12 +121,12 @@ class FaqFragment : Fragment() {
         return root
     }
 
-    fun displayData() {
+    fun displayData(data: List<FaqData>) {
         var to = (page - 1) * itemsPerPage + itemsPerPage - 1
-        if (to > faqsData.data.size) {
-            to = faqsData.data.size - 1
+        if (to > data.size) {
+            to = data.size - 1
         }
-        for (faq in faqsData.data.slice((page - 1) * itemsPerPage..to)) {
+        for (faq in data.slice((page - 1) * itemsPerPage..to)) {
             val row = TableRow(activity)
             row.setPadding(0, 25, 0, 25)
             val textCode = TextView(activity)
@@ -131,6 +150,6 @@ class FaqFragment : Fragment() {
                 navController?.navigate(R.id.nav_faqs_details, bundle)
             }
         }
-        paginationText.setText("${(page - 1) * itemsPerPage + 1} - ${(page - 1) * itemsPerPage + itemsPerPage} of ${faqsData.data.size}")
+        paginationText.setText("${(page - 1) * itemsPerPage + 1} - ${(page - 1) * itemsPerPage + itemsPerPage} of ${data.size}")
     }
 }

@@ -2,6 +2,8 @@ package cms.cms.ui.dictionary
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,7 @@ import cms.cms.APIService
 import cms.cms.R
 import cms.cms.constants
 import cms.cms.models.DictionariesResponse
+import cms.cms.models.DictionaryData
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +35,8 @@ class DictionaryFragment : Fragment() {
     private var itemsPerPage: Int = 5
     private var rows: ArrayList<TableRow> = arrayListOf<TableRow>()
     private lateinit var spinner: ProgressBar
+    private lateinit var filter: EditText
+    private lateinit var filteredDictionaries: List<DictionaryData>
 
     override fun onResume() {
         super.onResume()
@@ -51,9 +56,11 @@ class DictionaryFragment : Fragment() {
                 if (response.isSuccessful) {
                     val jsonResponse = JsonParser.parseString(response.body()?.string()).toString()
                     dictionariesData = Gson().fromJson<DictionariesResponse>(jsonResponse, DictionariesResponse::class.java)
-                    displayData()
+                    displayData(dictionariesData.data.toMutableList())
+                    filteredDictionaries = dictionariesData.data.toMutableList()
                     spinner.visibility = View.GONE
                     table.visibility = View.VISIBLE
+                    filter.visibility = View.VISIBLE
                 } else {
                     Log.e("RETROFIT_ERROR", response.toString())
                 }
@@ -72,13 +79,28 @@ class DictionaryFragment : Fragment() {
         paginationText = root.findViewById(R.id.dictionary_pagination)
         nextBtn = root.findViewById(R.id.dictionary_pagination_next_btn)
         prevBtn = root.findViewById(R.id.dictionary_pagination_prev_btn)
+        filter = root.findViewById(R.id.dictionary_filter_edittext)
+        filter.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                for (row in rows) {
+                    table!!.removeView(row)
+                }
+                rows.clear()
+                filteredDictionaries = dictionariesData.data.filter { it.code.contains(s.toString()) || it.status.contains(s.toString()) }
+                displayData(filteredDictionaries)
+            }
+        })
         nextBtn.setOnClickListener {
             page += 1;
             for (row in rows) {
                 table!!.removeView(row)
             }
             rows.clear()
-            displayData()
+            displayData(filteredDictionaries)
         }
         prevBtn.setOnClickListener {
             if (page > 1) {
@@ -87,7 +109,7 @@ class DictionaryFragment : Fragment() {
                     table!!.removeView(row)
                 }
                 rows.clear()
-                displayData()
+                displayData(filteredDictionaries)
             }
         }
         val addDictionaryBtn: Button = root.findViewById(R.id.add_dictionary_btn)
@@ -99,12 +121,12 @@ class DictionaryFragment : Fragment() {
         return root
     }
 
-    fun displayData() {
+    fun displayData(data: List<DictionaryData>) {
         var to = (page - 1) * itemsPerPage + itemsPerPage - 1
-        if (to > dictionariesData.data.size) {
-            to = dictionariesData.data.size - 1
+        if (to > data.size) {
+            to = data.size - 1
         }
-        for (dict in dictionariesData.data.slice((page - 1) * itemsPerPage..to)) {
+        for (dict in data.slice((page - 1) * itemsPerPage..to)) {
             val row = TableRow(activity)
             row.setPadding(0, 25, 0, 25)
             val textCode = TextView(activity)
@@ -128,6 +150,6 @@ class DictionaryFragment : Fragment() {
                 navController?.navigate(R.id.nav_dictionaries_details, bundle)
             }
         }
-        paginationText.setText("${(page - 1) * itemsPerPage + 1} - ${(page - 1) * itemsPerPage + itemsPerPage} of ${dictionariesData.data.size}")
+        paginationText.setText("${(page - 1) * itemsPerPage + 1} - ${(page - 1) * itemsPerPage + itemsPerPage} of ${data.size}")
     }
 }

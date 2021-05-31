@@ -71,6 +71,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <EditText
+                android:id="@+id/settings_filter_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:hint="Filter"
+                android:visibility="gone"/>
+
             <TableLayout
                 android:id="@+id/settings_table"
                 android:layout_width="match_parent"

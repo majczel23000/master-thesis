@@ -2,6 +2,8 @@ package cms.cms.ui.user
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import androidx.navigation.findNavController
 import cms.cms.APIService
 import cms.cms.R
 import cms.cms.constants
+import cms.cms.models.UserData
 import cms.cms.models.UsersResponse
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -20,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
-
 
 class UserFragment : Fragment() {
 
@@ -33,6 +35,8 @@ class UserFragment : Fragment() {
     private var itemsPerPage: Int = 5
     private var rows: ArrayList<TableRow> = arrayListOf<TableRow>()
     private lateinit var spinner: ProgressBar
+    private lateinit var filter: EditText
+    private lateinit var filteredUsers: List<UserData>
 
     override fun onResume() {
         super.onResume()
@@ -52,9 +56,11 @@ class UserFragment : Fragment() {
                 if (response.isSuccessful) {
                     val jsonResponse = JsonParser.parseString(response.body()?.string()).toString()
                     usersData = Gson().fromJson<UsersResponse>(jsonResponse, UsersResponse::class.java)
-                    displayData()
+                    displayData(usersData.data.toMutableList())
+                    filteredUsers = usersData.data.toMutableList()
                     spinner.visibility = View.GONE
                     table.visibility = View.VISIBLE
+                    filter.visibility = View.VISIBLE
                 } else {
                     Log.e("RETROFIT_ERROR", response.toString())
                 }
@@ -73,13 +79,28 @@ class UserFragment : Fragment() {
         paginationText = root.findViewById(R.id.users_pagination)
         nextBtn = root.findViewById(R.id.users_pagination_next_btn)
         prevBtn = root.findViewById(R.id.users_pagination_prev_btn)
+        filter = root.findViewById(R.id.users_filter_edittext)
+        filter.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                for (row in rows) {
+                    table!!.removeView(row)
+                }
+                rows.clear()
+                filteredUsers = usersData.data.filter { it.email.contains(s.toString()) || it.status.contains(s.toString()) }
+                displayData(filteredUsers)
+            }
+        })
         nextBtn.setOnClickListener{
             page += 1;
             for (row in rows) {
                 table!!.removeView(row)
             }
             rows.clear()
-            displayData()
+            displayData(filteredUsers)
         }
         prevBtn.setOnClickListener{
             if (page > 1) {
@@ -88,7 +109,7 @@ class UserFragment : Fragment() {
                     table!!.removeView(row)
                 }
                 rows.clear()
-                displayData()
+                displayData(filteredUsers)
             }
         }
         val addUserBtn: Button = root.findViewById(R.id.add_user_btn)
@@ -100,12 +121,12 @@ class UserFragment : Fragment() {
         return root
     }
 
-    fun displayData() {
+    fun displayData(data: List<UserData>) {
         var to = (page-1)*itemsPerPage + itemsPerPage - 1
-        if (to > usersData.data.size) {
-            to = usersData.data.size - 1
+        if (to > data.size) {
+            to = data.size - 1
         }
-        for (user in usersData.data.slice((page-1)*itemsPerPage..to)) {
+        for (user in data.slice((page-1)*itemsPerPage..to)) {
             val row = TableRow(activity)
             row.setPadding(0, 25, 0, 25)
             val textEmail = TextView(activity)
@@ -129,7 +150,7 @@ class UserFragment : Fragment() {
                 navController?.navigate(R.id.nav_users_details, bundle)
             }
         }
-        paginationText.setText("${(page-1)*itemsPerPage + 1} - ${(page-1)*itemsPerPage + itemsPerPage} of ${usersData.data.size}")
+        paginationText.setText("${(page-1)*itemsPerPage + 1} - ${(page-1)*itemsPerPage + itemsPerPage} of ${data.size}")
     }
 
 }
